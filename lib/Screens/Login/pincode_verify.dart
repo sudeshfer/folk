@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:folk/pin_code_fields.dart';
 
 class PincodeVerify extends StatefulWidget {
@@ -32,7 +33,11 @@ class _PincodeVerifyState extends State<PincodeVerify> {
             child: IconButton(
             icon: Icon(Icons.arrow_back),
             color: Colors.black,
-            onPressed: () {},
+            iconSize: 38,
+            onPressed: () {
+              log('Clikced on back btn');
+              Navigator.of(context).pop();
+            },
           ),
                   alignment: Alignment.centerLeft,
                 
@@ -93,30 +98,35 @@ class _PincodeVerifyState extends State<PincodeVerify> {
              
            
                   
-              Container(
-                   padding: EdgeInsets.only(top: 32),
-                    child: Center(
-                    child: Container(
-                      height: 51,
-                      width: MediaQuery.of(context).size.width / 1.12,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFf45d27), Color(0xFFf5851f)],
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
+              InkWell(
+                onTap: (){
+                  Navigator.of(context).pushNamed("/setupstep1");
+                },
+                              child: Container(
+                     padding: EdgeInsets.only(top: 32),
                       child: Center(
-                        child: Text(
-                          'Continue'.toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold),
+                      child: Container(
+                        height: 51,
+                        width: MediaQuery.of(context).size.width / 1.12,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                        child: Center(
+                          child: Text(
+                            'Continue'.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  ),
+                    ),
+              ),
                 SizedBox(
                 height: 20,
               ),
