@@ -13,12 +13,59 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 50.0,
-            left: (MediaQuery.of(context).size.width) / 35,
+      backgroundColor: Colors.white,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: ListView(
+            children: <Widget>[
+              SizedBox(height: 30),
+              Container(
+                
             child: IconButton(
+<<<<<<< HEAD
+            icon: Icon(Icons.arrow_back),
+            color: Colors.black,
+            onPressed: () {},
+          ),
+                  alignment: Alignment.centerLeft,
+                
+              ),
+          
+              SizedBox(height: 12),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                child: Text(
+                  'Reset Password',
+                  style: TextStyle(fontWeight: FontWeight.bold,color: Color.fromRGBO(64, 75, 105, 1),fontFamily: 'Montserrat', fontSize: 22),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                    
+                child: RichText(
+                  text: TextSpan(
+                      text: "Reset code was sent your email. Please \n"
+                            "enter ther code and create new password.",
+                      style: TextStyle(color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
+                  child: TextField(
+=======
               icon: Icon(Icons.arrow_back),
               color: Colors.black,
               iconSize: 38,
@@ -58,14 +105,38 @@ class _ResetPasswordState extends State<ResetPassword> {
             top: 300.0,
             left: (MediaQuery.of(context).size.width) / 15,
             child: TextField(
+>>>>>>> e8ff59efd39e089718324d5122bb58eb8a177cf3
               decoration: InputDecoration(
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.grey[200])),
                   labelText: 'Reset Code'),
             ),
-            height: 100.0,
-            width: 360.0,
           ),
+<<<<<<< HEAD
+             
+             
+           
+                  
+              Container(
+                   padding: EdgeInsets.only(top: 32),
+                    child: Center(
+                      child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed("/resetpw");
+                      },
+                    child: Container(
+                      height: 51,
+                      width: MediaQuery.of(context).size.width / 1.12,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFf45d27), Color(0xFFf5851f)],
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                      child: Center(
+                        child: Text(
+                          'Change Phone number'.toUpperCase(),
+                          style: TextStyle(
+=======
           Positioned(
             top: 385.0,
             left: 28,
@@ -92,6 +163,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           child: Text(
                             'Change Phone number'.toUpperCase(),
                             style: TextStyle(
+>>>>>>> e8ff59efd39e089718324d5122bb58eb8a177cf3
                               fontSize: 16,
                               color: Colors.white,
                               fontFamily: 'Montserrat',
@@ -101,11 +173,15 @@ class _ResetPasswordState extends State<ResetPassword> {
                       ),
                     ),
                   ),
-                ],
+                  ),
               ),
-            ),
-          )
-        ],
+              SizedBox(
+                height: 14,
+              ),
+              
+            ],
+          ),
+        ),
       ),
     );
   }
