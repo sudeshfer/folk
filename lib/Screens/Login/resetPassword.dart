@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -19,20 +21,21 @@ class _ResetPasswordState extends State<ResetPassword> {
             child: IconButton(
               icon: Icon(Icons.arrow_back),
               color: Colors.black,
-              iconSize: 40,
+              iconSize: 38,
               onPressed: () {
+                log('Clikced on back btn');
                 Navigator.of(context).pop();
               },
             ),
           ),
           Positioned(
-            top: 160.0,
+            top: 155.0,
             left: (MediaQuery.of(context).size.width) / 17,
             child: Text(
               "Reset Password \n",
               style: TextStyle(
                 color: Color.fromRGBO(64, 75, 105, 1),
-                fontSize: 21,
+                fontSize: 22,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w700,
               ),
@@ -44,12 +47,11 @@ class _ResetPasswordState extends State<ResetPassword> {
             child: Text(
               "Reset code was sent your email. Please \n"
               "enter ther code and create new password.",
-              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.justify,
               style: TextStyle(
                   color: Color.fromRGBO(64, 75, 105, 3),
-                  fontSize: 17.5,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400),
+                  fontSize: 16,
+                  fontFamily: 'Montserrat'),
             ),
           ),
           Positioned(
@@ -58,7 +60,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             child: TextField(
               decoration: InputDecoration(
                   border: new OutlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.grey)),
+                      borderSide: new BorderSide(color: Colors.grey[200])),
                   labelText: 'Reset Code'),
             ),
             height: 100.0,
@@ -72,23 +74,29 @@ class _ResetPasswordState extends State<ResetPassword> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Center(
-                    child: Container(
-                      height: 55,
-                      width: MediaQuery.of(context).size.width / 1.15,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFf45d27), Color(0xFFf5851f)],
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Center(
-                        child: Text(
-                          'Change Phone number'.toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 17,
+                  InkWell(
+                    onTap: (){
+                      log('Clikced on change 4n num btn');
+                    },
+                    child: Center(
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width / 1.15,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
+                        child: Center(
+                          child: Text(
+                            'Change Phone number'.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 16,
                               color: Colors.white,
                               fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                       ),
                     ),

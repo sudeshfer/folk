@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -42,43 +44,53 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 12.0),
-                      child: Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width / 1.2,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xFF2672CB), Color(0xFF2672CB)],
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/fb-icon.png',
-                                scale: 1.4,
+                  InkWell(
+                    onTap: (){
+                      log('Clikced on Login with facebook btn');
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0xFF2672CB), Color(0xFF2672CB)],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 35.0, right: 20),
-                                child: Text(
-                                  'Login with Facebook'.toUpperCase(),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50))),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/fb-icon.png',
+                                  scale: 1.4,
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 35.0, right: 20),
+                                  child: Text(
+                                    'Login with Facebook'.toUpperCase(),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15.5,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.2,
+                                        height: 1,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
+                      log('Clikced on Login with 4n btn');
                       Navigator.of(context).pushNamed("/phonelogin");
                     },
                     child: Center(
@@ -106,7 +118,10 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text(
                                     'Login with phone number'.toUpperCase(),
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
+                                        color: Colors.white, fontSize: 15.5,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.2,
+                                        height: 1),
                                   ),
                                 ),
                               ],
@@ -121,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.only(top: 16.0),
                       child: InkWell(
                         onTap: () {
+                          log('Clikced on trouble with login');
                           Navigator.of(context).pushNamed("/forgotpw");
                         },
                         child: Container(

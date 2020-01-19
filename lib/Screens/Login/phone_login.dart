@@ -18,7 +18,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 60.0, left: 14),
+              padding: EdgeInsets.only(top: 50.0, left: 14),
               child: IconButton(
                 icon: Icon(Icons.arrow_back),
                 iconSize: 38,
@@ -45,7 +45,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
             ),
             Center(
               child: Container(
-                margin: EdgeInsets.only(top: 40, left: 30, right: 30),
+                margin: EdgeInsets.only(top: 40, left: 28, right: 28),
                 child: TextField(
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
@@ -57,7 +57,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
             ),
             Center(
               child: Container(
-                margin: EdgeInsets.only(top: 30, left: 30, right: 30),
+                margin: EdgeInsets.only(top: 30, left: 28, right: 28),
                 child: Text(
                   "Tap Next to receive an SMS confirmation from \n Account Kit powered by Facebook. Folk uses \n Facebook technology to keep you sign in.",
                   textAlign: TextAlign.center,
@@ -71,7 +71,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
             ),
             Center(
               child: Container(
-                margin: EdgeInsets.only(top: 45, left: 30, right: 30),
+                margin: EdgeInsets.only(top: 45, left: 26, right: 26),
                 child: InkWell(
                   onTap: () {
                     log('Clikced on next btn');

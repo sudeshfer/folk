@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -19,14 +21,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             child: IconButton(
               icon: Icon(Icons.arrow_back),
               color: Colors.black,
-              iconSize: 40,
+              iconSize: 38,
               onPressed: () {
+                log('Clikced on back btn');
                 Navigator.of(context).pop();
               },
             ),
           ),
           Positioned(
-            top: 160.0,
+            top: 155.0,
             left: (MediaQuery.of(context).size.width) / 17,
             child: Text(
               "Forgot Password? \n",
@@ -40,14 +43,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           ),
           Positioned(
             top: 210.0,
-            left: (MediaQuery.of(context).size.width) / 17,
+            left: (MediaQuery.of(context).size.width) / 18,
             child: Text(
               "Pleace enter your email below to receive your \n"
               "password reset instructions.",
-              textDirection: TextDirection.ltr,
               style: TextStyle(
                   color: Color.fromRGBO(64, 75, 105, 3),
-                  fontSize: 17.5,
+                  fontSize: 16,
                   fontFamily: 'Montserrat',
                   ),
             ),
@@ -75,6 +77,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   Center(
                     child: InkWell(
                       onTap: () {
+                        log('Clikced on send req btn');
                         Navigator.of(context).pushNamed("/resetpw");
                       },
                       child: Container(
@@ -82,7 +85,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         width: MediaQuery.of(context).size.width / 1.15,
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Color(0xFFf45d27), Color(0xFFf5851f)],
+                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                             ),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(50))),
@@ -90,10 +93,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           child: Text(
                             'Send request'.toUpperCase(),
                             style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 16,
                                 color: Colors.white,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                                fontFamily: 'Montserrat'),
                           ),
                         ),
                       ),
