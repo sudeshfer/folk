@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:folk/pin_code_fields.dart';
 
 class PincodeVerify extends StatefulWidget {
-  PincodeVerify({Key key}) : super(key: key);
+  final phone;
+  // PincodeVerify({Key key}) : super(key: key);
+  PincodeVerify({this.phone});
 
   @override
   _PincodeVerifyState createState() => _PincodeVerifyState();
@@ -31,15 +33,18 @@ class _PincodeVerifyState extends State<PincodeVerify> {
               SizedBox(height: 30),
               Container(
                 
-            child: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-            iconSize: 38,
-            onPressed: () {
-              log('Clikced on back btn');
-              Navigator.of(context).pop();
-            },
+            child: Padding(
+              padding: EdgeInsets.only( left: 14),
+              child: IconButton(
+              icon: Icon(Icons.arrow_back),
+              color: Colors.black,
+              iconSize: 38,
+              onPressed: () {
+                log('Clikced on back btn');
+                Navigator.of(context).pop();
+              },
           ),
+            ),
                   alignment: Alignment.centerLeft,
                 
               ),
@@ -63,7 +68,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                       
                       children: [
                         TextSpan(
-                            text: "12345",
+                            text: widget.phone,
                             style: TextStyle(
                                 color: Color(0xFFf45d27),
                                 fontWeight: FontWeight.bold,
