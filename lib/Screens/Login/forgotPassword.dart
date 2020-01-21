@@ -10,9 +10,13 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+
+ final _email = TextEditingController();
+ String _errorTxt = '';
+
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
@@ -23,37 +27,46 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           width: MediaQuery.of(context).size.width,
           child: ListView(
             children: <Widget>[
-              SizedBox(height: 30),
-              Container(
-                
-            child: IconButton(
-<<<<<<< HEAD
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () {},
-          ),
+              // SizedBox(height: 40),
+              Padding(
+                padding: EdgeInsets.only(top: 50.0, left: 14),
+                child: Container(
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Colors.black,
+                    iconSize: 38,
+                    onPressed: () {
+                      log('Clikced on back btn');
+                    Navigator.of(context).pop();
+                    },
+                  ),
                   alignment: Alignment.centerLeft,
-                
+                ),
               ),
-          
+
               SizedBox(height: 12),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                 child: Text(
                   'Forgot Password?',
-                  style: TextStyle(fontWeight: FontWeight.bold,color: Color.fromRGBO(64, 75, 105, 1),fontFamily: 'Montserrat', fontSize: 22),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(64, 75, 105, 1),
+                      fontFamily: 'Montserrat',
+                      fontSize: 22),
                   textAlign: TextAlign.left,
                 ),
               ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                    
                 child: RichText(
                   text: TextSpan(
-                      text: "Pleace enter your email below to receive your \npassword reset instructions.",
-                      style: TextStyle(color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
+                      text:
+                          "Pleace enter your email below to receive your \npassword reset instructions.",
+                      style: TextStyle(
+                          color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -61,93 +74,53 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 height: 30,
               ),
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
-                  child: TextField(
-=======
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-              iconSize: 38,
-              onPressed: () {
-                log('Clikced on back btn');
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          Positioned(
-            top: 155.0,
-            left: (MediaQuery.of(context).size.width) / 17,
-            child: Text(
-              "Forgot Password? \n",
-              style: TextStyle(
-                color: Color.fromRGBO(64, 75, 105, 1),
-                fontSize: 22,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w700,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
+                child: TextField(
+                  controller: _email,
+                  decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                          borderSide: new BorderSide(color: Colors.grey)),
+                      labelText: 'Email',
+                      errorText: _errorTxt,
+                      errorBorder: _errorTxt.isEmpty
+                                  ? OutlineInputBorder(
+                                      borderSide:
+                                          new BorderSide(color: Colors.grey))
+                                  : null,
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.green))
+                      ),
+                ),
               ),
-            ),
-          ),
-          Positioned(
-            top: 210.0,
-            left: (MediaQuery.of(context).size.width) / 18,
-            child: Text(
-              "Pleace enter your email below to receive your \n"
-              "password reset instructions.",
-              style: TextStyle(
-                  color: Color.fromRGBO(64, 75, 105, 3),
-                  fontSize: 16,
-                  fontFamily: 'Montserrat',
-                  ),
-            ),
-          ),
-          Positioned(
-            top: 300.0,
-            left: (MediaQuery.of(context).size.width) / 15,
-            child: TextField(
->>>>>>> e8ff59efd39e089718324d5122bb58eb8a177cf3
-              decoration: InputDecoration(
-                  border: new OutlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.grey)),
-                  labelText: 'Email'),
-            ),
-          ),
-             
-             
-           
-                  
+
               Container(
-                   padding: EdgeInsets.only(top: 32),
-                    child: Center(
-                      child: InkWell(
-                      onTap: () {
-                        log('Clikced on send req btn');
-                        Navigator.of(context).pushNamed("/resetpw");
-                      },
-<<<<<<< HEAD
+                padding: EdgeInsets.only(top: 32),
+                child: Center(
+                  child: InkWell(
+                    onTap: () {
+
+                      if (checkNull()) {
+                        setState(() {
+                          _errorTxt = "";
+                        });
+
+                      log('Clikced on send req btn');
+                      Navigator.of(context).pushNamed("/resetpw");
+
+                      } else {
+                        setState(() {
+                          _errorTxt = "You should fill out this field !";
+                        });
+                      }
+                    },
                     child: Container(
                       height: 51,
                       width: MediaQuery.of(context).size.width / 1.12,
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [Color(0xFFf45d27), Color(0xFFf5851f)],
-=======
-                      child: Container(
-                        height: 55,
-                        width: MediaQuery.of(context).size.width / 1.15,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        child: Center(
-                          child: Text(
-                            'Send request'.toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontFamily: 'Montserrat'),
->>>>>>> e8ff59efd39e089718324d5122bb58eb8a177cf3
+                            colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(50))),
                       child: Center(
@@ -162,16 +135,23 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                     ),
                   ),
-                  ),
+                ),
               ),
               SizedBox(
                 height: 14,
               ),
-              
             ],
           ),
         ),
       ),
     );
+  }
+
+  bool checkNull() {
+    if (_email.text == '') {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

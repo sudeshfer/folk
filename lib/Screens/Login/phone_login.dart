@@ -159,7 +159,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                         // Navigator.of(context).pushNamed("/pincode");
                       } else {
                         setState(() {
-                          _errorTxt = "You should fill this field !";
+                          _errorTxt = "You should fill out this field !";
                         });
                       }
                     },
