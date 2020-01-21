@@ -104,6 +104,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                         child: TextField(
                           keyboardType: TextInputType.number,
                           controller: _phoneNo,
+                          maxLength: 9,
                           decoration: InputDecoration(
                               border: new OutlineInputBorder(
                                   borderSide: new BorderSide(
