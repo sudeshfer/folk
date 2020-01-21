@@ -12,12 +12,25 @@ class PhoneLogin extends StatefulWidget {
 }
 
 class _PhoneLoginState extends State<PhoneLogin> {
-
   Country _selected;
-   String _countrycode = '';
-   final _phoneNo = TextEditingController();
-   bool _validate = false;
+  String _countrycode = '';
+  final _phoneNo = TextEditingController();
+  String _errorTxt = '';
+  bool _validate = false;
 
+  @override
+  void initState() {
+    setState(() {
+      _errorTxt = "";
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _phoneNo.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,14 +102,23 @@ class _PhoneLoginState extends State<PhoneLogin> {
                         width: MediaQuery.of(context).size.width / 1.5,
                         margin: EdgeInsets.only(top: 40),
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           controller: _phoneNo,
                           decoration: InputDecoration(
-                            border: new OutlineInputBorder(
-                                borderSide: new BorderSide(
-                                    color: Color.fromRGBO(238, 238, 238, 0.1))),
-                            labelText: 'Phone Number',
-                            // errorText: _validate? 'this field should be filled' : null,
-                          ),
+                              border: new OutlineInputBorder(
+                                  borderSide: new BorderSide(
+                                      color:
+                                          Color.fromRGBO(238, 238, 238, 0.1))),
+                              labelText: 'Phone Number',
+                              errorText: _errorTxt,
+                              errorBorder: _errorTxt.isEmpty
+                                  ? OutlineInputBorder(
+                                      borderSide:
+                                          new BorderSide(color: Colors.grey))
+                                  : null,
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.green))),
                         ),
                       ),
                     ],
@@ -123,31 +145,22 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   child: InkWell(
                     onTap: () {
                       if (checkNull()) {
+                        setState(() {
+                          _errorTxt = "";
+                        });
 
-                        String phoneNum = _countrycode+_phoneNo.text;
-                        print(phoneNum );
+                        String phoneNum = _countrycode + _phoneNo.text;
+                        print(phoneNum);
 
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PincodeVerify(phone: phoneNum)));
+                            builder: (context) =>
+                                PincodeVerify(phone: phoneNum)));
 
                         // Navigator.of(context).pushNamed("/pincode");
                       } else {
-                            
-                            // _validate = true;
-
-                        showDialog(context: context,
-                        child: new AlertDialog(
-                             title: new Text("Oh come on!"),
-                             content: new Text("You should fill the phone number"),
-                             actions: <Widget>[
-                              new FlatButton(
-                                child: new Text('Ok'),
-                                onPressed: (){
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                             ],
-                        ));
+                        setState(() {
+                          _errorTxt = "You should fill this field !";
+                        });
                       }
                     },
                     child: Container(
@@ -185,5 +198,12 @@ class _PhoneLoginState extends State<PhoneLogin> {
       return true;
     }
   }
-  
+
+  bool checklength() {
+    if (_phoneNo.text == '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
