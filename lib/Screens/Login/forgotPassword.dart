@@ -15,6 +15,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
  String _errorTxt = '';
 
   @override
+  void initState() {
+    setState(() {
+      _errorTxt = "";
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,

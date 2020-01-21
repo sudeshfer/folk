@@ -11,8 +11,17 @@ class ResetPassword extends StatefulWidget {
 
 class _ResetPasswordState extends State<ResetPassword> {
 
+
 final _resetCode = TextEditingController();
 String _errorTxt = '';
+
+ @override
+  void initState() {
+    setState(() {
+      _errorTxt = "";
+    });
+    super.initState();
+  }
 
 
   @override
@@ -87,9 +96,9 @@ String _errorTxt = '';
                                       borderSide:
                                           new BorderSide(color: Colors.grey))
                                   : null,
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder:_errorTxt.isNotEmpty? OutlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: Colors.green))
+                                      BorderSide(color: Colors.green)):null
                       ),
                       
                 ),
