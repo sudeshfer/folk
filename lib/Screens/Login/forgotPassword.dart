@@ -27,7 +27,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               Container(
                 
             child: IconButton(
-<<<<<<< HEAD
             icon: Icon(Icons.arrow_back),
             color: Colors.black,
             onPressed: () {},
@@ -64,47 +63,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
                   child: TextField(
-=======
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
               iconSize: 38,
-              onPressed: () {
-                log('Clikced on back btn');
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          Positioned(
-            top: 155.0,
-            left: (MediaQuery.of(context).size.width) / 17,
-            child: Text(
-              "Forgot Password? \n",
-              style: TextStyle(
-                color: Color.fromRGBO(64, 75, 105, 1),
-                fontSize: 22,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 210.0,
-            left: (MediaQuery.of(context).size.width) / 18,
-            child: Text(
-              "Pleace enter your email below to receive your \n"
-              "password reset instructions.",
-              style: TextStyle(
-                  color: Color.fromRGBO(64, 75, 105, 3),
-                  fontSize: 16,
-                  fontFamily: 'Montserrat',
-                  ),
-            ),
-          ),
-          Positioned(
-            top: 300.0,
-            left: (MediaQuery.of(context).size.width) / 15,
-            child: TextField(
->>>>>>> e8ff59efd39e089718324d5122bb58eb8a177cf3
               decoration: InputDecoration(
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.grey)),
@@ -123,31 +82,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         log('Clikced on send req btn');
                         Navigator.of(context).pushNamed("/resetpw");
                       },
-<<<<<<< HEAD
                     child: Container(
                       height: 51,
                       width: MediaQuery.of(context).size.width / 1.12,
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [Color(0xFFf45d27), Color(0xFFf5851f)],
-=======
-                      child: Container(
-                        height: 55,
-                        width: MediaQuery.of(context).size.width / 1.15,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        child: Center(
-                          child: Text(
-                            'Send request'.toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontFamily: 'Montserrat'),
->>>>>>> e8ff59efd39e089718324d5122bb58eb8a177cf3
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(50))),
                       child: Center(
