@@ -6,6 +6,7 @@ import 'package:folk/Screens/Login/resetPassword.dart';
 import 'package:folk/Screens/Login/pincode_verify.dart';
 import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Screens/Login/setup_step2.dart';
+import 'package:folk/Screens/Login/location.dart';
 
 
 void main() => runApp(MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: new LoginPage(),
+      home: new GetLocation(),
       routes: <String, WidgetBuilder>{
         // login and resgistration routes
         "/login":(BuildContext context) => new LoginPage(),
