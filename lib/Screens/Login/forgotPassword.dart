@@ -63,7 +63,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
                   child: TextField(
-              iconSize: 38,
               decoration: InputDecoration(
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: Colors.grey)),
