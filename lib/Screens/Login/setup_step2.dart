@@ -54,7 +54,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 30, left: 30),
+                margin: EdgeInsets.only(top: 25, left: 30),
                 child: Text(
                   "Introduce Yourself",
                   textAlign: TextAlign.center,
@@ -79,7 +79,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 30),
+                margin: EdgeInsets.only(top: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -199,7 +199,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 25.0, top: 10),
+                    padding: const EdgeInsets.only(right: 20.0, top: 10),
                     child: Container(
                       child: IconButton(
                         icon: Icon(FontAwesomeIcons.solidCalendarAlt),

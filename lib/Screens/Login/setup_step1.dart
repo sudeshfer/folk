@@ -110,112 +110,114 @@ class _SetupStepOneState extends State<SetupStepOne> {
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: Container(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 50.0, left: 14),
-              child: IconButton(
-                icon: Icon(Icons.arrow_back),
-                iconSize: 38,
-                onPressed: () {
-                  log('Clikced on back btn');
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 30, left: 30),
-              child: Text(
-                "Introduce Yourself",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromRGBO(64, 75, 105, 1),
-                  fontSize: 25,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                log("image upload btn clicked");
-                _showChoiceDialog(context);
-              },
-              child: Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 40),
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: (imageFile==null) ? Image.asset('assets/images/btn_upload_cover.png',
-                          width: 220.0, height: 245.0, fit: BoxFit.cover)
-
-                          :Image.file(imageFile,width: 220,height: 245,fit: BoxFit.fill,)
-                          
-                          ),
-                ),
-              ),
-            ),
-            Container(
-              // width: MediaQuery.of(context).size.width / 1.5,
-              margin: EdgeInsets.only(top: 40, left: 28, right: 28),
-              child: TextField(
-                controller: _name,
-                decoration: InputDecoration(
-                    border: new OutlineInputBorder(
-                        borderSide: new BorderSide(color: Color(0xFFF5F5F5))),
-                    labelText: 'Name',
-                    errorText: _errorName,
-                    errorBorder: _errorName.isEmpty
-                        ? OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.grey))
-                        : null,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.green))),
-              ),
-            ),
-            Center(
-              child: Container(
-                margin:
-                    EdgeInsets.only(top: 30, left: 26, right: 26, bottom: 25),
-                child: InkWell(
-                  onTap: () {
-                    if (checkNull()) {
-                      setState(() {
-                        _errorName = "";
-                      });
-
-                      Navigator.of(context).pushNamed("/setupstep2");
-                    } else {
-                      setState(() {
-                        _errorName = "You should fill out this field !";
-                      });
-                    }
-                  },
+        child: SingleChildScrollView(
                   child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width / 1.15,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 50.0, left: 14),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  iconSize: 38,
+                  onPressed: () {
+                    log('Clikced on back btn');
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 30, left: 30),
+                child: Text(
+                  "Introduce Yourself",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromRGBO(64, 75, 105, 1),
+                    fontSize: 25,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  log("image upload btn clicked");
+                  _showChoiceDialog(context);
+                },
+                child: Center(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 40),
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: (imageFile==null) ? Image.asset('assets/images/btn_upload_cover.png',
+                            width: 220.0, height: 220.0, fit: BoxFit.cover)
+
+                            :Image.file(imageFile,width: 220,height: 220,fit: BoxFit.fill,)
+                            
+                            ),
+                  ),
+                ),
+              ),
+              Container(
+                // width: MediaQuery.of(context).size.width / 1.5,
+                margin: EdgeInsets.only(top: 40, left: 28, right: 28),
+                child: TextField(
+                  controller: _name,
+                  decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                          borderSide: new BorderSide(color: Color(0xFFF5F5F5))),
+                      labelText: 'Name',
+                      errorText: _errorName,
+                      errorBorder: _errorName.isEmpty
+                          ? OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.grey))
+                          : null,
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green))),
+                ),
+              ),
+              Center(
+                child: Container(
+                  margin:
+                      EdgeInsets.only(top: 20, left: 26, right: 26,bottom: 15),
+                  child: InkWell(
+                    onTap: () {
+                      if (checkNull()) {
+                        setState(() {
+                          _errorName = "";
+                        });
+
+                        Navigator.of(context).pushNamed("/setupstep2");
+                      } else {
+                        setState(() {
+                          _errorName = "You should fill out this field !";
+                        });
+                      }
+                    },
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width / 1.15,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                      child: Center(
+                        child: Text(
+                          'Next'.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontFamily: 'Montserrat'),
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    child: Center(
-                      child: Text(
-                        'Next'.toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: 'Montserrat'),
                       ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
-        )),
+              )
+            ],
+          )),
+        ),
       ),
     );
   }

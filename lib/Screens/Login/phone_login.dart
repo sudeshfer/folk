@@ -71,13 +71,13 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   ),
                 ),
                 Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 12.0, right: 12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Container(
-                          width: MediaQuery.of(context).size.width / 3.8,
+                          width: MediaQuery.of(context).size.width / 3.7,
                           margin: EdgeInsets.only(top: 40),
                           child: CountryPicker(
                             dense: false,
@@ -103,7 +103,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                           ),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width / 1.5,
+                          width: MediaQuery.of(context).size.width / 1.6,
                           margin: EdgeInsets.only(top: 40),
                           child: TextField(
                             keyboardType: TextInputType.number,
