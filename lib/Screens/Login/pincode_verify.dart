@@ -1,22 +1,31 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:folk/Controllers/OTP.dart';
+import 'package:flutter_alert/flutter_alert.dart';
 import 'package:folk/Utils/Login_utils/pin_code_fields.dart';
+
+FlutterOtp otp = FlutterOtp();
+String result;
+int enteredOtp;
 
 class PincodeVerify extends StatefulWidget {
   final String phone;
+  final int newotp;
   // PincodeVerify({Key key}) : super(key: key);
-  PincodeVerify({this.phone});
-
+  PincodeVerify({
+    this.phone,
+    this.newotp,
+  });
   @override
   _PincodeVerifyState createState() => _PincodeVerifyState();
-
-  
 }
 
 class _PincodeVerifyState extends State<PincodeVerify> {
   @override
   Widget build(BuildContext context) {
+    log("OTP sent");
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
@@ -30,40 +39,38 @@ class _PincodeVerifyState extends State<PincodeVerify> {
             children: <Widget>[
               SizedBox(height: 30),
               Container(
-                
-            child: Padding(
-              padding: EdgeInsets.only( left: 14),
-              child: IconButton(
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-              iconSize: 38,
-              onPressed: () {
-                log('Clikced on back btn');
-                Navigator.of(context).pop();
-              },
-          ),
-            ),
-                  alignment: Alignment.centerLeft,
-                
+                child: Padding(
+                  padding: EdgeInsets.only(left: 14),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    color: Colors.black,
+                    iconSize: 38,
+                    onPressed: () {
+                      log('Clikced on back btn');
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+                alignment: Alignment.centerLeft,
               ),
-          
               SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
                   'Enter the code',
-                  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Montserrat', fontSize: 22),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat',
+                      fontSize: 22),
                   textAlign: TextAlign.center,
                 ),
               ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                    
                 child: RichText(
                   text: TextSpan(
                       text: "A verification code has been sent to ",
-                      
                       children: [
                         TextSpan(
                             text: widget.phone,
@@ -92,50 +99,53 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                     onCompleted: (v) {
                       print("Completed");
                     },
-                    onChanged: (value) {
-                      print(value);
-                      setState(() {
-                      });
+                    onChanged: (val) {
+                      enteredOtp = int.parse(val);
                     },
                   )),
-             
-             
-           
-                  
               InkWell(
-                onTap: (){
-                  Navigator.of(context).pushNamed("/setupstep1");
+                onTap: () {
+                  // bool yesOrNo = otp.resultChecker(enteredOtp);
+                  if (widget.newotp == enteredOtp) {
+                    Navigator.of(context).pushNamed("/setupstep1");
+                  } else {
+                    showAlert(
+                      context: context,
+                      title: "Empty or Invalid OTP",
+                    );
+                    log("Invalid OTP");
+                  }
                 },
-                              child: Container(
-                     padding: EdgeInsets.only(top: 32),
-                      child: Center(
-                      child: Container(
-                        height: 51,
-                        width: MediaQuery.of(context).size.width / 1.12,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(50))),
-                        child: Center(
-                          child: Text(
-                            'Continue'.toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold),
+                child: Container(
+                  padding: EdgeInsets.only(top: 32),
+                  child: Center(
+                    child: Container(
+                      height: 51,
+                      width: MediaQuery.of(context).size.width / 1.12,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                           ),
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                      child: Center(
+                        child: Text(
+                          'Continue'.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                    ),
+                  ),
+                ),
               ),
-                SizedBox(
+              SizedBox(
                 height: 20,
               ),
               Container(
-                 padding: EdgeInsets.only(top: 30),
+                padding: EdgeInsets.only(top: 30),
               ),
               RichText(
                 textAlign: TextAlign.center,
@@ -145,15 +155,12 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                     children: [
                       TextSpan(
                           text: " \n Tap Continue to accept Facebook's Terms",
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14))
+                          style: TextStyle(color: Colors.grey, fontSize: 14))
                     ]),
               ),
               SizedBox(
                 height: 14,
               ),
-              
             ],
           ),
         ),

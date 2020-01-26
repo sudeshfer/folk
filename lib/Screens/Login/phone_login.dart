@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_country_picker/flutter_country_picker.dart';
+import 'package:folk/Controllers/OTP.dart';
+
 import 'package:folk/Screens/Login/pincode_verify.dart';
 
 class PhoneLogin extends StatefulWidget {
@@ -11,8 +13,9 @@ class PhoneLogin extends StatefulWidget {
   _PhoneLoginState createState() => _PhoneLoginState();
 }
 
-class _PhoneLoginState extends State<PhoneLogin> {
+FlutterOtp otp = FlutterOtp();
 
+class _PhoneLoginState extends State<PhoneLogin> {
   final _phoneNo = TextEditingController();
   Country _selected;
   String _countrycode = '';
@@ -32,7 +35,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
       resizeToAvoidBottomPadding: false, // this avoids the overflow error
       resizeToAvoidBottomInset: true,
       body: InkWell(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: SingleChildScrollView(
@@ -46,7 +49,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     icon: Icon(Icons.arrow_back),
                     iconSize: 38,
                     onPressed: () {
-
                       log('Clikced on back btn');
                       Navigator.of(context).pop();
                       //go back
@@ -87,17 +89,16 @@ class _PhoneLoginState extends State<PhoneLogin> {
                             showCurrency: false, //eg. 'British pound'
                             showCurrencyISO: false, //eg. 'GBP'
                             onChanged: (Country country) {
+                              setState(() {
+                                _selected = country;
+                              });
 
-                                    setState(() {
-                                      _selected = country;
-                                    });
+                              final countryCode = "+${country.dialingCode}";
 
-                                    final countryCode = "+${country.dialingCode}";
-                                    
-                                    _countrycode = countryCode.toString();
+                              _countrycode = countryCode.toString();
 
-                                    print(_countrycode);
-                               },
+                              print(_countrycode);
+                            },
                             selectedCountry: _selected,
                           ),
                         ),
@@ -152,12 +153,13 @@ class _PhoneLoginState extends State<PhoneLogin> {
                             _errorTxt = "";
                           });
 
-                         final String phoneNum = _countrycode + _phoneNo.text;
+                          final String phoneNum = _countrycode + _phoneNo.text;
                           print(phoneNum);
-
+                          otp.sendOtp(phoneNum);
+                          int code = otp.get_otp();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
-                                  PincodeVerify(phone: phoneNum)));
+                                  PincodeVerify(phone: phoneNum,newotp:code)));
 
                           // Navigator.of(context).pushNamed("/pincode");
                         } else {
