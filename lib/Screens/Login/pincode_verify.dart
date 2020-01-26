@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:folk/pin_code_fields.dart';
+import 'package:folk/Utils/Login_utils/pin_code_fields.dart';
 
 class PincodeVerify extends StatefulWidget {
-  final phone;
+  final String phone;
   // PincodeVerify({Key key}) : super(key: key);
   PincodeVerify({this.phone});
 

@@ -13,11 +13,10 @@ class PhoneLogin extends StatefulWidget {
 
 class _PhoneLoginState extends State<PhoneLogin> {
 
+  final _phoneNo = TextEditingController();
   Country _selected;
   String _countrycode = '';
-  final _phoneNo = TextEditingController();
   String _errorTxt = '';
-  bool _validate = false;
 
   @override
   void initState() {
@@ -47,8 +46,10 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     icon: Icon(Icons.arrow_back),
                     iconSize: 38,
                     onPressed: () {
+
                       log('Clikced on back btn');
                       Navigator.of(context).pop();
+                      //go back
                     },
                   ),
                 ),
@@ -86,14 +87,17 @@ class _PhoneLoginState extends State<PhoneLogin> {
                             showCurrency: false, //eg. 'British pound'
                             showCurrencyISO: false, //eg. 'GBP'
                             onChanged: (Country country) {
-                              setState(() {
-                                _selected = country;
-                              });
-                              final country_code = "+${country.dialingCode}";
-                              _countrycode = country_code.toString();
 
-                              print(_countrycode);
-                            },
+                                    setState(() {
+                                      _selected = country;
+                                    });
+
+                                    final countryCode = "+${country.dialingCode}";
+                                    
+                                    _countrycode = countryCode.toString();
+
+                                    print(_countrycode);
+                               },
                             selectedCountry: _selected,
                           ),
                         ),
@@ -103,12 +107,11 @@ class _PhoneLoginState extends State<PhoneLogin> {
                           child: TextField(
                             keyboardType: TextInputType.number,
                             controller: _phoneNo,
-                            maxLength: 9,
+                            maxLength: 15,
                             decoration: InputDecoration(
                                 border: new OutlineInputBorder(
                                     borderSide: new BorderSide(
-                                        color: Color.fromRGBO(
-                                            238, 238, 238, 0.1))),
+                                        color: Color(0xFFF5F5F5))),
                                 labelText: 'Phone Number',
                                 errorText: _errorTxt,
                                 errorBorder: _errorTxt.isEmpty
@@ -149,7 +152,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                             _errorTxt = "";
                           });
 
-                          String phoneNum = _countrycode + _phoneNo.text;
+                         final String phoneNum = _countrycode + _phoneNo.text;
                           print(phoneNum);
 
                           Navigator.of(context).push(MaterialPageRoute(
@@ -201,11 +204,11 @@ class _PhoneLoginState extends State<PhoneLogin> {
     }
   }
 
-  bool checklength() {
-    if (_phoneNo.text == '') {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  // bool checklength() {
+  //   if (_phoneNo.text == '') {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 }
