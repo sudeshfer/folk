@@ -160,11 +160,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: SingleChildScrollView(
-<<<<<<< HEAD
           child: Container(
-=======
-                  child: Container(
->>>>>>> 13ad1aeb5764615f793df0374fab7ec009f3eafb
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -200,19 +196,8 @@ class _SetupStepOneState extends State<SetupStepOne> {
                 child: Center(
                   child: Container(
                     margin: EdgeInsets.only(top: 40),
-<<<<<<< HEAD
                     child:
                         Align(alignment: Alignment.center, child: _showImg()),
-=======
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: (imageFile==null) ? Image.asset('assets/images/btn_upload_cover.png',
-                            width: 220.0, height: 220.0, fit: BoxFit.cover)
-
-                            :Image.file(imageFile,width: 220,height: 220,fit: BoxFit.fill,)
-                            
-                            ),
->>>>>>> 13ad1aeb5764615f793df0374fab7ec009f3eafb
                   ),
                 ),
               ),
@@ -237,11 +222,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
               Center(
                 child: Container(
                   margin:
-<<<<<<< HEAD
                       EdgeInsets.only(top: 20, left: 26, right: 26, bottom: 15),
-=======
-                      EdgeInsets.only(top: 20, left: 26, right: 26,bottom: 15),
->>>>>>> 13ad1aeb5764615f793df0374fab7ec009f3eafb
                   child: InkWell(
                     onTap: () {
                       if (checkNull()) {
