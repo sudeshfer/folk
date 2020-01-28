@@ -1,13 +1,16 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_country_picker/flutter_country_picker.dart';
 import 'package:folk/Controllers/OTP.dart';
-
 import 'package:folk/Screens/Login/pincode_verify.dart';
 
 class PhoneLogin extends StatefulWidget {
-  PhoneLogin({Key key}) : super(key: key);
+  final fbId;
+  final fbName;
+  final fbEmail;
+  final fbPicUrl;
+  PhoneLogin({Key key, this.fbId, this.fbName, this.fbEmail, this.fbPicUrl})
+      : super(key: key);
 
   @override
   _PhoneLoginState createState() => _PhoneLoginState();
@@ -26,6 +29,13 @@ class _PhoneLoginState extends State<PhoneLogin> {
     setState(() {
       _errorTxt = "";
     });
+    // print(widget.fbId +
+    //     "\n" +
+    //     widget.fbName +
+    //     "\n" +
+    //     widget.fbEmail +
+    //     "\n" +
+    //     widget.fbPicUrl);
     super.initState();
   }
 
@@ -157,9 +167,20 @@ class _PhoneLoginState extends State<PhoneLogin> {
                           print(phoneNum);
                           otp.sendOtp(phoneNum);
                           int code = otp.get_otp();
+
+                          final _fbId = widget.fbId;
+                          final _fbName = widget.fbName;
+                          final _fbEmail = widget.fbEmail;
+                          final _fbPicUrl = widget.fbPicUrl;
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
-                                  PincodeVerify(phone: phoneNum,newotp:code)));
+                                  PincodeVerify(phone: phoneNum,
+                                                // newotp:code,
+                                                fbId: _fbId,
+                                    fbName: _fbName,
+                                    fbEmail: _fbEmail,
+                                    fbPicUrl: _fbPicUrl,
+                                  )));
 
                           // Navigator.of(context).pushNamed("/pincode");
                         } else {

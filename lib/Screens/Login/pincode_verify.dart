@@ -1,8 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:folk/Controllers/OTP.dart';
 import 'package:flutter_alert/flutter_alert.dart';
+import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Utils/Login_utils/pin_code_fields.dart';
 
 FlutterOtp otp = FlutterOtp();
@@ -12,16 +12,40 @@ int enteredOtp;
 class PincodeVerify extends StatefulWidget {
   final String phone;
   final int newotp;
+  final fbId;
+  final fbName;
+  final fbEmail;
+  final fbPicUrl;
   // PincodeVerify({Key key}) : super(key: key);
-  PincodeVerify({
-    this.phone,
-    this.newotp,
-  });
+  PincodeVerify(
+      {this.phone,
+      this.newotp,
+      this.fbId,
+      this.fbName,
+      this.fbEmail,
+      this.fbPicUrl});
   @override
   _PincodeVerifyState createState() => _PincodeVerifyState();
 }
 
 class _PincodeVerifyState extends State<PincodeVerify> {
+  @override
+  void initState() {
+    setState(() {
+      // _errorTxt = "";
+    });
+    // print(widget.fbId +
+    //     "\n" +
+    //     widget.fbName +
+    //     "\n" +
+    //     widget.fbEmail +
+    //     "\n" +
+    //     widget.fbPicUrl +
+    //     "\n" +
+    //     widget.phone);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     log("OTP sent");
@@ -105,9 +129,33 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   )),
               InkWell(
                 onTap: () {
-                  // bool yesOrNo = otp.resultChecker(enteredOtp);
+                  // final _phone = widget.phone;
+                  //   final _fbId = widget.fbId;
+                  //   final _fbName = widget.fbName;
+                  //   final _fbEmail = widget.fbEmail;
+                  //   final _fbPicUrl = widget.fbPicUrl;
+                  //   Navigator.of(context).push(MaterialPageRoute(
+                  //       builder: (context) => SetupStepOne(
+                  //             phone: _phone,
+                  //             fbId: _fbId,
+                  //             fbName: _fbName,
+                  //             fbEmail: _fbEmail,
+                  //             fbPicUrl: _fbPicUrl,
+                  //           )));
                   if (widget.newotp == enteredOtp) {
-                    Navigator.of(context).pushNamed("/setupstep1");
+                    final _phone = widget.phone;
+                    final _fbId = widget.fbId;
+                    final _fbName = widget.fbName;
+                    final _fbEmail = widget.fbEmail;
+                    final _fbPicUrl = widget.fbPicUrl;
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SetupStepOne(
+                              phone: _phone,
+                              fbId: _fbId,
+                              fbName: _fbName,
+                              fbEmail: _fbEmail,
+                              fbPicUrl: _fbPicUrl,
+                            )));
                   } else {
                     showAlert(
                       context: context,

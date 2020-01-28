@@ -1,8 +1,9 @@
 import 'dart:developer';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert' as JSON;
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:folk/Screens/Login/phone_login.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -12,6 +13,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLoggedIn = false;
+  var profileData;
+
+  var facebookLogin = FacebookLogin();
+
+  void onLoginStatusChanged(bool isLoggedIn, {profileData}) {
+    setState(() {
+      this.isLoggedIn = isLoggedIn;
+      this.profileData = profileData;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +59,9 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       log('Clikced on Login with facebook btn');
+                      initiateFacebookLogin();
                     },
                     child: Center(
                       child: Padding(
@@ -76,11 +89,12 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text(
                                     'Login with Facebook'.toUpperCase(),
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 15.5,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 0.2,
-                                        height: 1,
-                                        ),
+                                      color: Colors.white,
+                                      fontSize: 15.5,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.2,
+                                      height: 1,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -120,7 +134,8 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text(
                                     'Login with phone number'.toUpperCase(),
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 15.5,
+                                        color: Colors.white,
+                                        fontSize: 15.5,
                                         fontWeight: FontWeight.w600,
                                         letterSpacing: 0.2,
                                         height: 1),
@@ -182,5 +197,42 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  void initiateFacebookLogin() async {
+    var facebookLoginResult =
+        await facebookLogin.logInWithReadPermissions(['email']);
+
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        onLoginStatusChanged(false);
+        break;
+      case FacebookLoginStatus.loggedIn:
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(400)&access_token=${facebookLoginResult.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        print(profile.toString());
+
+        onLoginStatusChanged(true, profileData: profile);
+
+        final _fbId = "${profileData['id']}";
+        final _fbName = "${profileData['name']}";
+        final _fbEmail = "${profileData['email']}";
+        final _fbPicUrl = profileData['picture']['data']['url'];
+
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PhoneLogin(
+                fbId: _fbId,
+                fbName: _fbName,
+                fbEmail: _fbEmail,
+                fbPicUrl: _fbPicUrl)));
+
+        // print(_fbName+"\n"+_fbEmail);
+        break;
+    }
   }
 }

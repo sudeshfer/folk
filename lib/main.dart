@@ -10,7 +10,6 @@ import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Screens/Login/location.dart';
 import 'package:folk/Screens/Splash_screen/splash_screen.dart';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -26,20 +25,16 @@ class MyApp extends StatelessWidget {
       home: new SplashScreen(),
       routes: <String, WidgetBuilder>{
         // login and resgistration routes
-        "/login":(BuildContext context) => new LoginPage(),
-        "/phonelogin":(BuildContext context) => new PhoneLogin(),
-        "/forgotpw":(BuildContext context) => new ForgotPassword(),
-        "/resetpw":(BuildContext context) => new ResetPassword(),
-        "/pincode":(BuildContext context) => new PincodeVerify(),
-        "/setupstep1":(BuildContext context) => new SetupStepOne(),
-        "/setupstep2":(BuildContext context) => new SetupStepTwo(),
-        "/setupstep3":(BuildContext context) => new SetupStepThree(),
-        "/location":(BuildContext context) => new GetLocation(),
-
+        "/login": (BuildContext context) => new LoginPage(),
+        "/phonelogin": (BuildContext context) => new PhoneLogin(),
+        "/forgotpw": (BuildContext context) => new ForgotPassword(),
+        "/resetpw": (BuildContext context) => new ResetPassword(),
+        "/pincode": (BuildContext context) => new PincodeVerify(),
+        "/setupstep1": (BuildContext context) => new SetupStepOne(),
+        "/setupstep2": (BuildContext context) => new SetupStepTwo(),
+        "/setupstep3": (BuildContext context) => new SetupStepThree(),
+        "/location": (BuildContext context) => new GetLocation(),
       },
-
-
     );
   }
 }
-
