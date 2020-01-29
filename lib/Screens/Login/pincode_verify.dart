@@ -129,21 +129,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   )),
               InkWell(
                 onTap: () {
-                  // final _phone = widget.phone;
-                  //   final _fbId = widget.fbId;
-                  //   final _fbName = widget.fbName;
-                  //   final _fbEmail = widget.fbEmail;
-                  //   final _fbPicUrl = widget.fbPicUrl;
-                  //   Navigator.of(context).push(MaterialPageRoute(
-                  //       builder: (context) => SetupStepOne(
-                  //             phone: _phone,
-                  //             fbId: _fbId,
-                  //             fbName: _fbName,
-                  //             fbEmail: _fbEmail,
-                  //             fbPicUrl: _fbPicUrl,
-                  //           )));
-                  if (widget.newotp == enteredOtp) {
-                    final _phone = widget.phone;
+                  final _phone = widget.phone;
                     final _fbId = widget.fbId;
                     final _fbName = widget.fbName;
                     final _fbEmail = widget.fbEmail;
@@ -156,13 +142,27 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                               fbEmail: _fbEmail,
                               fbPicUrl: _fbPicUrl,
                             )));
-                  } else {
-                    showAlert(
-                      context: context,
-                      title: "Empty or Invalid OTP",
-                    );
-                    log("Invalid OTP");
-                  }
+                  // if (widget.newotp == enteredOtp) {
+                  //   final _phone = widget.phone;
+                  //   final _fbId = widget.fbId;
+                  //   final _fbName = widget.fbName;
+                  //   final _fbEmail = widget.fbEmail;
+                  //   final _fbPicUrl = widget.fbPicUrl;
+                  //   // Navigator.of(context).push(MaterialPageRoute(
+                  //   //     builder: (context) => SetupStepOne(
+                  //   //           phone: _phone,
+                  //   //           fbId: _fbId,
+                  //   //           fbName: _fbName,
+                  //   //           fbEmail: _fbEmail,
+                  //   //           fbPicUrl: _fbPicUrl,
+                  //   //         )));
+                  // } else {
+                  //   showAlert(
+                  //     context: context,
+                  //     title: "Empty or Invalid OTP",
+                  //   );
+                  //   log("Invalid OTP");
+                  // }
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: 32),

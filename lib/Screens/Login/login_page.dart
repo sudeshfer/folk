@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                                 colors: [Color(0xFF2672CB), Color(0xFF2672CB)],
                               ),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
+                              BorderRadius.all(Radius.circular(50))),
                           child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                                 colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                               ),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
+                              BorderRadius.all(Radius.circular(50))),
                           child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -201,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void initiateFacebookLogin() async {
     var facebookLoginResult =
-        await facebookLogin.logInWithReadPermissions(['email']);
+    await facebookLogin.logInWithReadPermissions(['email']);
 
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
@@ -222,14 +222,15 @@ class _LoginPageState extends State<LoginPage> {
         final _fbId = "${profileData['id']}";
         final _fbName = "${profileData['name']}";
         final _fbEmail = "${profileData['email']}";
+        // final _gender = "${profileData['user_gender']}";
         final _fbPicUrl = profileData['picture']['data']['url'];
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => PhoneLogin(
-                fbId: _fbId,
-                fbName: _fbName,
-                fbEmail: _fbEmail,
-                fbPicUrl: _fbPicUrl)));
+       Navigator.of(context).push(MaterialPageRoute(
+           builder: (context) => PhoneLogin(
+               fbId: _fbId,
+               fbName: _fbName,
+               fbEmail: _fbEmail,
+               fbPicUrl: _fbPicUrl)));
 
         // print(_fbName+"\n"+_fbEmail);
         break;

@@ -165,8 +165,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
 
                           final String phoneNum = _countrycode + _phoneNo.text;
                           print(phoneNum);
-                          otp.sendOtp(phoneNum);
-                          int code = otp.get_otp();
+                          // otp.sendOtp(phoneNum);
+                          // int code = otp.get_otp();
 
                           final _fbId = widget.fbId;
                           final _fbName = widget.fbName;

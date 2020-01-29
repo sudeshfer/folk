@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SetupStepOne extends StatefulWidget {
   final phone;
@@ -28,29 +28,31 @@ class SetupStepOne extends StatefulWidget {
 class _SetupStepOneState extends State<SetupStepOne> {
   final _name = TextEditingController();
   String _errorName = "";
-
+  bool _nameController;
   File imageFile;
 
   //asynce function to pick an image from gallery
-//   _openGallery(BuildContext context) async{
+  _openGallery(BuildContext context) async{
 
-//     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-//     this.setState((){
-//            imageFile = picture;
-//     });
-//     Navigator.of(context).pop();
-//   }
-// //asynce function to pick an image from camera
-//   _openCamera(BuildContext context) async{
+    this.setState((){
+           imageFile = picture;
+    });
+    Navigator.of(context).pop();
+    _showImg();
+  }
+//asynce function to pick an image from camera
+  _openCamera(BuildContext context) async{
 
-//     var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+    var picture = await ImagePicker.pickImage(source: ImageSource.camera);
 
-//     this.setState((){
-//            imageFile = picture;
-//     });
-//     Navigator.of(context).pop();
-//   }
+    this.setState((){
+           imageFile = picture;
+    });
+    Navigator.of(context).pop();
+    _showImg();
+  }
 
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
@@ -73,7 +75,8 @@ class _SetupStepOneState extends State<SetupStepOne> {
                     children: <Widget>[
                       GestureDetector(
                           onTap: () {
-                            // _openGallery(context);
+                            _openGallery(context);
+                            
                           },
                           child: Image.asset('assets/images/art.png')),
                       Padding(
@@ -87,7 +90,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // _openCamera(context);
+                          _openCamera(context);
                         },
                         child: Image.asset('assets/images/camera.png'),
                       ),
@@ -105,22 +108,24 @@ class _SetupStepOneState extends State<SetupStepOne> {
           );
         });
   }
-
+//function to show image
   _showImg() {
     final imguUrl = widget.fbPicUrl;
     print({"URl ==== ": imguUrl, "image file ": imageFile});
+
     if ((imageFile == null) && (imguUrl == null)) {
       // return Image.network(imguUrl);
       return Image.asset('assets/images/btn_upload_cover.png',
           width: 220.0, height: 220.0, fit: BoxFit.cover);
     }
-    else if ((imguUrl != null) && (imageFile == null)) {
+    if ((imguUrl != null) && (imageFile == null)) {
+
       return Image.network(imguUrl,
       width: 220.0, height: 220.0,fit: BoxFit.fill);
       // return Image.asset('assets/images/btn_upload_cover.png',
       //     width: 220.0, height: 220.0, fit: BoxFit.cover);
     }
-    else if ((imguUrl == null) && (imageFile != null)) 
+   if ((imguUrl == null) && (imageFile != null)) 
     {
       return Image.file(
         imageFile,
@@ -128,6 +133,19 @@ class _SetupStepOneState extends State<SetupStepOne> {
         height: 220,
         fit: BoxFit.fill,
       );
+    }
+  }
+//function tht determines the name controller
+  _initiateNameController(){
+    if(widget.fbName == null){
+      setState(() {
+        _name.text =null;
+      });
+      print("name controller is empty");
+    }
+    else{
+      _name.text= widget.fbName;
+      print(_name.text);
     }
   }
 
@@ -142,6 +160,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
     //     widget.fbPicUrl +
     //     "\n" +
     //     widget.phone);
+    _initiateNameController();
     super.initState();
   }
 

@@ -1,7 +1,4 @@
-#Tue Jan 28 21:08:02 IST 2020
-base.0=C\:\\Users\\Suthura\\Desktop\\folk\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
-path.1=classes2.dex
-renamed.1=classes2.dex
+#Wed Jan 29 13:49:21 IST 2020
+base.0=F\:\\my projects\\folk\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
-base.1=C\:\\Users\\Suthura\\Desktop\\folk\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
