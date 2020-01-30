@@ -88,17 +88,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   controller: _email,
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.grey)),
+                          borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
                       labelText: 'Email',
                       errorText: _errorTxt,
                       errorBorder: _errorTxt.isEmpty
                                   ? OutlineInputBorder(
                                       borderSide:
-                                          new BorderSide(color: Colors.grey))
+                                          new BorderSide(color: Color(0xFFE0E0E0)))
                                   : null,
                               focusedBorder: OutlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: Colors.green))
+                                      BorderSide(color: Color(0xFFE0E0E0)))
                       ),
                 ),
               ),

@@ -88,17 +88,17 @@ String _errorTxt = '';
                   controller: _resetCode,
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.grey[200])),
+                          borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
                       labelText: 'Reset Code',
                       errorText: _errorTxt,
                       errorBorder: _errorTxt.isEmpty
                                   ? OutlineInputBorder(
                                       borderSide:
-                                          new BorderSide(color: Colors.grey))
+                                          new BorderSide(color: Color(0xFFE0E0E0)))
                                   : null,
                               focusedBorder:_errorTxt.isNotEmpty? OutlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: Colors.green)):null
+                                      BorderSide(color: Color(0xFFE0E0E0))):null
                       ),
                       
                 ),
