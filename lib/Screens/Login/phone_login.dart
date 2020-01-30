@@ -177,10 +177,10 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                   PincodeVerify(phone: phoneNum,
                                                 newotp:code,
                                                 fbId: _fbId,
-                                    fbName: _fbName,
-                                    fbEmail: _fbEmail,
-                                    fbPicUrl: _fbPicUrl,
-                                  )));
+                                                fbName: _fbName,
+                                                fbEmail: _fbEmail,
+                                                fbPicUrl: _fbPicUrl,
+                                              )));
 
                           // Navigator.of(context).pushNamed("/pincode");
                         } else {
