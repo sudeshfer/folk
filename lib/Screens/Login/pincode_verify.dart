@@ -129,7 +129,21 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   )),
               InkWell(
                 onTap: () {
-                  final _phone = widget.phone;
+                  // final _phone = widget.phone;
+                  //   final _fbId = widget.fbId;
+                  //   final _fbName = widget.fbName;
+                  //   final _fbEmail = widget.fbEmail;
+                  //   final _fbPicUrl = widget.fbPicUrl;
+                  //   Navigator.of(context).push(MaterialPageRoute(
+                  //       builder: (context) => SetupStepOne(
+                  //             phone: _phone,
+                  //             fbId: _fbId,
+                  //             fbName: _fbName,
+                  //             fbEmail: _fbEmail,
+                  //             fbPicUrl: _fbPicUrl,
+                  //           )));
+                  if (widget.newotp == enteredOtp) {
+                    final _phone = widget.phone;
                     final _fbId = widget.fbId;
                     final _fbName = widget.fbName;
                     final _fbEmail = widget.fbEmail;
@@ -142,27 +156,13 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                               fbEmail: _fbEmail,
                               fbPicUrl: _fbPicUrl,
                             )));
-                  // if (widget.newotp == enteredOtp) {
-                  //   final _phone = widget.phone;
-                  //   final _fbId = widget.fbId;
-                  //   final _fbName = widget.fbName;
-                  //   final _fbEmail = widget.fbEmail;
-                  //   final _fbPicUrl = widget.fbPicUrl;
-                  //   // Navigator.of(context).push(MaterialPageRoute(
-                  //   //     builder: (context) => SetupStepOne(
-                  //   //           phone: _phone,
-                  //   //           fbId: _fbId,
-                  //   //           fbName: _fbName,
-                  //   //           fbEmail: _fbEmail,
-                  //   //           fbPicUrl: _fbPicUrl,
-                  //   //         )));
-                  // } else {
-                  //   showAlert(
-                  //     context: context,
-                  //     title: "Empty or Invalid OTP",
-                  //   );
-                  //   log("Invalid OTP");
-                  // }
+                  } else {
+                    showAlert(
+                      context: context,
+                      title: "Empty or Invalid OTP",
+                    );
+                    log("Invalid OTP");
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: 32),
@@ -195,16 +195,23 @@ class _PincodeVerifyState extends State<PincodeVerify> {
               Container(
                 padding: EdgeInsets.only(top: 30),
               ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                    text: "I didn't get a code",
-                    style: TextStyle(color: Color(0xFFf45d27), fontSize: 17.5),
-                    children: [
-                      TextSpan(
-                          text: " \n Tap Continue to accept Facebook's Terms",
-                          style: TextStyle(color: Colors.grey, fontSize: 14))
-                    ]),
+              InkWell(
+                onTap: () {
+                  log('Clikced on back btn');
+                      Navigator.of(context).pop();
+                },
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      text: "I didn't get a code",
+                      style:
+                          TextStyle(color: Color(0xFFf45d27), fontSize: 17.5),
+                      children: [
+                        TextSpan(
+                            text: " \n Tap Continue to accept Facebook's Terms",
+                            style: TextStyle(color: Colors.grey, fontSize: 14))
+                      ]),
+                ),
               ),
               SizedBox(
                 height: 14,
