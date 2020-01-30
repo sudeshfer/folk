@@ -128,11 +128,11 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                 errorBorder: _errorTxt.isEmpty
                                     ? OutlineInputBorder(
                                         borderSide:
-                                            new BorderSide(color: Colors.grey))
+                                            new BorderSide(color: Color(0xFFE0E0E0)))
                                     : null,
                                 focusedBorder: OutlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.green))),
+                                        BorderSide(color: Color(0xFFE0E0E0)))),
                           ),
                         ),
                       ],
