@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class SetupStepOne extends StatefulWidget {
   final phone;
@@ -28,16 +29,45 @@ class SetupStepOne extends StatefulWidget {
 class _SetupStepOneState extends State<SetupStepOne> {
   final _name = TextEditingController();
   String _errorName = "";
-  bool _nameController;
   File imageFile;
 
   //asynce function to pick an image from gallery
   _openGallery(BuildContext context) async{
 
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
+    File croppedFile = await ImageCropper.cropImage(
+    sourcePath: picture.path,
+    aspectRatioPresets: Platform.isAndroid
+    ?[
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+    ]
+    :[
+      CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+              CropAspectRatioPreset.ratio16x9
+    ],
 
+    androidUiSettings: AndroidUiSettings(
+         toolbarTitle: 'Crop Your photo',
+          toolbarColor: Color(0xFFFF9006),
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false),
+    );
+    
     this.setState((){
-           imageFile = picture;
+          //  imageFile = croppedFile;
+           imageFile = croppedFile;
+
     });
     Navigator.of(context).pop();
     _showImg();
@@ -46,9 +76,37 @@ class _SetupStepOneState extends State<SetupStepOne> {
   _openCamera(BuildContext context) async{
 
     var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+    File croppedFile = await ImageCropper.cropImage(
+    sourcePath: picture.path,
+    aspectRatioPresets: Platform.isAndroid
+    ?[
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9
+    ]
+    :[
+      CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.ratio3x2,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio5x3,
+              CropAspectRatioPreset.ratio5x4,
+              CropAspectRatioPreset.ratio7x5,
+              CropAspectRatioPreset.ratio16x9
+    ],
+
+    androidUiSettings: AndroidUiSettings(
+         toolbarTitle: 'Crop Yor Photo',
+          toolbarColor: Color(0xFFFF9006),
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false),
+    );
 
     this.setState((){
-           imageFile = picture;
+           imageFile = croppedFile;
     });
     Navigator.of(context).pop();
     _showImg();
@@ -232,10 +290,10 @@ class _SetupStepOneState extends State<SetupStepOne> {
                       errorText: _errorName,
                       errorBorder: _errorName.isEmpty
                           ? OutlineInputBorder(
-                              borderSide: new BorderSide(color: Colors.grey))
-                          : null,
+                              borderSide: new BorderSide(color: Color(0xFFE0E0E0)))
+                          : null, 
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green))),
+                          borderSide: BorderSide(color: Colors.orangeAccent))),
                 ),
               ),
               Center(
