@@ -165,8 +165,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
 
                           final String phoneNum = _countrycode + _phoneNo.text;
                           print(phoneNum);
-                          // otp.sendOtp(phoneNum);
-                          // int code = otp.get_otp();
+                          otp.sendOtp(phoneNum);
+                          int code = otp.get_otp();
 
                           final _fbId = widget.fbId;
                           final _fbName = widget.fbName;
@@ -175,7 +175,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   PincodeVerify(phone: phoneNum,
-                                                // newotp:code,
+                                                newotp:code,
                                                 fbId: _fbId,
                                     fbName: _fbName,
                                     fbEmail: _fbEmail,
