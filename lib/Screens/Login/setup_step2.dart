@@ -174,63 +174,66 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width / 1.4,
-                    margin: EdgeInsets.only(top: 45, left: 28),
-                    child: TextField(
-                      controller: _birthday,
-                      enabled: false,
-                      decoration: InputDecoration(
-                          border: new OutlineInputBorder(
-                              borderSide: new BorderSide(
-                                  color:Color(0xFFF5F5F5))),
-                          labelText: 'Your Birthday',
-                          errorText: _errorBday,
-                          errorBorder: _errorBday.isEmpty
-                              ? OutlineInputBorder(
-                                  borderSide:
-                                      new BorderSide(color: Colors.grey))
-                              : null,
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFE0E0E0)))),
-                    ),
+              Padding(
+                padding: const EdgeInsets.only(left:25.0,right: 25.0,bottom: 10,top: 30),
+                child: Container(
+                  height: 64,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color(0xFFE0E0E0)
+                    )
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0, top: 10),
-                    child: Container(
-                      child: IconButton(
-                        icon: Icon(FontAwesomeIcons.solidCalendarAlt),
-                        iconSize: 35,
-                        color: Color(0XFFFF5E3A),
-                        onPressed: () {
-                          
-                          DatePicker.showDatePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime(1980, 12, 31),
-                              maxTime: DateTime(2020, 12, 31),
-                              onChanged: (date) {
-                            //print the date
-                            print('change $date');
-                                                }, 
-                              onConfirm: (date) {
-                                final bday = "$date";
-
-                                setState(() {
-                                  _birthday.text = bday; 
-                                  //eaqual the bday value to text editing controller
-                                });
-
-                            //print the bday
-                            print('confirm ' + bday);
-                          }, locale: LocaleType.en);
-                        },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        height: 54,
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        // margin: EdgeInsets.only(top: 15),
+                        child: TextField(
+                          controller: _birthday,
+                          enabled: false,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: 'Your Birthday',
+                              ),
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                      Container(
+                        // margin: const EdgeInsets.only( top: 10),
+                        child: Container(
+                          child: IconButton(
+                            icon: Icon(FontAwesomeIcons.solidCalendarAlt),
+                            iconSize: 30,
+                            color: Color(0XFFFF5E3A),
+                            onPressed: () {
+                              
+                              DatePicker.showDatePicker(context,
+                                  showTitleActions: true,
+                                  minTime: DateTime(1980, 12, 31),
+                                  maxTime: DateTime(2020, 12, 31),
+                                  onChanged: (date) {
+                                //print the date
+                                print('change $date');
+                                                    }, 
+                                  onConfirm: (date) {
+                                    final bday = "$date";
+
+                                    setState(() {
+                                      _birthday.text = bday; 
+                                      //eaqual the bday value to text editing controller
+                                    });
+
+                                //print the bday
+                                print('confirm ' + bday);
+                              }, locale: LocaleType.en);
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
               Column(
                 children: <Widget>[
@@ -247,7 +250,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                           errorBorder: _errorTxt.isEmpty
                               ? OutlineInputBorder(
                                   borderSide:
-                                      new BorderSide(color: Colors.grey))
+                                      new BorderSide(color: Color(0xFFE0E0E0)))
                               : null,
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0xFFE0E0E0)))),
@@ -284,7 +287,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                       }
                     },
                     child: Container(
-                      height: 50,
+                      height: 55,
                       width: MediaQuery.of(context).size.width / 1.15,
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
