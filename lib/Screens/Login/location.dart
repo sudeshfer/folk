@@ -1,4 +1,7 @@
+// import 'package:location/location.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class GetLocation extends StatefulWidget {
   GetLocation({Key key}) : super(key: key);
@@ -8,6 +11,60 @@ class GetLocation extends StatefulWidget {
 }
 
 class _GetLocationState extends State<GetLocation> {
+  // Map<String,double> currentLocation = new Map();
+  // StreamSubscription<Map<String,double>> locationSubscription;
+
+  // Location location = new Location();
+  String error;
+  PermissionStatus _status;
+
+   @override
+  void initState() {
+      PermissionHandler().checkPermissionStatus(PermissionGroup.locationWhenInUse).then(_updateStatus);
+    // print(widget.fbId +
+    //     "\n" +
+    //     widget.fbName +
+    //     "\n" +
+    //     widget.fbEmail +
+    //     "\n" +
+    //     widget.fbPicUrl);
+    super.initState();
+    // currentLocation['latitude'] = 0.0;
+    // currentLocation['longintube'] = 0.0;
+    // initPlatformState();
+    // locationSubscription = location.onLocationChanged().listen((Map<String,double> result){
+    //   setState(() {
+    //     currentLocation = result;
+    //   });
+    // } );
+  }
+
+  void _updateStatus(PermissionStatus status){
+    if(status != _status){
+      setState(() {
+        _status = status;
+      });
+      print(_status);
+    }
+  }
+ 
+ void _askPermission(){
+   PermissionHandler().requestPermissions([PermissionGroup.locationWhenInUse]).then(_onStatusRequested);
+ }
+
+ void _onStatusRequested(Map<PermissionGroup, PermissionStatus> statuses){
+    final status = statuses[PermissionGroup.locationWhenInUse];
+    // if(status != PermissionStatus.granted){
+    //   PermissionHandler().openAppSettings();
+    // }
+    // else{
+    //   _updateStatus(status);
+    // }
+    _updateStatus(status);
+ }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,17 +77,6 @@ class _GetLocationState extends State<GetLocation> {
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.fill,
             ),     
-        //      decoration: BoxDecoration(
-      //  gradient: LinearGradient(
-      //    begin: Alignment.topRight,
-      //    end: Alignment.bottomLeft,
-      //    stops: [0.2,1.2],
-      //    colors: [
-     //    Color(0xFFf45d27), Color(0xFFf5851f)
-      //    ],
-    //hari color eka ganna be oi 
-    //    ),
-           //   ),
           ),
            Positioned(
             top: 50.0,
@@ -45,41 +91,42 @@ class _GetLocationState extends State<GetLocation> {
             ),
           ),
            Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 100.0),
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 95.0,bottom: 15),
                       child: Container(
                         child: Text('Where are you?',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 25,
+                              fontSize: 32,
+                              fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold
                             )),
                       ),
                     ),
                   ),
        Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 185.0),
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 240.0,bottom: 50),
                       child: Container(
                         child:  RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                    text: "Your location service need to be turned n order for \n",
+                    text: "Your location service need to be turned on  \n",
                     
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    style: TextStyle(color: Colors.white, fontSize: 16,fontFamily: 'Montserrat'),
                     children: [
                       TextSpan(
-                          text: "this to work.",
+                          text: "order for this to work.",
                           style: TextStyle(
                               color: Colors.white,fontFamily: 'Montserrat',
-                              fontSize: 14))
+                              fontSize: 16))
                     ]),
               ),
                       ),
                     ),
                   ),
           Positioned(
-           top: 430,
+           top: 440,
             left: 32,
             child: Center(
               child: Column(
@@ -89,13 +136,15 @@ class _GetLocationState extends State<GetLocation> {
                  
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed("/");
+                      _askPermission();
+                      // initPlatformState();
+                      // Navigator.of(context).pushNamed("/");
                     },
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 80.0),
+                        padding: const EdgeInsets.only(top: 100.0),
                         child: Container(
-                          height: 50,
+                          height: 55,
                           width: MediaQuery.of(context).size.width / 1.2,
                           decoration: BoxDecoration(
                             color: Colors.white, 
@@ -111,7 +160,7 @@ class _GetLocationState extends State<GetLocation> {
                                   child: Text(
                                     'enable location'.toUpperCase(),
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 16,
+                                        color: Colors.black, fontSize: 18,fontFamily: 'Montserrat',
                                        // fontWeight: FontWeight.w600,
                                         letterSpacing: 0.2,
                                         height: 1),
@@ -135,4 +184,30 @@ class _GetLocationState extends State<GetLocation> {
       ),
     );
   }
+  // void initPlatformState() async{
+  //   Map<String,double> my_location;
+
+  //   try{
+  //     my_location = await location.getLocation();
+  //     error = "";
+  //   } 
+  //   on PlatformException catch(e){
+  //     if(e.code == 'PERMISSION_DENIED')
+  //     error = 'Permission Denied';
+
+  //     else if(e.code == 'PERMISSION_DENIED_NEVER_ASK')
+  //     error = 'Permission denied - please ask the user to enable it from the app settings';
+  //     my_location = null;
+  //   }
+    
+  //   setState(() {
+  //     currentLocation = my_location;
+  //   });
+
+  //   final lat = "${currentLocation['latitude']}";
+  //   final long = "${currentLocation['longitude']}";
+
+  //   print(lat +"\n"+ long);
+
+  // }
 }
