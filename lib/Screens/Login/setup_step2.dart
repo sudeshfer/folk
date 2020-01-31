@@ -15,7 +15,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   final _birthday = TextEditingController();
   final _email = TextEditingController();
   String _errorTxt = '';
-  String _errorBday = "";
+  // String _errorBday = "";
   String _gender = "";
   bool isMaleClicked = false;
   bool isFemaleClicked = false;

@@ -205,11 +205,13 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   text: TextSpan(
                       text: "I didn't get a code",
                       style:
-                          TextStyle(color: Color(0xFFf45d27), fontSize: 17.5),
+                          TextStyle(color: Color(0xFFf45d27), 
+                          fontSize: 17.5,
+                          fontFamily: 'Montserrat'),
                       children: [
                         TextSpan(
                             text: " \n Tap Continue to accept Facebook's Terms",
-                            style: TextStyle(color: Colors.grey, fontSize: 14))
+                            style: TextStyle(color: Colors.grey, fontSize: 14,fontFamily: 'Montserrat'))
                       ]),
                 ),
               ),

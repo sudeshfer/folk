@@ -26,6 +26,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+     
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -67,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),
                         child: Container(
-                          height: 50,
+                          height: 55,
                           width: MediaQuery.of(context).size.width / 1.2,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -90,9 +96,10 @@ class _LoginPageState extends State<LoginPage> {
                                     'Login with Facebook'.toUpperCase(),
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 15.5,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.2,
+                                      fontSize: 15,
+                                      fontFamily: 'Montserrat',
+                                      // fontWeight: FontWeight.w100,
+                                      // letterSpacing: 0.2,
                                       height: 1,
                                     ),
                                   ),
@@ -113,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: Container(
-                          height: 50,
+                          height: 55,
                           width: MediaQuery.of(context).size.width / 1.2,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -135,9 +142,10 @@ class _LoginPageState extends State<LoginPage> {
                                     'Login with phone number'.toUpperCase(),
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 15.5,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 0.2,
+                                        fontSize: 15,
+                                        fontFamily: 'Montserrat',
+                                        // fontWeight: FontWeight.w600,
+                                        // letterSpacing: 0.2,
                                         height: 1),
                                   ),
                                 ),
@@ -160,7 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text('Trouble Logging In',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 15,
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 14,
                                   decoration: TextDecoration.underline)),
                         ),
                       ),
@@ -173,7 +182,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text('By clicking start, you agree to our',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontFamily: 'Montserrat',
+                              fontSize: 14,
                             )),
                       ),
                     ),
@@ -185,6 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text('Terms and Conditions',
                             style: TextStyle(
                               color: Colors.white,
+                              fontFamily: 'Montserrat',
                               fontSize: 15,
                             )),
                       ),
