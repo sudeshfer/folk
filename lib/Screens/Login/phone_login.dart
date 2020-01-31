@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_country_picker/flutter_country_picker.dart';
 import 'package:folk/Controllers/OTP.dart';
 import 'package:folk/Screens/Login/pincode_verify.dart';
+import 'package:folk/Controllers/ApiServices/OtpLoginService.dart';
 
 class PhoneLogin extends StatefulWidget {
   final fbId;
   final fbName;
   final fbEmail;
   final fbPicUrl;
-  PhoneLogin({Key key, this.fbId, this.fbName, this.fbEmail, this.fbPicUrl})
+  final loginType;
+  PhoneLogin(
+      {Key key,
+      this.fbId,
+      this.fbName,
+      this.fbEmail,
+      this.fbPicUrl,
+      this.loginType})
       : super(key: key);
 
   @override
@@ -23,6 +31,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
   Country _selected;
   String _countrycode = '';
   String _errorTxt = '';
+  String _loginStatus = "";
 
   @override
   void initState() {
@@ -36,6 +45,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
     //     widget.fbEmail +
     //     "\n" +
     //     widget.fbPicUrl);
+    log("LoginType = "+ widget.loginType);
     super.initState();
   }
 
@@ -127,8 +137,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                 errorText: _errorTxt,
                                 errorBorder: _errorTxt.isEmpty
                                     ? OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Color(0xFFE0E0E0)))
+                                        borderSide: new BorderSide(
+                                            color: Color(0xFFE0E0E0)))
                                     : null,
                                 focusedBorder: OutlineInputBorder(
                                     borderSide:
@@ -168,19 +178,40 @@ class _PhoneLoginState extends State<PhoneLogin> {
                           otp.sendOtp(phoneNum);
                           int code = otp.get_otp();
 
-                          final _fbId = widget.fbId;
-                          final _fbName = widget.fbName;
-                          final _fbEmail = widget.fbEmail;
-                          final _fbPicUrl = widget.fbPicUrl;
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  PincodeVerify(phone: phoneNum,
-                                                newotp:code,
-                                                fbId: _fbId,
-                                                fbName: _fbName,
-                                                fbEmail: _fbEmail,
-                                                fbPicUrl: _fbPicUrl,
-                                              )));
+                          final body = {"phone": phoneNum};
+
+                          if (widget.loginType == "otp") {
+                            OtpLoginService.OtpAuth(body).then((newuser) {
+                              if (newuser) {
+                                setState(() {
+                                  _loginStatus = "newuser";
+                                });
+                              
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => PincodeVerify(
+                                          phone: phoneNum,
+                                          newotp: code,
+                                        )));
+                              }
+                              else{
+                                log("seems like you already have an account");
+                              }
+                            });
+                          } else {
+                            final _fbId = widget.fbId;
+                            final _fbName = widget.fbName;
+                            final _fbEmail = widget.fbEmail;
+                            final _fbPicUrl = widget.fbPicUrl;
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PincodeVerify(
+                                      phone: phoneNum,
+                                      newotp: code,
+                                      fbId: _fbId,
+                                      fbName: _fbName,
+                                      fbEmail: _fbEmail,
+                                      fbPicUrl: _fbPicUrl,
+                                    )));
+                          }
 
                           // Navigator.of(context).pushNamed("/pincode");
                         } else {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:folk/Screens/Login/phone_login.dart';
+import 'package:folk/Controllers/ApiServices/FbLoginService.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isLoggedIn = false;
   var profileData;
+  String login_Type = "";
 
   var facebookLogin = FacebookLogin();
 
@@ -28,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-     
   }
 
   @override
@@ -67,6 +68,9 @@ class _LoginPageState extends State<LoginPage> {
                   InkWell(
                     onTap: () {
                       log('Clikced on Login with facebook btn');
+                      setState(() {
+                        login_Type = "fb";
+                      });
                       initiateFacebookLogin();
                     },
                     child: Center(
@@ -80,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                                 colors: [Color(0xFF2672CB), Color(0xFF2672CB)],
                               ),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(50))),
+                                  BorderRadius.all(Radius.circular(50))),
                           child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -114,7 +118,12 @@ class _LoginPageState extends State<LoginPage> {
                   InkWell(
                     onTap: () {
                       log('Clikced on Login with 4n btn');
-                      Navigator.of(context).pushNamed("/phonelogin");
+                      setState(() {
+                        login_Type = "otp";
+                      });
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PhoneLogin(
+                              loginType: login_Type)));
                     },
                     child: Center(
                       child: Padding(
@@ -127,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                                 colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                               ),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(50))),
+                                  BorderRadius.all(Radius.circular(50))),
                           child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -212,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void initiateFacebookLogin() async {
     var facebookLoginResult =
-    await facebookLogin.logInWithReadPermissions(['email']);
+        await facebookLogin.logInWithReadPermissions(['email']);
 
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
@@ -236,12 +245,31 @@ class _LoginPageState extends State<LoginPage> {
         // final _gender = "${profileData['user_gender']}";
         final _fbPicUrl = profileData['picture']['data']['url'];
 
-       Navigator.of(context).push(MaterialPageRoute(
-           builder: (context) => PhoneLogin(
-               fbId: _fbId,
-               fbName: _fbName,
-               fbEmail: _fbEmail,
-               fbPicUrl: _fbPicUrl)));
+        final body = {"email": _fbEmail};
+
+        FbLoginService.FbAuth(body).then((newuser) {
+          if (newuser) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PhoneLogin(
+                    fbId: _fbId,
+                    fbName: _fbName,
+                    fbEmail: _fbEmail,
+                    fbPicUrl: _fbPicUrl,
+                    loginType: login_Type)));
+            return;
+          } else {
+            log("seems like you already hvae an acc");
+            Navigator.of(context).pushNamed("/home");
+            return;
+          }
+        });
+
+        //  Navigator.of(context).push(MaterialPageRoute(
+        //      builder: (context) => PhoneLogin(
+        //          fbId: _fbId,
+        //          fbName: _fbName,
+        //          fbEmail: _fbEmail,
+        //          fbPicUrl: _fbPicUrl)));
 
         // print(_fbName+"\n"+_fbEmail);
         break;
