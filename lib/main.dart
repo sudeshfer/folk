@@ -10,6 +10,8 @@ import 'package:folk/Screens/Login/setup_step2.dart';
 import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Screens/Splash_screen/splash_screen.dart';
 
+import 'package:folk/Screens/Home_page/home_page.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -34,7 +36,9 @@ class MyApp extends StatelessWidget {
         "/setupstep2": (BuildContext context) => new SetupStepTwo(),
         "/setupstep3": (BuildContext context) => new SetupStepThree(),
         "/location": (BuildContext context) => new GetLocation(),
-
+        
+        //homepage routes
+        "/home": (BuildContext context) => new Homepage(),
       },
     );
   }
