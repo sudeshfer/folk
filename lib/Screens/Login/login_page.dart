@@ -246,7 +246,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void initiateFacebookLogin() async {
+ void initiateFacebookLogin() async {
     var facebookLoginResult =
         await facebookLogin.logInWithReadPermissions(['email']);
 
@@ -271,25 +271,21 @@ class _LoginPageState extends State<LoginPage> {
         final _fbEmail = "${profileData['email']}";
         // final _gender = "${profileData['user_gender']}";
         final _fbPicUrl = profileData['picture']['data']['url'];
+        final body = {
+          "email": _fbEmail,
+        };
 
-        final body = {"email": _fbEmail};
-
-        FbLoginService.fbAuth(body).then((newuser) {
-          if (newuser) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PhoneLogin(
-                    fbId: _fbId,
-                    fbName: _fbName,
-                    fbEmail: _fbEmail,
-                    fbPicUrl: _fbPicUrl,
-                    loginType: login_Type)));
-            return;
-          } else {
-            log("seems like you already hvae an acc");
-            Navigator.of(context).pushNamed("/home");
-            return;
-          }
-        });
+        if (_fbEmail != null) {
+          LoginwithFBService.LoginWithFB(body).then((success) {
+            if (success) {
+              print("when old user");
+            } else {
+              print("when new  user");
+            }
+          });
+        } else {
+          print("something went wrong ");
+        }
 
         //  Navigator.of(context).push(MaterialPageRoute(
         //      builder: (context) => PhoneLogin(
