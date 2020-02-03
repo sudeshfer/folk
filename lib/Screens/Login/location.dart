@@ -1,6 +1,7 @@
 // import 'package:location/location.dart';
 // import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class GetLocation extends StatefulWidget {
@@ -18,9 +19,11 @@ class _GetLocationState extends State<GetLocation> {
   String error;
   PermissionStatus _status;
 
-   @override
+  @override
   void initState() {
-      PermissionHandler().checkPermissionStatus(PermissionGroup.locationWhenInUse).then(_updateStatus);
+    PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+        .then(_updateStatus);
     // print(widget.fbId +
     //     "\n" +
     //     widget.fbName +
@@ -39,20 +42,21 @@ class _GetLocationState extends State<GetLocation> {
     // } );
   }
 
-  void _updateStatus(PermissionStatus status){
-    if(status != _status){
+  void _updateStatus(PermissionStatus status) {
+    if (status != _status) {
       setState(() {
         _status = status;
       });
       print(_status);
     }
   }
- 
- void _askPermission(){
-   PermissionHandler().requestPermissions([PermissionGroup.locationWhenInUse]).then(_onStatusRequested);
- }
 
- void _onStatusRequested(Map<PermissionGroup, PermissionStatus> statuses){
+  void _askPermission() {
+    PermissionHandler().requestPermissions(
+        [PermissionGroup.locationWhenInUse]).then(_onStatusRequested);
+  }
+
+  void _onStatusRequested(Map<PermissionGroup, PermissionStatus> statuses) {
     final status = statuses[PermissionGroup.locationWhenInUse];
     // if(status != PermissionStatus.granted){
     //   PermissionHandler().openAppSettings();
@@ -61,138 +65,104 @@ class _GetLocationState extends State<GetLocation> {
     //   _updateStatus(status);
     // }
     _updateStatus(status);
- }
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    body:  Stack(
+      body: Stack(
         children: <Widget>[
           Container(
-        child: new Image.asset(
+            child: new Image.asset(
               'assets/images/location_bg.png',
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.fill,
-            ),     
-          ),
-           Positioned(
-            top: 50.0,
-            // left: (MediaQuery.of(context).size.width) / 20,
-            child: Align(
-              alignment: Alignment.center,
-                          child: Container(
-                margin: const EdgeInsets.only(bottom: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/images/location.jpg'),
-                              fit: BoxFit.cover)),
-                      height: 300.0,
-                      width: 300.0,
-                    ),
-                  ],
-                ),
-              ),
             ),
           ),
-           Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 95.0,bottom: 15),
-                      child: Container(
-                        child: Text('Where are you?',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold
-                            )),
-                      ),
-                    ),
-                  ),
-       Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 240.0,bottom: 50),
-                      child: Container(
-                        child:  RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                    text: "Your location service need to be turned on  \n",
-                    
-                    style: TextStyle(color: Colors.white, fontSize: 16,fontFamily: 'Montserrat'),
-                    children: [
-                      TextSpan(
-                          text: "order for this to work.",
-                          style: TextStyle(
-                              color: Colors.white,fontFamily: 'Montserrat',
-                              fontSize: 16))
-                    ]),
-              ),
-                      ),
-                    ),
-                  ),
           Positioned(
-           top: 440,
-            left: 32,
+            top: 30.0,
+            left: (MediaQuery.of(context).size.width) / 13,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                 
-                  InkWell(
-                    onTap: () {
-                      _askPermission();
-                                Navigator.of(context).pushNamed("/home"); 
-
-                      // initPlatformState();
-                      // Navigator.of(context).pushNamed("/");
-                    },
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 40.0),
-                        child: Container(
-                          height: 55,
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          decoration: BoxDecoration(
-                            color: Colors.white, 
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                              
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    'enable location'.toUpperCase(),
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 18,fontFamily: 'Montserrat',
-                                       // fontWeight: FontWeight.w600,
-                                        letterSpacing: 0.2,
-                                        height: 1),
-                                  ),
-                                ),
-                              ],
+                  FadeAnimation(0.8, Container(
+                      // margin: EdgeInsets.only(left:25,right: 20),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/location_ico.jpg'),
+                              fit: BoxFit.cover)),
+                      height: 340.0,
+                      width: 340.0,
+                    ),
+                  ),
+                  FadeAnimation(0.9, Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 2, left: 10),
+                        child: Text(
+                          "Where are you?",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  FadeAnimation(1, Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 18),
+                        child: Text(
+                          "Your location service need to be turned on\norder for this to work",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: 'Montserrat',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  FadeAnimation(1.2, InkWell(
+                      onTap: (){
+                        _askPermission();
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 40.0),
+                          child: Container(
+                            height: 55,
+                            width: MediaQuery.of(context).size.width / 1.4,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50))),
+                            child: Center(
+                              child: Text(
+                                'Enable location'.toUpperCase(),
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: 'Montserrat',
+                                    // fontWeight: FontWeight.w600,
+                                    // letterSpacing: 0.2,
+                                    height: 1),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                
-                 
-                 
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -203,7 +173,7 @@ class _GetLocationState extends State<GetLocation> {
   //   try{
   //     my_location = await location.getLocation();
   //     error = "";
-  //   } 
+  //   }
   //   on PlatformException catch(e){
   //     if(e.code == 'PERMISSION_DENIED')
   //     error = 'Permission Denied';
@@ -212,7 +182,7 @@ class _GetLocationState extends State<GetLocation> {
   //     error = 'Permission denied - please ask the user to enable it from the app settings';
   //     my_location = null;
   //   }
-    
+
   //   setState(() {
   //     currentLocation = my_location;
   //   });
