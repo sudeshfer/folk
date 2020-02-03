@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:folk/Controllers/OTP.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:folk/Screens/Login/setup_step1.dart';
+import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Login_utils/pin_code_fields.dart';
 
 FlutterOtp otp = FlutterOtp();
@@ -80,55 +81,58 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                 alignment: Alignment.centerLeft,
               ),
               SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  'Enter the code',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
-                      fontSize: 22),
-                  textAlign: TextAlign.center,
+              FadeAnimation(0.8, Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    'Enter the code',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat',
+                        fontSize: 22),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                child: RichText(
-                  text: TextSpan(
-                      text: "A verification code has been sent to ",
-                      children: [
-                        TextSpan(
-                            text: widget.phone,
-                            style: TextStyle(
-                                color: Color(0xFFf45d27),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15)),
-                      ],
-                      style: TextStyle(color: Colors.black54, fontSize: 18)),
-                  textAlign: TextAlign.left,
+              FadeAnimation(0.9, Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                  child: RichText(
+                    text: TextSpan(
+                        text: "A verification code has been sent to ",
+                        children: [
+                          TextSpan(
+                              text: widget.phone,
+                              style: TextStyle(
+                                  color: Color(0xFFf45d27),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15)),
+                        ],
+                        style: TextStyle(color: Colors.black54, fontSize: 18)),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 30,
               ),
-              Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
-                  child: PinCodeTextField(
-                    length: 4,
-                    obsecureText: false,
-                    shape: PinCodeFieldShape.box,
-                    fieldHeight: 57,
-                    backgroundColor: Colors.white,
-                    fieldWidth: 67,
-                    onCompleted: (v) {
-                      print("Completed");
-                    },
-                    onChanged: (val) {
-                      enteredOtp = int.parse(val);
-                    },
-                  )),
+              FadeAnimation(1, Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
+                    child: PinCodeTextField(
+                      length: 4,
+                      obsecureText: false,
+                      shape: PinCodeFieldShape.box,
+                      fieldHeight: 57,
+                      backgroundColor: Colors.white,
+                      fieldWidth: 67,
+                      onCompleted: (v) {
+                        print("Completed");
+                      },
+                      onChanged: (val) {
+                        enteredOtp = int.parse(val);
+                      },
+                    )),
+              ),
               InkWell(
                 onTap: () {
                   // final _phone = widget.phone;
@@ -143,6 +147,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   //             fbName: _fbName,
                   //             fbEmail: _fbEmail,
                   //             fbPicUrl: _fbPicUrl,
+                  //             loginType: widget.loginType,
                   //           )));
                   if (widget.newotp == enteredOtp) {
                     final _phone = widget.phone;
@@ -166,25 +171,26 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                     log("Invalid OTP");
                   }
                 },
-                child: Container(
-                  padding: EdgeInsets.only(top: 32),
-                  child: Center(
-                    child: Container(
-                      height: 51,
-                      width: MediaQuery.of(context).size.width / 1.12,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                child: FadeAnimation(1.2, Container(
+                    padding: EdgeInsets.only(top: 32),
+                    child: Center(
+                      child: Container(
+                        height: 51,
+                        width: MediaQuery.of(context).size.width / 1.12,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                        child: Center(
+                          child: Text(
+                            'Continue'.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Center(
-                        child: Text(
-                          'Continue'.toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -197,24 +203,25 @@ class _PincodeVerifyState extends State<PincodeVerify> {
               Container(
                 padding: EdgeInsets.only(top: 30),
               ),
-              InkWell(
-                onTap: () {
-                  log('Clikced on back btn');
-                      Navigator.of(context).pop();
-                },
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                      text: "I didn't get a code",
-                      style:
-                          TextStyle(color: Color(0xFFf45d27), 
-                          fontSize: 17.5,
-                          fontFamily: 'Montserrat'),
-                      children: [
-                        TextSpan(
-                            text: " \n Tap Continue to accept Facebook's Terms",
-                            style: TextStyle(color: Colors.grey, fontSize: 14,fontFamily: 'Montserrat'))
-                      ]),
+              FadeAnimation(1.4, InkWell(
+                  onTap: () {
+                    log('Clikced on back btn');
+                        Navigator.of(context).pop();
+                  },
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: "I didn't get a code",
+                        style:
+                            TextStyle(color: Color(0xFFf45d27), 
+                            fontSize: 17.5,
+                            fontFamily: 'Montserrat'),
+                        children: [
+                          TextSpan(
+                              text: " \n Tap Continue to accept Facebook's Terms",
+                              style: TextStyle(color: Colors.grey, fontSize: 14,fontFamily: 'Montserrat'))
+                        ]),
+                  ),
                 ),
               ),
               SizedBox(

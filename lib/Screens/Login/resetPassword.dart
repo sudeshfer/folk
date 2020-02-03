@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:folk/Utils/Animations/FadeAnimation.dart';
 
 class ResetPassword extends StatefulWidget {
   ResetPassword({Key key}) : super(key: key);
@@ -53,89 +54,93 @@ String _errorTxt = '';
                 ),
               ),
               SizedBox(height: 12),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                child: Text(
-                  'Reset Password',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(64, 75, 105, 1),
-                      fontFamily: 'Montserrat',
-                      fontSize: 22),
-                  textAlign: TextAlign.left,
+              FadeAnimation(0.8, Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                  child: Text(
+                    'Reset Password',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(64, 75, 105, 1),
+                        fontFamily: 'Montserrat',
+                        fontSize: 22),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                child: RichText(
-                  text: TextSpan(
-                      text: "Reset code was sent your email. Please \n"
-                          "enter ther code and create new password.",
-                      style: TextStyle(
-                          color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
-                  textAlign: TextAlign.left,
+              FadeAnimation(0.9, Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                  child: RichText(
+                    text: TextSpan(
+                        text: "Reset code was sent your email. Please \n"
+                            "enter ther code and create new password.",
+                        style: TextStyle(
+                            color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 30,
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
-                child: TextField(
-                  controller: _resetCode,
-                  decoration: InputDecoration(
-                      border: new OutlineInputBorder(
-                          borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
-                      labelText: 'Reset Code',
-                      errorText: _errorTxt,
-                      errorBorder: _errorTxt.isEmpty
-                                  ? OutlineInputBorder(
-                                      borderSide:
-                                          new BorderSide(color: Color(0xFFE0E0E0)))
-                                  : null,
-                              focusedBorder:_errorTxt.isNotEmpty? OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xFFE0E0E0))):null
-                      ),
-                      
+              FadeAnimation(1.1, Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
+                  child: TextField(
+                    controller: _resetCode,
+                    decoration: InputDecoration(
+                        border: new OutlineInputBorder(
+                            borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
+                        labelText: 'Reset Code',
+                        errorText: _errorTxt,
+                        errorBorder: _errorTxt.isEmpty
+                                    ? OutlineInputBorder(
+                                        borderSide:
+                                            new BorderSide(color: Color(0xFFE0E0E0)))
+                                    : null,
+                                focusedBorder:_errorTxt.isNotEmpty? OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xFFE0E0E0))):null
+                        ),
+                        
+                  ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 32),
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      if (checkNull()) {
-                        setState(() {
-                          _errorTxt = "";
-                        });
+              FadeAnimation(1.2, Container(
+                  padding: EdgeInsets.only(top: 32),
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
+                        if (checkNull()) {
+                          setState(() {
+                            _errorTxt = "";
+                          });
 
-                      Navigator.of(context).pushNamed("/resetpw");
+                        Navigator.of(context).pushNamed("/resetpw");
 
-                      } else {
-                        setState(() {
-                          _errorTxt = "You should fill out this field !";
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: 51,
-                      width: MediaQuery.of(context).size.width / 1.12,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Center(
-                        child: Text(
-                          'Change Phone number'.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontFamily: 'Montserrat',
+                        } else {
+                          setState(() {
+                            _errorTxt = "You should fill out this field !";
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 51,
+                        width: MediaQuery.of(context).size.width / 1.12,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                        child: Center(
+                          child: Text(
+                            'Change Phone number'.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontFamily: 'Montserrat',
+                            ),
                           ),
                         ),
                       ),

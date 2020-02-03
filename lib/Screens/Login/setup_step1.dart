@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:folk/Screens/Login/setup_step2.dart';
+import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -11,6 +12,7 @@ class SetupStepOne extends StatefulWidget {
   final fbName;
   final fbEmail;
   final fbPicUrl;
+  final loginType;
   SetupStepOne(
       {Key key,
       this.title,
@@ -18,7 +20,8 @@ class SetupStepOne extends StatefulWidget {
       this.fbId,
       this.fbName,
       this.fbEmail,
-      this.fbPicUrl})
+      this.fbPicUrl,
+       this.loginType})
       : super(key: key);
 
   final String title;
@@ -218,7 +221,10 @@ class _SetupStepOneState extends State<SetupStepOne> {
     //     "\n" +
     //     widget.fbPicUrl +
     //     "\n" +
-    //     widget.phone);
+    //     widget.phone+
+    //     "\n" +
+    //     widget.loginType);
+    print(widget.loginType);
     _initiateNameController();
     super.initState();
   }
@@ -253,16 +259,17 @@ class _SetupStepOneState extends State<SetupStepOne> {
                   },
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 30, left: 30),
-                child: Text(
-                  "Introduce Yourself",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromRGBO(64, 75, 105, 1),
-                    fontSize: 25,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
+              FadeAnimation(0.8, Container(
+                  margin: EdgeInsets.only(top: 30, left: 30),
+                  child: Text(
+                    "Introduce Yourself",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color.fromRGBO(64, 75, 105, 1),
+                      fontSize: 25,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -271,77 +278,83 @@ class _SetupStepOneState extends State<SetupStepOne> {
                   log("image upload btn clicked");
                   _showChoiceDialog(context);
                 },
-                child: Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 40),
-                    child:
-                        Align(alignment: Alignment.center, child: _showImg()),
+                child: FadeAnimation(1, Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 40),
+                      child:
+                          Align(alignment: Alignment.center, child: _showImg()),
+                    ),
                   ),
                 ),
               ),
-              Container(
-                // width: MediaQuery.of(context).size.width / 1.5,
-                margin: EdgeInsets.only(top: 40, left: 28, right: 28),
-                child: TextField(
-                  controller: _name,
-                  decoration: InputDecoration(
-                      border: new OutlineInputBorder(
-                          borderSide: new BorderSide(color: Color(0xFFF5F5F5))),
-                      labelText: 'Name',
-                      errorText: _errorName,
-                      errorBorder: _errorName.isEmpty
-                          ? OutlineInputBorder(
-                              borderSide: new BorderSide(color: Color(0xFFE0E0E0)))
-                          : null, 
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.orangeAccent))),
+              FadeAnimation(1.2, Container(
+                  // width: MediaQuery.of(context).size.width / 1.5,
+                  margin: EdgeInsets.only(top: 40, left: 28, right: 28),
+                  child: TextField(
+                    controller: _name,
+                    enabled: widget.loginType =="fb"? false :true,
+                    decoration: InputDecoration(
+                        border: new OutlineInputBorder(
+                            borderSide: new BorderSide(color: Color(0xFFF5F5F5))),
+                        labelText: 'Name',
+                        errorText: _errorName,
+                        errorBorder: _errorName.isEmpty
+                            ? OutlineInputBorder(
+                                borderSide: new BorderSide(color: Color(0xFFE0E0E0)))
+                            : null, 
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.orangeAccent))),
+                  ),
                 ),
               ),
-              Center(
-                child: Container(
-                  margin:
-                      EdgeInsets.only(top: 20, left: 26, right: 26, bottom: 15),
-                  child: InkWell(
-                    onTap: () {
-                      if (checkNull()) {
-                        setState(() {
-                          _errorName = "";
-                        });
+              FadeAnimation(1.4, Center(
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(top: 20, left: 26, right: 26, bottom: 15),
+                    child: InkWell(
+                      onTap: () {
+                        if (checkNull()) {
+                          setState(() {
+                            _errorName = "";
+                          });
 
-                    final _phone = widget.phone;
-                    final _fbId = widget.fbId;
-                    final _fbName = widget.fbName;
-                    final _fbEmail = widget.fbEmail;
-                    final _fbPicUrl = widget.fbPicUrl;
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SetupStepTwo(
-                              phone: _phone,
-                              fbId: _fbId,
-                              fbName: _fbName,
-                              fbEmail: _fbEmail,
-                              fbPicUrl: _fbPicUrl,
-                            )));
-                      } else {
-                        setState(() {
-                          _errorName = "You should fill out this field !";
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width / 1.15,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                      final _phone = widget.phone;
+                      final _fbId = widget.fbId;
+                      final _fbName = widget.fbName;
+                      final _fbEmail = widget.fbEmail;
+                      final _fbPicUrl = widget.fbPicUrl;
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SetupStepTwo(
+                                phone: _phone,
+                                fbId: _fbId,
+                                fbName: _fbName,
+                                fbEmail: _fbEmail,
+                                fbPicUrl: _fbPicUrl,
+                                loginType: widget.loginType,
+
+                              )));
+                        } else {
+                          setState(() {
+                            _errorName = "You should fill out this field !";
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width / 1.15,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                        child: Center(
+                          child: Text(
+                            'Next'.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: 'Montserrat'),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Center(
-                        child: Text(
-                          'Next'.toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontFamily: 'Montserrat'),
                         ),
                       ),
                     ),

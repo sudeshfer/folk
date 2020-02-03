@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:folk/Screens/Login/setup_step3.dart';
+import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
@@ -10,13 +11,15 @@ class SetupStepTwo extends StatefulWidget {
   final fbName;
   final fbEmail;
   final fbPicUrl;
+  final loginType;
   SetupStepTwo(
       {Key key,
       this.phone,
       this.fbId,
       this.fbName,
       this.fbEmail,
-      this.fbPicUrl})
+      this.fbPicUrl,
+      this.loginType})
       : super(key: key);
 
   @override
@@ -78,261 +81,268 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                   },
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 25, left: 30),
-                child: Text(
-                  "Introduce Yourself",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromRGBO(64, 75, 105, 1),
-                    fontSize: 25,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
+              FadeAnimation(0.8, Container(
+                  margin: EdgeInsets.only(top: 25, left: 30),
+                  child: Text(
+                    "Introduce Yourself",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color.fromRGBO(64, 75, 105, 1),
+                      fontSize: 25,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 30, left: 30),
-                child: Text(
-                  "Gender",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromRGBO(64, 75, 105, 1),
-                    fontSize: 19,
-                    fontFamily: 'Montserrat',
+              FadeAnimation(0.9, Container(
+                  margin: EdgeInsets.only(top: 30, left: 30),
+                  child: Text(
+                    "Gender",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color.fromRGBO(64, 75, 105, 1),
+                      fontSize: 19,
+                      fontFamily: 'Montserrat',
+                    ),
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isMaleClicked = true;
-                              isFemaleClicked = false;
-                              _gender = "male";
-                            });
-
-                            print("Selected gender = " + _gender);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(left: 55),
-                            height: 70.0,
-                            width: 70.0,
-                            decoration: new BoxDecoration(
-                              border: Border.all(color: Color(0xFFE0E0E0)),
-                              shape: BoxShape.circle,
-                              color: isMaleClicked
-                                  ? Color(0XFFFF5E3A)
-                                  : Colors.white,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Container(
-                                child: isMaleClicked
-                                    ? Image.asset(
-                                        'assets/images/male-white.png')
-                                    : Image.asset(
-                                        'assets/images/male-black.png'),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5, left: 60.0),
-                          child: Container(
-                              decoration: BoxDecoration(color: Colors.white),
-                              child: Text("Male")),
-                        )
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isFemaleClicked = true;
-                              isMaleClicked = false;
-                              _gender = "female";
-                            });
-
-                            print("Selected gender = " + _gender);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(right: 55),
-                            height: 70.0,
-                            width: 70.0,
-                            decoration: new BoxDecoration(
-                              border: Border.all(color: Color(0xFFE0E0E0)),
-                              shape: BoxShape.circle,
-                              color: isFemaleClicked
-                                  ? Color(0XFFFF5E3A)
-                                  : Colors.white,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Container(
-                                child: isFemaleClicked
-                                    ? Image.asset(
-                                        'assets/images/female-white.png') //white icon show
-                                    : Image.asset(
-                                        'assets/images/female-black.png'), //black icon show
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5, right: 60.0),
-                          child: Container(
-                              decoration: BoxDecoration(color: Colors.white),
-                              child: Text("Female")),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 25.0, right: 25.0, bottom: 10, top: 30),
-                child: Container(
-                  height: 64,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xFFE0E0E0))),
+              FadeAnimation(1, Container(
+                  margin: EdgeInsets.only(top: 25),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Container(
-                        height: 54,
-                        width: MediaQuery.of(context).size.width / 1.5,
-                        // margin: EdgeInsets.only(top: 15),
-                        child: TextField(
-                          controller: _birthday,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            labelText: 'Your Birthday',
-                          ),
-                        ),
-                      ),
-                      Container(
-                        // margin: const EdgeInsets.only( top: 10),
-                        child: Container(
-                          child: IconButton(
-                            icon: Icon(FontAwesomeIcons.solidCalendarAlt),
-                            iconSize: 30,
-                            color: Color(0XFFFF5E3A),
-                            onPressed: () {
-                              DatePicker.showDatePicker(context,
-                                  showTitleActions: true,
-                                  minTime: DateTime(1980, 12, 31),
-                                  maxTime: DateTime(2020, 12, 31),
-                                  onChanged: (date) {
-                                //print the date
-                                print('change $date');
-                              }, onConfirm: (date) {
-                                final bday = "$date";
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isMaleClicked = true;
+                                isFemaleClicked = false;
+                                _gender = "male";
+                              });
 
-                                setState(() {
-                                  _birthday.text = bday;
-                                  //eaqual the bday value to text editing controller
-                                });
-
-                                //print the bday
-                                print('confirm ' + bday);
-                              }, locale: LocaleType.en);
+                              print("Selected gender = " + _gender);
                             },
+                            child: Container(
+                              margin: EdgeInsets.only(left: 55),
+                              height: 70.0,
+                              width: 70.0,
+                              decoration: new BoxDecoration(
+                                border: Border.all(color: Color(0xFFE0E0E0)),
+                                shape: BoxShape.circle,
+                                color: isMaleClicked
+                                    ? Color(0XFFFF5E3A)
+                                    : Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: Container(
+                                  child: isMaleClicked
+                                      ? Image.asset(
+                                          'assets/images/male-white.png')
+                                      : Image.asset(
+                                          'assets/images/male-black.png'),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      )
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5, left: 60.0),
+                            child: Container(
+                                decoration: BoxDecoration(color: Colors.white),
+                                child: Text("Male")),
+                          )
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isFemaleClicked = true;
+                                isMaleClicked = false;
+                                _gender = "female";
+                              });
+
+                              print("Selected gender = " + _gender);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(right: 55),
+                              height: 70.0,
+                              width: 70.0,
+                              decoration: new BoxDecoration(
+                                border: Border.all(color: Color(0xFFE0E0E0)),
+                                shape: BoxShape.circle,
+                                color: isFemaleClicked
+                                    ? Color(0XFFFF5E3A)
+                                    : Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: Container(
+                                  child: isFemaleClicked
+                                      ? Image.asset(
+                                          'assets/images/female-white.png') //white icon show
+                                      : Image.asset(
+                                          'assets/images/female-black.png'), //black icon show
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5, right: 60.0),
+                            child: Container(
+                                decoration: BoxDecoration(color: Colors.white),
+                                child: Text("Female")),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ),
-              Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 7.0, horizontal: 25),
-                    child: TextField(
-                      controller: _email,
-                      decoration: InputDecoration(
-                          border: new OutlineInputBorder(
-                              borderSide:
-                                  new BorderSide(color: Color(0xFFE0E0E0))),
-                          labelText: 'Email',
-                          errorText: _errorTxt,
-                          errorBorder: _errorTxt.isEmpty
-                              ? OutlineInputBorder(
-                                  borderSide:
-                                      new BorderSide(color: Color(0xFFE0E0E0)))
-                              : null,
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Color(0xFFE0E0E0)))),
+              FadeAnimation(1.1, Padding(
+                  padding: const EdgeInsets.only(
+                      left: 25.0, right: 25.0, bottom: 10, top: 30),
+                  child: Container(
+                    height: 64,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xFFE0E0E0))),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          height: 54,
+                          width: MediaQuery.of(context).size.width / 1.5,
+                          // margin: EdgeInsets.only(top: 15),
+                          child: TextField(
+                            controller: _birthday,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: 'Your Birthday',
+                            ),
+                          ),
+                        ),
+                        Container(
+                          // margin: const EdgeInsets.only( top: 10),
+                          child: Container(
+                            child: IconButton(
+                              icon: Icon(FontAwesomeIcons.solidCalendarAlt),
+                              iconSize: 30,
+                              color: Color(0XFFFF5E3A),
+                              onPressed: () {
+                                DatePicker.showDatePicker(context,
+                                    showTitleActions: true,
+                                    minTime: DateTime(1980, 12, 31),
+                                    maxTime: DateTime(2020, 12, 31),
+                                    onChanged: (date) {
+                                  //print the date
+                                  print('change $date');
+                                }, onConfirm: (date) {
+                                  final bday = "$date";
+
+                                  setState(() {
+                                    _birthday.text = bday;
+                                    //eaqual the bday value to text editing controller
+                                  });
+
+                                  //print the bday
+                                  print('confirm ' + bday);
+                                }, locale: LocaleType.en);
+                              },
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-              Center(
-                child: Container(
-                  margin:
-                      EdgeInsets.only(top: 25, left: 26, right: 26, bottom: 25),
-                  child: InkWell(
-                    onTap: () {
-                      if (checkNull()) {
-                        setState(() {
-                          _errorTxt = "";
-                        });
+              FadeAnimation(1.1, Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 7.0, horizontal: 25),
+                      child: TextField(
+                        controller: _email,
+                        enabled: widget.loginType =="fb"? false :true,
+                        decoration: InputDecoration(
+                            border: new OutlineInputBorder(
+                                borderSide:
+                                    new BorderSide(color: Color(0xFFE0E0E0))),
+                            labelText: 'Email',
+                            errorText: _errorTxt,
+                            errorBorder: _errorTxt.isEmpty
+                                ? OutlineInputBorder(
+                                    borderSide:
+                                        new BorderSide(color: Color(0xFFE0E0E0)))
+                                : null,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xFFE0E0E0)))),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              FadeAnimation(1.2, Center(
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(top: 25, left: 26, right: 26, bottom: 25),
+                    child: InkWell(
+                      onTap: () {
+                        if (checkNull()) {
+                          setState(() {
+                            _errorTxt = "";
+                          });
 
-                        String bday = _birthday.text;
-                        String gender = _gender;
-                        String email = _email.text;
-                        final _phone = widget.phone;
-                        final _fbId = widget.fbId;
-                        final _fbName = widget.fbName;
-                        final _fbEmail = widget.fbEmail;
-                        final _fbPicUrl = widget.fbPicUrl;
+                          String bday = _birthday.text;
+                          String gender = _gender;
+                          String email = _email.text;
+                          final _phone = widget.phone;
+                          final _fbId = widget.fbId;
+                          final _fbName = widget.fbName;
+                          final _fbEmail = widget.fbEmail;
+                          final _fbPicUrl = widget.fbPicUrl;
 
-                        print(bday + gender + email);
-                        //passing data to next screens
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SetupStepThree(
-                                bday: bday, gender: gender, email: email,phone: _phone,
-                              fbId: _fbId,
-                              fbName: _fbName,
-                              fbEmail: _fbEmail,
-                              fbPicUrl: _fbPicUrl,)));
+                          print(bday + gender + email);
+                          //passing data to next screens
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SetupStepThree(
+                                  bday: bday, gender: gender, email: email,phone: _phone,
+                                fbId: _fbId,
+                                fbName: _fbName,
+                                fbEmail: _fbEmail,
+                                fbPicUrl: _fbPicUrl,)));
 
-                        // Navigator.of(context).pushNamed("/pincode");
-                      } else {
-                        setState(() {
-                          _errorTxt = "You should fill out this field !";
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: 55,
-                      width: MediaQuery.of(context).size.width / 1.15,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                          // Navigator.of(context).pushNamed("/pincode");
+                        } else {
+                          setState(() {
+                            _errorTxt = "You should fill out this field !";
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 55,
+                        width: MediaQuery.of(context).size.width / 1.15,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                        child: Center(
+                          child: Text(
+                            'Next'.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: 'Montserrat'),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Center(
-                        child: Text(
-                          'Next'.toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontFamily: 'Montserrat'),
                         ),
                       ),
                     ),

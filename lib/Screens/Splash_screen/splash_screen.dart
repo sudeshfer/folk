@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:folk/Screens/Login/login_page.dart';
 import 'package:folk/Utils/Animations/delayed_reveal.dart';
-import 'package:folk/Utils/Animations/domino_reveal.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
