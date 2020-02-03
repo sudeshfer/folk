@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:folk/Screens/Login/login_page.dart';
+import 'package:folk/Utils/Animations/delayed_reveal.dart';
+import 'package:folk/Utils/Animations/domino_reveal.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -30,8 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(245, 246, 250, 1),
-      body: Center(
-        child: Image.asset('assets/images/logo.png',width: 280,height: 280,),
+      body: DelayedReveal(
+        delay: Duration(milliseconds: 1200),
+              child: Center(
+          child: Image.asset('assets/images/logo.png',width: 280,height: 280,),
+        ),
       ),
     );
   }

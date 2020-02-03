@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:folk/Screens/Login/phone_login.dart';
 import 'package:folk/Controllers/ApiServices/FbLoginService.dart';
+import 'package:folk/Utils/Animations/FadeAnimation.dart';
+import 'package:folk/Utils/Animations/delayed_reveal.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -37,12 +39,14 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Container(
-            child: new Image.asset(
-              'assets/images/bg-white.png',
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              fit: BoxFit.fill,
+          FadeAnimation(1.5,
+                       Container(
+              child: new Image.asset(
+                'assets/images/bg-white.png',
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           Positioned(
@@ -65,148 +69,171 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      log('Clikced on Login with facebook btn');
-                      setState(() {
-                        login_Type = "fb";
-                      });
-                      initiateFacebookLogin();
-                    },
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: Container(
-                          height: 55,
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xFF2672CB), Color(0xFF2672CB)],
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/images/fb-icon.png',
-                                  scale: 1.4,
+                  DelayedReveal(
+                    delay: Duration(milliseconds: 300),
+                    child: InkWell(
+                      onTap: () {
+                        log('Clikced on Login with facebook btn');
+                        setState(() {
+                          login_Type = "fb";
+                        });
+                        initiateFacebookLogin();
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Container(
+                            height: 55,
+                            width: MediaQuery.of(context).size.width / 1.2,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF2672CB),
+                                    Color(0xFF2672CB)
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 35.0, right: 20),
-                                  child: Text(
-                                    'Login with Facebook'.toUpperCase(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontFamily: 'Montserrat',
-                                      // fontWeight: FontWeight.w100,
-                                      // letterSpacing: 0.2,
-                                      height: 1,
-                                    ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50))),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/fb-icon.png',
+                                    scale: 1.4,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      log('Clikced on Login with 4n btn');
-                      setState(() {
-                        login_Type = "otp";
-                      });
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => PhoneLogin(
-                              loginType: login_Type)));
-                    },
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Container(
-                          height: 55,
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.phone,
-                                  color: Colors.white,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    'Login with phone number'.toUpperCase(),
-                                    style: TextStyle(
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 35.0, right: 20),
+                                    child: Text(
+                                      'Login with Facebook'.toUpperCase(),
+                                      style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 15,
                                         fontFamily: 'Montserrat',
-                                        // fontWeight: FontWeight.w600,
+                                        // fontWeight: FontWeight.w100,
                                         // letterSpacing: 0.2,
-                                        height: 1),
+                                        height: 1,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: InkWell(
-                        onTap: () {
-                          log('Clikced on trouble with login');
-                          Navigator.of(context).pushNamed("/forgotpw");
-                        },
-                        child: Container(
-                          child: Text('Trouble Logging In',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 14,
-                                  decoration: TextDecoration.underline)),
+                  DelayedReveal(
+                    delay: Duration(milliseconds: 450),
+                    child: InkWell(
+                      onTap: () {
+                        log('Clikced on Login with 4n btn');
+                        setState(() {
+                          login_Type = "otp";
+                        });
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                PhoneLogin(loginType: login_Type)));
+                      },
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Container(
+                            height: 55,
+                            width: MediaQuery.of(context).size.width / 1.2,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF6038),
+                                    Color(0xFFFF9006)
+                                  ],
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50))),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.phone,
+                                    color: Colors.white,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: Text(
+                                      'Login with phone number'.toUpperCase(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontFamily: 'Montserrat',
+                                          // fontWeight: FontWeight.w600,
+                                          // letterSpacing: 0.2,
+                                          height: 1),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Container(
-                        child: Text('By clicking start, you agree to our',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Montserrat',
-                              fontSize: 14,
-                            )),
+                  DelayedReveal(
+                    delay: Duration(milliseconds: 600),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: InkWell(
+                          onTap: () {
+                            log('Clikced on trouble with login');
+                            Navigator.of(context).pushNamed("/forgotpw");
+                          },
+                          child: Container(
+                            child: Text('Trouble Logging In',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 14,
+                                    decoration: TextDecoration.underline)),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: Container(
-                        child: Text('Terms and Conditions',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Montserrat',
-                              fontSize: 15,
-                            )),
+                  DelayedReveal(
+                    delay: Duration(milliseconds: 750),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Container(
+                          child: Text('By clicking start, you agree to our',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Montserrat',
+                                fontSize: 14,
+                              )),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DelayedReveal(
+                    delay: Duration(milliseconds: 900),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: Container(
+                          child: Text('Terms and Conditions',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Montserrat',
+                                fontSize: 15,
+                              )),
+                        ),
                       ),
                     ),
                   )
@@ -247,7 +274,7 @@ class _LoginPageState extends State<LoginPage> {
 
         final body = {"email": _fbEmail};
 
-        FbLoginService.FbAuth(body).then((newuser) {
+        FbLoginService.fbAuth(body).then((newuser) {
           if (newuser) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => PhoneLogin(
