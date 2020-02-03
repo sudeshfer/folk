@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:folk/Utils/Animations/FadeAnimation.dart';
 
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key key}) : super(key: key);
@@ -53,92 +54,96 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
 
               SizedBox(height: 12),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                child: Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(64, 75, 105, 1),
-                      fontFamily: 'Montserrat',
-                      fontSize: 22),
-                  textAlign: TextAlign.left,
+              FadeAnimation(0.8, Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                  child: Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(64, 75, 105, 1),
+                        fontFamily: 'Montserrat',
+                        fontSize: 22),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
-                child: RichText(
-                  text: TextSpan(
-                      text:
-                          "Pleace enter your email below to receive your \npassword reset instructions.",
-                      style: TextStyle(
-                          color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
-                  textAlign: TextAlign.left,
+              FadeAnimation(0.9, Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                  child: RichText(
+                    text: TextSpan(
+                        text:
+                            "Pleace enter your email below to receive your \npassword reset instructions.",
+                        style: TextStyle(
+                            color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 30,
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
-                child: TextField(
-                  controller: _email,
-                  decoration: InputDecoration(
-                      border: new OutlineInputBorder(
-                          borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
-                      labelText: 'Email',
-                      errorText: _errorTxt,
-                      errorBorder: _errorTxt.isEmpty
-                                  ? OutlineInputBorder(
-                                      borderSide:
-                                          new BorderSide(color: Color(0xFFE0E0E0)))
-                                  : null,
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xFFE0E0E0)))
-                      ),
+              FadeAnimation(0.1, Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
+                  child: TextField(
+                    controller: _email,
+                    decoration: InputDecoration(
+                        border: new OutlineInputBorder(
+                            borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
+                        labelText: 'Email',
+                        errorText: _errorTxt,
+                        errorBorder: _errorTxt.isEmpty
+                                    ? OutlineInputBorder(
+                                        borderSide:
+                                            new BorderSide(color: Color(0xFFE0E0E0)))
+                                    : null,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xFFE0E0E0)))
+                        ),
+                  ),
                 ),
               ),
 
-              Container(
-                padding: EdgeInsets.only(top: 32),
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
+              FadeAnimation(1.2, Container(
+                  padding: EdgeInsets.only(top: 32),
+                  child: Center(
+                    child: InkWell(
+                      onTap: () {
 
-                      if (checkNull()) {
-                        setState(() {
-                          _errorTxt = "";
-                        });
+                        if (checkNull()) {
+                          setState(() {
+                            _errorTxt = "";
+                          });
 
-                      log('Clikced on send req btn');
-                      Navigator.of(context).pushNamed("/resetpw");
+                        log('Clikced on send req btn');
+                        Navigator.of(context).pushNamed("/resetpw");
 
-                      } else {
-                        setState(() {
-                          _errorTxt = "You should fill out this field !";
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: 51,
-                      width: MediaQuery.of(context).size.width / 1.12,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                        } else {
+                          setState(() {
+                            _errorTxt = "You should fill out this field !";
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 51,
+                        width: MediaQuery.of(context).size.width / 1.12,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                        child: Center(
+                          child: Text(
+                            'Send request'.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold),
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Center(
-                        child: Text(
-                          'Send request'.toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
