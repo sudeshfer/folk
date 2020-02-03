@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:folk/Screens/Login/setup_step2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -307,7 +308,19 @@ class _SetupStepOneState extends State<SetupStepOne> {
                           _errorName = "";
                         });
 
-                        Navigator.of(context).pushNamed("/setupstep2");
+                    final _phone = widget.phone;
+                    final _fbId = widget.fbId;
+                    final _fbName = widget.fbName;
+                    final _fbEmail = widget.fbEmail;
+                    final _fbPicUrl = widget.fbPicUrl;
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SetupStepTwo(
+                              phone: _phone,
+                              fbId: _fbId,
+                              fbName: _fbName,
+                              fbEmail: _fbEmail,
+                              fbPicUrl: _fbPicUrl,
+                            )));
                       } else {
                         setState(() {
                           _errorName = "You should fill out this field !";

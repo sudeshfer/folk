@@ -6,8 +6,17 @@ class SetupStepThree extends StatefulWidget {
   final bday;
   final gender;
   final email;
+  final phone;
+  final fbId;
+  final fbName;
+  final fbEmail;
+  final fbPicUrl;
   // PincodeVerify({Key key}) : super(key: key);
-  SetupStepThree({this.bday, this.gender, this.email});
+  SetupStepThree({this.bday, this.gender, this.email,this.phone,
+      this.fbId,
+      this.fbName,
+      this.fbEmail,
+      this.fbPicUrl});
 
   @override
   _SetupStepThreeState createState() => _SetupStepThreeState();
@@ -25,7 +34,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 50.0, left: 15),
+                  padding: EdgeInsets.only(top:45.0, left: 15),
                   child: IconButton(
                     icon: Icon(Icons.arrow_back),
                     iconSize: 38,
@@ -36,7 +45,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 25, left: 30),
+                  margin: EdgeInsets.only(top: 20, left: 30),
                   child: Text(
                     "Choose Interests",
                     textAlign: TextAlign.center,
@@ -50,7 +59,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 30.0, right: 30.0, top: 20),
+                      const EdgeInsets.only(left: 30.0, right: 30.0, top: 18),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -739,7 +748,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     Navigator.of(context).pushNamed("/location");
                   },
                   child: Container(
-                    padding: EdgeInsets.only(top: 32),
+                    padding: EdgeInsets.only(top: 32,bottom:25),
                     child: Center(
                       child: Container(
                         height: 51,

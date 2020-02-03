@@ -132,7 +132,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                             decoration: InputDecoration(
                                 border: new OutlineInputBorder(
                                     borderSide: new BorderSide(
-                                        color: Color(0xFFF5F5F5))),
+                                        color: Color(0xFFE0E0E0))),
                                 labelText: 'Phone Number',
                                 errorText: _errorTxt,
                                 errorBorder: _errorTxt.isEmpty
@@ -195,6 +195,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                               }
                               else{
                                 log("seems like you already have an account");
+                                // Navigator.of(context).pushNamed("/home"); 
                               }
                             });
                           } else {
@@ -210,6 +211,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                       fbName: _fbName,
                                       fbEmail: _fbEmail,
                                       fbPicUrl: _fbPicUrl,
+                                      loginType: widget.loginType,
                                     )));
                           }
 

@@ -5,7 +5,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class SetupStepTwo extends StatefulWidget {
-  SetupStepTwo({Key key}) : super(key: key);
+  final phone;
+  final fbId;
+  final fbName;
+  final fbEmail;
+  final fbPicUrl;
+  SetupStepTwo(
+      {Key key,
+      this.phone,
+      this.fbId,
+      this.fbName,
+      this.fbEmail,
+      this.fbPicUrl})
+      : super(key: key);
 
   @override
   _SetupStepTwoState createState() => _SetupStepTwoState();
@@ -24,8 +36,21 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   void initState() {
     isFemaleClicked = true;
     // String _gender = "female";
+    _initiateEmailController();
 
     super.initState();
+  }
+
+  _initiateEmailController() {
+    if (widget.fbEmail == null) {
+      setState(() {
+        _email.text = null;
+      });
+      print(_email);
+    } else {
+      _email.text = widget.fbEmail;
+      print(_email.text);
+    }
   }
 
   @override
@@ -175,14 +200,12 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left:25.0,right: 25.0,bottom: 10,top: 30),
+                padding: const EdgeInsets.only(
+                    left: 25.0, right: 25.0, bottom: 10, top: 30),
                 child: Container(
                   height: 64,
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Color(0xFFE0E0E0)
-                    )
-                  ),
+                      border: Border.all(color: Color(0xFFE0E0E0))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -194,9 +217,9 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                           controller: _birthday,
                           enabled: false,
                           decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: 'Your Birthday',
-                              ),
+                            border: InputBorder.none,
+                            labelText: 'Your Birthday',
+                          ),
                         ),
                       ),
                       Container(
@@ -207,7 +230,6 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                             iconSize: 30,
                             color: Color(0XFFFF5E3A),
                             onPressed: () {
-                              
                               DatePicker.showDatePicker(context,
                                   showTitleActions: true,
                                   minTime: DateTime(1980, 12, 31),
@@ -215,14 +237,13 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                                   onChanged: (date) {
                                 //print the date
                                 print('change $date');
-                                                    }, 
-                                  onConfirm: (date) {
-                                    final bday = "$date";
+                              }, onConfirm: (date) {
+                                final bday = "$date";
 
-                                    setState(() {
-                                      _birthday.text = bday; 
-                                      //eaqual the bday value to text editing controller
-                                    });
+                                setState(() {
+                                  _birthday.text = bday;
+                                  //eaqual the bday value to text editing controller
+                                });
 
                                 //print the bday
                                 print('confirm ' + bday);
@@ -244,7 +265,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                       controller: _email,
                       decoration: InputDecoration(
                           border: new OutlineInputBorder(
-                              borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
+                              borderSide:
+                                  new BorderSide(color: Color(0xFFE0E0E0))),
                           labelText: 'Email',
                           errorText: _errorTxt,
                           errorBorder: _errorTxt.isEmpty
@@ -253,7 +275,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                                       new BorderSide(color: Color(0xFFE0E0E0)))
                               : null,
                           focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFE0E0E0)))),
+                              borderSide:
+                                  BorderSide(color: Color(0xFFE0E0E0)))),
                     ),
                   ),
                 ],
@@ -272,12 +295,21 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                         String bday = _birthday.text;
                         String gender = _gender;
                         String email = _email.text;
+                        final _phone = widget.phone;
+                        final _fbId = widget.fbId;
+                        final _fbName = widget.fbName;
+                        final _fbEmail = widget.fbEmail;
+                        final _fbPicUrl = widget.fbPicUrl;
 
                         print(bday + gender + email);
                         //passing data to next screens
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => SetupStepThree(
-                                bday: bday, gender: gender, email: email)));
+                                bday: bday, gender: gender, email: email,phone: _phone,
+                              fbId: _fbId,
+                              fbName: _fbName,
+                              fbEmail: _fbEmail,
+                              fbPicUrl: _fbPicUrl,)));
 
                         // Navigator.of(context).pushNamed("/pincode");
                       } else {

@@ -80,14 +80,25 @@ class _GetLocationState extends State<GetLocation> {
           ),
            Positioned(
             top: 50.0,
-            left: (MediaQuery.of(context).size.width) / 20,
-            child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/location.jpg'),
-                      fit: BoxFit.cover)),
-              height: 350.0,
-              width: 365.0,
+            // left: (MediaQuery.of(context).size.width) / 20,
+            child: Align(
+              alignment: Alignment.center,
+                          child: Container(
+                margin: const EdgeInsets.only(bottom: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/location.jpg'),
+                              fit: BoxFit.cover)),
+                      height: 300.0,
+                      width: 300.0,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
            Center(
@@ -137,12 +148,14 @@ class _GetLocationState extends State<GetLocation> {
                   InkWell(
                     onTap: () {
                       _askPermission();
+                                Navigator.of(context).pushNamed("/home"); 
+
                       // initPlatformState();
                       // Navigator.of(context).pushNamed("/");
                     },
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 100.0),
+                        padding: const EdgeInsets.only(top: 40.0),
                         child: Container(
                           height: 55,
                           width: MediaQuery.of(context).size.width / 1.2,

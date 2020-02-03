@@ -16,6 +16,7 @@ class PincodeVerify extends StatefulWidget {
   final fbName;
   final fbEmail;
   final fbPicUrl;
+  final loginType;
   // PincodeVerify({Key key}) : super(key: key);
   PincodeVerify(
       {this.phone,
@@ -23,7 +24,8 @@ class PincodeVerify extends StatefulWidget {
       this.fbId,
       this.fbName,
       this.fbEmail,
-      this.fbPicUrl});
+      this.fbPicUrl,
+      this.loginType});
   @override
   _PincodeVerifyState createState() => _PincodeVerifyState();
 }
