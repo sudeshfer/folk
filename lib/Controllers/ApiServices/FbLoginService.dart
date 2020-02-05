@@ -16,7 +16,7 @@ class LoginwithFBService {
         await http.post('${URLS.BASE_URL}/user/loginwithfb', body: jsonEncode(body) , headers: requestHeaders);
 
     var data = response.body;
-    print(body);
+    // print(body);
     print(json.decode(data));
 
     Map<String, dynamic> res_data = jsonDecode(data);

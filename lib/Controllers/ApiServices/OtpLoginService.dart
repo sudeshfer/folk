@@ -3,19 +3,28 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:folk/Controllers/ApiServices/variables.dart';
 
-class OtpLoginService {
-  static Future<bool> OtpAuth(body) async {
-    final response = await http.post('${URLS.BASE_URL}/user/loginwithotp', body: body);
+class LoginwithOtpService {
+  static Future<bool> LoginWithOtp(body) async {
 
-    final data = response.body;
+     Map<String, String> requestHeaders = {
+       'Content-Type': 'application/json'
+     };
 
-    Map<String, dynamic> user = jsonDecode(data);
-    log(user['loginstatus']);
 
-    if (user['loginstatus'] == 'newuser') {
+    final response =
+        await http.post('${URLS.BASE_URL}/user/loginwithotp', body: jsonEncode(body) , headers: requestHeaders);
+
+    var data = response.body;
+    print(body);
+    print(json.decode(data));
+
+    Map<String, dynamic> res_data = jsonDecode(data);
+    log(res_data['loginstatus']);
+    if (res_data['loginstatus'] == 'olduser') {
       return true;
     } else {
       return false;
     }
+    // return false;
   }
 }

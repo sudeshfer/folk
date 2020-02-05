@@ -1,9 +1,11 @@
 import 'dart:developer';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:folk/Controllers/OTP.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
+import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 import 'package:folk/Utils/Login_utils/pin_code_fields.dart';
 
 FlutterOtp otp = FlutterOtp();
@@ -18,6 +20,7 @@ class PincodeVerify extends StatefulWidget {
   final fbEmail;
   final fbPicUrl;
   final loginType;
+  final loginStatus;
   // PincodeVerify({Key key}) : super(key: key);
   PincodeVerify(
       {this.phone,
@@ -26,7 +29,8 @@ class PincodeVerify extends StatefulWidget {
       this.fbName,
       this.fbEmail,
       this.fbPicUrl,
-      this.loginType});
+      this.loginType,
+      this.loginStatus});
   @override
   _PincodeVerifyState createState() => _PincodeVerifyState();
 }
@@ -48,6 +52,15 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     //     widget.phone);
     super.initState();
   }
+
+  // navigateToHome() {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => SettingUpScreen(),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,13 +88,16 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                     onPressed: () {
                       log('Clikced on back btn');
                       Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     },
                   ),
                 ),
                 alignment: Alignment.centerLeft,
               ),
               SizedBox(height: 12),
-              FadeAnimation(0.8, Padding(
+              FadeAnimation(
+                0.8,
+                Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
                     'Enter the code',
@@ -93,7 +109,9 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   ),
                 ),
               ),
-              FadeAnimation(0.9, Padding(
+              FadeAnimation(
+                0.9,
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: RichText(
@@ -115,9 +133,11 @@ class _PincodeVerifyState extends State<PincodeVerify> {
               SizedBox(
                 height: 30,
               ),
-              FadeAnimation(1, Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
+              FadeAnimation(
+                1,
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 7.0, horizontal: 25),
                     child: PinCodeTextField(
                       length: 4,
                       obsecureText: false,
@@ -135,6 +155,43 @@ class _PincodeVerifyState extends State<PincodeVerify> {
               ),
               InkWell(
                 onTap: () {
+                  if (widget.newotp == enteredOtp) {
+                        final login_type = widget.loginType;
+                        final login_status = widget.loginStatus;
+
+                        if (login_type == "otp" && login_status == "otpolduser") 
+                        {
+                          log("otp old user // has otp login // should go to home");
+                          navigateToVerifyingScreen();
+
+                        } 
+                        else if (login_type == "otp" && login_status == "otpnewuser") {
+                          log("otp new user // no otp login // should go to stepOne ");
+                          navigateToStepOne();
+
+                        } 
+                        else if (login_type == "fb" && login_status == "fbnewuserOtpOld") {
+                          log("fb new user // has otp login // should go to home ");
+                          navigateToHome();
+
+                        } 
+                        else if (login_type == "fb" && login_status == "fbnewuserOtpNew") {
+                          log("fb new user // no otp login // should go to stepOne ");
+                          navigateToStepOne();
+                        } 
+                        else
+                        {
+                          log("somehting went wrong");
+                        }
+                  } 
+                  else 
+                  {
+                    showAlert(
+                      context: context,
+                      title: "Empty or Invalid OTP",
+                    );
+                    log("Invalid OTP");
+                  }
                   // final _phone = widget.phone;
                   //   final _fbId = widget.fbId;
                   //   final _fbName = widget.fbName;
@@ -149,29 +206,31 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   //             fbPicUrl: _fbPicUrl,
                   //             loginType: widget.loginType,
                   //           )));
-                  if (widget.newotp == enteredOtp) {
-                    final _phone = widget.phone;
-                    final _fbId = widget.fbId;
-                    final _fbName = widget.fbName;
-                    final _fbEmail = widget.fbEmail;
-                    final _fbPicUrl = widget.fbPicUrl;
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SetupStepOne(
-                              phone: _phone,
-                              fbId: _fbId,
-                              fbName: _fbName,
-                              fbEmail: _fbEmail,
-                              fbPicUrl: _fbPicUrl,
-                            )));
-                  } else {
-                    showAlert(
-                      context: context,
-                      title: "Empty or Invalid OTP",
-                    );
-                    log("Invalid OTP");
-                  }
+                  // if (widget.newotp == enteredOtp) {
+                  //   final _phone = widget.phone;
+                  //   final _fbId = widget.fbId;
+                  //   final _fbName = widget.fbName;
+                  //   final _fbEmail = widget.fbEmail;
+                  //   final _fbPicUrl = widget.fbPicUrl;
+                  //   Navigator.of(context).push(MaterialPageRoute(
+                  //       builder: (context) => SetupStepOne(
+                  //             phone: _phone,
+                  //             fbId: _fbId,
+                  //             fbName: _fbName,
+                  //             fbEmail: _fbEmail,
+                  //             fbPicUrl: _fbPicUrl,
+                  //           )));
+                  // } else {
+                  //   showAlert(
+                  //     context: context,
+                  //     title: "Empty or Invalid OTP",
+                  //   );
+                  //   log("Invalid OTP");
+                  // }
                 },
-                child: FadeAnimation(1.2, Container(
+                child: FadeAnimation(
+                  1.2,
+                  Container(
                     padding: EdgeInsets.only(top: 32),
                     child: Center(
                       child: Container(
@@ -181,7 +240,8 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                             gradient: LinearGradient(
                               colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
                             'Continue'.toUpperCase(),
@@ -203,23 +263,29 @@ class _PincodeVerifyState extends State<PincodeVerify> {
               Container(
                 padding: EdgeInsets.only(top: 30),
               ),
-              FadeAnimation(1.4, InkWell(
+              FadeAnimation(
+                1.4,
+                InkWell(
                   onTap: () {
                     log('Clikced on back btn');
-                        Navigator.of(context).pop();
+                    Navigator.of(context).pop();
                   },
                   child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
                         text: "I didn't get a code",
-                        style:
-                            TextStyle(color: Color(0xFFf45d27), 
+                        style: TextStyle(
+                            color: Color(0xFFf45d27),
                             fontSize: 17.5,
                             fontFamily: 'Montserrat'),
                         children: [
                           TextSpan(
-                              text: " \n Tap Continue to accept Facebook's Terms",
-                              style: TextStyle(color: Colors.grey, fontSize: 14,fontFamily: 'Montserrat'))
+                              text:
+                                  " \n Tap Continue to accept Facebook's Terms",
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontFamily: 'Montserrat'))
                         ]),
                   ),
                 ),
@@ -230,6 +296,75 @@ class _PincodeVerifyState extends State<PincodeVerify> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Future<bool> navigateToHome() {
+    return showDialog(
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('You already have an account with this number !'),
+        content: Column(
+          children: <Widget>[
+            Text("click ok to veify & sign in !"),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            color: Colors.orange,
+            onPressed: () {
+              navigateToVerifyingScreen();
+            },
+            child: Text('OK',
+                style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold
+                        ),
+            ),
+          )
+        ],
+      ),
+      context: context,
+    );
+  }
+
+  navigateToVerifyingScreen() {
+    final _phone = widget.phone;
+    final _fbId = widget.fbId;
+    final _fbName = widget.fbName;
+    final _fbEmail = widget.fbEmail;
+    final _fbPicUrl = widget.fbPicUrl;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VerifyingScreen(
+          phone: _phone,
+          fbId: _fbId,
+          fbName: _fbName,
+          fbEmail: _fbEmail,
+          fbPicUrl: _fbPicUrl,
+        ),
+      ),
+    );
+  }
+
+   navigateToStepOne() {
+     final _phone = widget.phone;
+    final _fbId = widget.fbId;
+    final _fbName = widget.fbName;
+    final _fbEmail = widget.fbEmail;
+    final _fbPicUrl = widget.fbPicUrl;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SetupStepOne(phone: _phone,
+          fbId: _fbId,
+          fbName: _fbName,
+          fbEmail: _fbEmail,
+          fbPicUrl: _fbPicUrl,
+          loginType: widget.loginType),
       ),
     );
   }
