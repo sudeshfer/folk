@@ -306,7 +306,7 @@ class _LoginPageState extends State<LoginPage> {
               //Fb login old user
               //  Navigator.of(context).pushNamed("/home");
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => SettingUpScreen(
+                builder: (context) => VerifyingScreen(
                     fbId: _fbId,
                     fbName: _fbName,
                     fbEmail: _fbEmail,
