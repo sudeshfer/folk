@@ -39,6 +39,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
   _openGallery(BuildContext context) async{
 
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if(picture != null){
     File croppedFile = await ImageCropper.cropImage(
     sourcePath: picture.path,
     aspectRatioPresets: Platform.isAndroid
@@ -76,10 +77,15 @@ class _SetupStepOneState extends State<SetupStepOne> {
     Navigator.of(context).pop();
     _showImg();
   }
+    else{
+      _showImg();
+    }
+  }
 //asynce function to pick an image from camera
   _openCamera(BuildContext context) async{
 
     var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+    if(picture != null){
     File croppedFile = await ImageCropper.cropImage(
     sourcePath: picture.path,
     aspectRatioPresets: Platform.isAndroid
@@ -114,6 +120,10 @@ class _SetupStepOneState extends State<SetupStepOne> {
     });
     Navigator.of(context).pop();
     _showImg();
+     }
+    else{
+      _showImg();
+    }
   }
 
   Future<void> _showChoiceDialog(BuildContext context) {

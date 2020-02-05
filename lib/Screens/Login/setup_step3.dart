@@ -13,7 +13,11 @@ class SetupStepThree extends StatefulWidget {
   final fbEmail;
   final fbPicUrl;
   // PincodeVerify({Key key}) : super(key: key);
-  SetupStepThree({this.bday, this.gender, this.email,this.phone,
+  SetupStepThree(
+      {this.bday,
+      this.gender,
+      this.email,
+      this.phone,
       this.fbId,
       this.fbName,
       this.fbEmail,
@@ -35,7 +39,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top:45.0, left: 15),
+                  padding: EdgeInsets.only(top: 45.0, left: 15),
                   child: IconButton(
                     icon: Icon(Icons.arrow_back),
                     iconSize: 38,
@@ -45,7 +49,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     },
                   ),
                 ),
-                FadeAnimation(0.8, Container(
+                FadeAnimation(
+                  0.8,
+                  Container(
                     margin: EdgeInsets.only(top: 20, left: 30),
                     child: Text(
                       "Choose Interests",
@@ -59,7 +65,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(0.9, Padding(
+                FadeAnimation(
+                  0.9,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 30.0, right: 30.0, top: 18),
                     child: Row(
@@ -93,7 +101,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1, Padding(
+                FadeAnimation(
+                  1,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 25.0, right: 25.0, top: 16),
                     child: Row(
@@ -111,30 +121,40 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) {
-                                      return new Container(
-                                        margin: EdgeInsets.only(right: 7),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width /
-                                            5.2,
-                                        decoration: BoxDecoration(
-                                            color: Color(0xFFFFEBE7),
-                                            border: Border.all(color: Color(0xFFE0E0E0)),
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(50.0),
-                                                topRight: Radius.circular(50.0),
-                                                bottomRight:
-                                                    Radius.circular(50.0),
-                                                bottomLeft:
-                                                    Radius.circular(0.0))),
-                                        child: Center(
-                                          child: Text(
-                                            "${datalist[index]['iname']}",
-                                            style: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                color: Color(0xFFFF5E3A),
-                                                fontSize: 13),
+                                      return Wrap(
+                                        direction: Axis.vertical,
+                                        children: <Widget>[
+                                          new Container(
+                                            margin: EdgeInsets.only(right: 7),
+                                            height: 20,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                5.2,
+                                            decoration: BoxDecoration(
+                                                color: Color(0xFFFFEBE7),
+                                                border: Border.all(
+                                                    color: Color(0xFFE0E0E0)),
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(50.0),
+                                                    topRight:
+                                                        Radius.circular(50.0),
+                                                    bottomRight:
+                                                        Radius.circular(50.0),
+                                                    bottomLeft:
+                                                        Radius.circular(0.0))),
+                                            child: Center(
+                                              child: Text(
+                                                "${datalist[index]['iname']}",
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    color: Color(0xFFFF5E3A),
+                                                    fontSize: 13),
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       );
                                     },
                                     itemCount: datalist.length,
@@ -154,7 +174,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1.1, Padding(
+                FadeAnimation(
+                  1.1,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
                     child: Row(
@@ -188,7 +210,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1.1, Padding(
+                FadeAnimation(
+                  1.1,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 25.0, right: 25.0, top: 20),
                     child: Row(
@@ -288,7 +312,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1.1, Padding(
+                FadeAnimation(
+                  1.1,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 25.0, right: 25.0, top: 10),
                     child: Row(
@@ -388,7 +414,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1.2, Padding(
+                FadeAnimation(
+                  1.2,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
                     child: Row(
@@ -422,7 +450,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1.2, Padding(
+                FadeAnimation(
+                  1.2,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 25.0, right: 25.0, top: 20),
                     child: Row(
@@ -522,7 +552,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1.3, Padding(
+                FadeAnimation(
+                  1.3,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 30.0, right: 30.0, top: 30),
                     child: Row(
@@ -556,7 +588,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1.3, Padding(
+                FadeAnimation(
+                  1.3,
+                  Padding(
                     padding:
                         const EdgeInsets.only(left: 25.0, right: 25.0, top: 20),
                     child: Row(
@@ -656,13 +690,15 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(1.4, InkWell(
-                    onTap: (){
+                FadeAnimation(
+                  1.4,
+                  InkWell(
+                    onTap: () {
                       log('Clikced on trouble with login');
                       Navigator.of(context).pushNamed("/location");
                     },
                     child: Container(
-                      padding: EdgeInsets.only(top: 35,bottom:25),
+                      padding: EdgeInsets.only(top: 35, bottom: 25),
                       child: Center(
                         child: Container(
                           height: 51,

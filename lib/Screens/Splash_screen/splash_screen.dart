@@ -37,6 +37,19 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Image.asset('assets/images/logo.png',width: 280,height: 280,),
         ),
       ),
+
+      // body: Center(
+      //   child: Container(
+      //     height: 300,
+      //     width: 300,
+      //     decoration: BoxDecoration(
+      //       image:DecorationImage(
+      //         image:AssetImage('assets/images/sent.gif'),
+      //         fit: BoxFit.cover
+      //       )
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
