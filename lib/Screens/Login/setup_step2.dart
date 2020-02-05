@@ -4,6 +4,7 @@ import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class SetupStepTwo extends StatefulWidget {
   final phone;
@@ -81,7 +82,9 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                   },
                 ),
               ),
-              FadeAnimation(0.8, Container(
+              FadeAnimation(
+                0.8,
+                Container(
                   margin: EdgeInsets.only(top: 25, left: 30),
                   child: Text(
                     "Introduce Yourself",
@@ -95,7 +98,9 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                   ),
                 ),
               ),
-              FadeAnimation(0.9, Container(
+              FadeAnimation(
+                0.9,
+                Container(
                   margin: EdgeInsets.only(top: 30, left: 30),
                   child: Text(
                     "Gender",
@@ -108,7 +113,9 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                   ),
                 ),
               ),
-              FadeAnimation(1, Container(
+              FadeAnimation(
+                1,
+                Container(
                   margin: EdgeInsets.only(top: 25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -205,7 +212,9 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                   ),
                 ),
               ),
-              FadeAnimation(1.1, Padding(
+              FadeAnimation(
+                1.1,
+                Padding(
                   padding: const EdgeInsets.only(
                       left: 25.0, right: 25.0, bottom: 10, top: 30),
                   child: Container(
@@ -246,13 +255,16 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                                 }, onConfirm: (date) {
                                   final bday = "$date";
 
+                                  var formatter = new DateFormat('yyyy-MM-dd');
+                                  var selecteddate = formatter.format(date);
+
                                   setState(() {
-                                    _birthday.text = bday;
+                                    _birthday.text = selecteddate;
                                     //eaqual the bday value to text editing controller
                                   });
 
                                   //print the bday
-                                  print('confirm ' + bday);
+                                  print('confirm ' + selecteddate.toString());
                                 }, locale: LocaleType.en);
                               },
                             ),
@@ -263,14 +275,16 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                   ),
                 ),
               ),
-              FadeAnimation(1.1, Column(
+              FadeAnimation(
+                1.1,
+                Column(
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 7.0, horizontal: 25),
                       child: TextField(
                         controller: _email,
-                        enabled: widget.loginType =="fb"? false :true,
+                        enabled: widget.loginType == "fb" ? false : true,
                         decoration: InputDecoration(
                             border: new OutlineInputBorder(
                                 borderSide:
@@ -279,8 +293,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                             errorText: _errorTxt,
                             errorBorder: _errorTxt.isEmpty
                                 ? OutlineInputBorder(
-                                    borderSide:
-                                        new BorderSide(color: Color(0xFFE0E0E0)))
+                                    borderSide: new BorderSide(
+                                        color: Color(0xFFE0E0E0)))
                                 : null,
                             focusedBorder: OutlineInputBorder(
                                 borderSide:
@@ -290,10 +304,12 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                   ],
                 ),
               ),
-              FadeAnimation(1.2, Center(
+              FadeAnimation(
+                1.2,
+                Center(
                   child: Container(
-                    margin:
-                        EdgeInsets.only(top: 25, left: 26, right: 26, bottom: 25),
+                    margin: EdgeInsets.only(
+                        top: 25, left: 26, right: 26, bottom: 25),
                     child: InkWell(
                       onTap: () {
                         if (checkNull()) {
@@ -314,11 +330,15 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                           //passing data to next screens
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => SetupStepThree(
-                                  bday: bday, gender: gender, email: email,phone: _phone,
-                                fbId: _fbId,
-                                fbName: _fbName,
-                                fbEmail: _fbEmail,
-                                fbPicUrl: _fbPicUrl,)));
+                                    bday: bday,
+                                    gender: gender,
+                                    email: email,
+                                    phone: _phone,
+                                    fbId: _fbId,
+                                    fbName: _fbName,
+                                    fbEmail: _fbEmail,
+                                    fbPicUrl: _fbPicUrl,
+                                  )));
 
                           // Navigator.of(context).pushNamed("/pincode");
                         } else {
@@ -334,7 +354,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                             gradient: LinearGradient(
                               colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
                             'Next'.toUpperCase(),

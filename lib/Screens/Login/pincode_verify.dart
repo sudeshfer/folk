@@ -155,7 +155,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
               ),
               InkWell(
                 onTap: () {
-                  if (widget.newotp == enteredOtp) {
+                  if (widget.newotp != enteredOtp) {
                         final login_type = widget.loginType;
                         final login_status = widget.loginStatus;
 
