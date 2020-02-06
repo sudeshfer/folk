@@ -42,6 +42,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
     // String _gender = "female";
     _initiateEmailController();
 
+    _birthday.text = "";
+
     super.initState();
   }
 
@@ -64,7 +66,10 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
       resizeToAvoidBottomInset: true,
       body: InkWell(
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode()); //
+          FocusScope.of(context).requestFocus(FocusNode());
+          setState(() {
+            _errorTxt = "";
+          }); //
         },
         child: SingleChildScrollView(
           child: Container(
@@ -217,63 +222,45 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 25.0, right: 25.0, bottom: 10, top: 30),
-                  child: Container(
-                    height: 64,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFFE0E0E0))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left:10.0),
-                          child: Container(
-                            height: 54,
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            // margin: EdgeInsets.only(top: 15),
-                            child: TextField(
-                              controller: _birthday,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                labelText: 'Your Birthday',
+                  child: InkWell(
+                    onTap: () {
+                      showDatePicker();
+                    },
+                    child: Container(
+                      height: 64,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFE0E0E0))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Container(
+                              height: 54,
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              // margin: EdgeInsets.only(top: 15),
+                              child: TextField(
+                                controller: _birthday,
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  labelText: 'Your Birthday',
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          // margin: const EdgeInsets.only( top: 10),
-                          child: Container(
-                            child: IconButton(
-                              icon: Icon(FontAwesomeIcons.solidCalendarAlt),
-                              iconSize: 30,
-                              color: Color(0XFFFF5E3A),
-                              onPressed: () {
-                                DatePicker.showDatePicker(context,
-                                    showTitleActions: true,
-                                    minTime: DateTime(1980, 12, 31),
-                                    maxTime: DateTime(2020, 12, 31),
-                                    onChanged: (date) {
-                                  //print the date
-                                  print('change $date');
-                                }, onConfirm: (date) {
-                                  final bday = "$date";
-
-                                  var formatter = new DateFormat('yyyy-MM-dd');
-                                  var selecteddate = formatter.format(date);
-
-                                  setState(() {
-                                    _birthday.text = selecteddate;
-                                    //eaqual the bday value to text editing controller
-                                  });
-
-                                  //print the bday
-                                  print('confirm ' + selecteddate.toString());
-                                }, locale: LocaleType.en);
-                              },
+                          Container(
+                            // margin: const EdgeInsets.only( top: 10),
+                            child: Container(
+                              child: Icon(
+                                FontAwesomeIcons.solidCalendarAlt,
+                                size: 30,
+                                color: Color(0XFFFF5E3A),
+                              ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -320,28 +307,10 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                             _errorTxt = "";
                           });
 
-                          String bday = _birthday.text;
-                          String gender = _gender;
-                          String email = _email.text;
-                          final _phone = widget.phone;
-                          final _fbId = widget.fbId;
-                          final _fbName = widget.fbName;
-                          final _fbEmail = widget.fbEmail;
-                          final _fbPicUrl = widget.fbPicUrl;
-
-                          print(bday + gender + email);
-                          //passing data to next screens
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SetupStepThree(
-                                    bday: bday,
-                                    gender: gender,
-                                    email: email,
-                                    phone: _phone,
-                                    fbId: _fbId,
-                                    fbName: _fbName,
-                                    fbEmail: _fbEmail,
-                                    fbPicUrl: _fbPicUrl,
-                                  )));
+                          if (validateEmail()) {
+                            print(_birthday.text);
+                            navigateToStepThree();
+                          }
 
                           // Navigator.of(context).pushNamed("/pincode");
                         } else {
@@ -387,5 +356,68 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
     } else {
       return true;
     }
+  }
+
+  bool validateEmail() {
+    String email = _email.text;
+    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    if (emailValid) {
+      print("Valid email !");
+      log("Valid email !");
+      return true;
+    } else {
+      setState(() {
+        _errorTxt = "This is not a valid email !";
+      });
+      return false;
+    }
+  }
+
+  navigateToStepThree() {
+    String bday = _birthday.text;
+    String gender = _gender;
+    String email = _email.text;
+    final _phone = widget.phone;
+    final _fbId = widget.fbId;
+    final _fbName = widget.fbName;
+    final _fbEmail = widget.fbEmail;
+    final _fbPicUrl = widget.fbPicUrl;
+
+    print(bday + gender + email);
+    //passing data to next screens
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => SetupStepThree(
+              bday: bday,
+              gender: gender,
+              email: email,
+              phone: _phone,
+              fbId: _fbId,
+              fbName: _fbName,
+              fbEmail: _fbEmail,
+              fbPicUrl: _fbPicUrl,
+            )));
+  }
+
+  showDatePicker() {
+    DatePicker.showDatePicker(context,
+        showTitleActions: true,
+        minTime: DateTime(1980, 12, 31),
+        maxTime: DateTime(2020, 12, 31), onChanged: (date) {
+      //print the date
+      print('change $date');
+    }, onConfirm: (date) {
+      final bday = "$date";
+
+      var formatter = new DateFormat('yyyy-MM-dd');
+      var selecteddate = formatter.format(date);
+
+      setState(() {
+        _birthday.text = selecteddate;
+        //eaqual the bday value to text editing controller
+      });
+
+      //print the bday
+      print('confirm ' + selecteddate.toString());
+    }, locale: LocaleType.en);
   }
 }
