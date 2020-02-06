@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:folk/Screens/Login/setup_step2.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
@@ -21,7 +22,7 @@ class SetupStepOne extends StatefulWidget {
       this.fbName,
       this.fbEmail,
       this.fbPicUrl,
-       this.loginType})
+      this.loginType})
       : super(key: key);
 
   final String title;
@@ -36,92 +37,86 @@ class _SetupStepOneState extends State<SetupStepOne> {
   File imageFile;
 
   //asynce function to pick an image from gallery
-  _openGallery(BuildContext context) async{
-
+  _openGallery(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
-    if(picture != null){
-    File croppedFile = await ImageCropper.cropImage(
-    sourcePath: picture.path,
-    aspectRatioPresets: Platform.isAndroid
-    ?[
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio16x9
-    ]
-    :[
-      CropAspectRatioPreset.original,
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio5x3,
-              CropAspectRatioPreset.ratio5x4,
-              CropAspectRatioPreset.ratio7x5,
-              CropAspectRatioPreset.ratio16x9
-    ],
+    if (picture != null) {
+      File croppedFile = await ImageCropper.cropImage(
+        sourcePath: picture.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]
+            : [
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+                CropAspectRatioPreset.ratio16x9
+              ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Crop Your photo',
+            toolbarColor: Color(0xFFFF9006),
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+      );
 
-    androidUiSettings: AndroidUiSettings(
-         toolbarTitle: 'Crop Your photo',
-          toolbarColor: Color(0xFFFF9006),
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false),
-    );
-    
-    this.setState((){
-          //  imageFile = croppedFile;
-           imageFile = croppedFile;
-
-    });
-    Navigator.of(context).pop();
-    _showImg();
-  }
-    else{
+      this.setState(() {
+        //  imageFile = croppedFile;
+        imageFile = croppedFile;
+      });
+      Navigator.of(context).pop();
+      _showImg();
+    } else {
       _showImg();
     }
   }
+
 //asynce function to pick an image from camera
-  _openCamera(BuildContext context) async{
-
+  _openCamera(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.camera);
-    if(picture != null){
-    File croppedFile = await ImageCropper.cropImage(
-    sourcePath: picture.path,
-    aspectRatioPresets: Platform.isAndroid
-    ?[
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.original,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio16x9
-    ]
-    :[
-      CropAspectRatioPreset.original,
-              CropAspectRatioPreset.square,
-              CropAspectRatioPreset.ratio3x2,
-              CropAspectRatioPreset.ratio4x3,
-              CropAspectRatioPreset.ratio5x3,
-              CropAspectRatioPreset.ratio5x4,
-              CropAspectRatioPreset.ratio7x5,
-              CropAspectRatioPreset.ratio16x9
-    ],
+    if (picture != null) {
+      File croppedFile = await ImageCropper.cropImage(
+        sourcePath: picture.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio16x9
+              ]
+            : [
+                CropAspectRatioPreset.original,
+                CropAspectRatioPreset.square,
+                CropAspectRatioPreset.ratio3x2,
+                CropAspectRatioPreset.ratio4x3,
+                CropAspectRatioPreset.ratio5x3,
+                CropAspectRatioPreset.ratio5x4,
+                CropAspectRatioPreset.ratio7x5,
+                CropAspectRatioPreset.ratio16x9
+              ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Crop Yor Photo',
+            toolbarColor: Color(0xFFFF9006),
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+      );
 
-    androidUiSettings: AndroidUiSettings(
-         toolbarTitle: 'Crop Yor Photo',
-          toolbarColor: Color(0xFFFF9006),
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false),
-    );
-
-    this.setState((){
-           imageFile = croppedFile;
-    });
-    Navigator.of(context).pop();
-    _showImg();
-     }
-    else{
+      this.setState(() {
+        imageFile = croppedFile;
+      });
+      Navigator.of(context).pop();
+      _showImg();
+    } else {
       _showImg();
     }
   }
@@ -148,7 +143,6 @@ class _SetupStepOneState extends State<SetupStepOne> {
                       GestureDetector(
                           onTap: () {
                             _openGallery(context);
-                            
                           },
                           child: Image.asset('assets/images/art.png')),
                       Padding(
@@ -180,6 +174,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
           );
         });
   }
+
 //function to show image
   _showImg() {
     final imguUrl = widget.fbPicUrl;
@@ -191,14 +186,12 @@ class _SetupStepOneState extends State<SetupStepOne> {
           width: 220.0, height: 220.0, fit: BoxFit.cover);
     }
     if ((imguUrl != null) && (imageFile == null)) {
-
       return Image.network(imguUrl,
-      width: 220.0, height: 220.0,fit: BoxFit.fill);
+          width: 220.0, height: 220.0, fit: BoxFit.fill);
       // return Image.asset('assets/images/btn_upload_cover.png',
       //     width: 220.0, height: 220.0, fit: BoxFit.cover);
     }
-   if ((imguUrl == null) && (imageFile != null)) 
-    {
+    if ((imguUrl == null) && (imageFile != null)) {
       return Image.file(
         imageFile,
         width: 220,
@@ -207,16 +200,16 @@ class _SetupStepOneState extends State<SetupStepOne> {
       );
     }
   }
+
 //function tht determines the name controller
-  _initiateNameController(){
-    if(widget.fbName == null){
+  _initiateNameController() {
+    if (widget.fbName == null) {
       setState(() {
-        _name.text =null;
+        _name.text = null;
       });
       print("name controller is empty");
-    }
-    else{
-      _name.text= widget.fbName;
+    } else {
+      _name.text = widget.fbName;
       print(_name.text);
     }
   }
@@ -252,6 +245,9 @@ class _SetupStepOneState extends State<SetupStepOne> {
       body: InkWell(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
+          setState(() {
+            _errorName = "";
+          });
         },
         child: SingleChildScrollView(
           child: Container(
@@ -269,7 +265,9 @@ class _SetupStepOneState extends State<SetupStepOne> {
                   },
                 ),
               ),
-              FadeAnimation(0.8, Container(
+              FadeAnimation(
+                0.8,
+                Container(
                   margin: EdgeInsets.only(top: 30, left: 30),
                   child: Text(
                     "Introduce Yourself",
@@ -288,7 +286,9 @@ class _SetupStepOneState extends State<SetupStepOne> {
                   log("image upload btn clicked");
                   _showChoiceDialog(context);
                 },
-                child: FadeAnimation(1, Center(
+                child: FadeAnimation(
+                  1,
+                  Center(
                     child: Container(
                       margin: EdgeInsets.only(top: 40),
                       child:
@@ -297,30 +297,37 @@ class _SetupStepOneState extends State<SetupStepOne> {
                   ),
                 ),
               ),
-              FadeAnimation(1.2, Container(
+              FadeAnimation(
+                1.2,
+                Container(
                   // width: MediaQuery.of(context).size.width / 1.5,
                   margin: EdgeInsets.only(top: 40, left: 28, right: 28),
                   child: TextField(
                     controller: _name,
-                    enabled: widget.loginType =="fb"? false :true,
+                    enabled: widget.loginType == "fb" ? false : true,
                     decoration: InputDecoration(
                         border: new OutlineInputBorder(
-                            borderSide: new BorderSide(color: Color(0xFFF5F5F5))),
+                            borderSide:
+                                new BorderSide(color: Color(0xFFF5F5F5))),
                         labelText: 'Name',
                         errorText: _errorName,
                         errorBorder: _errorName.isEmpty
                             ? OutlineInputBorder(
-                                borderSide: new BorderSide(color: Color(0xFFE0E0E0)))
-                            : null, 
+                                borderSide:
+                                    new BorderSide(color: Color(0xFFE0E0E0)))
+                            : null,
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orangeAccent))),
+                            borderSide:
+                                BorderSide(color: Colors.orangeAccent))),
                   ),
                 ),
               ),
-              FadeAnimation(1.4, Center(
+              FadeAnimation(
+                1.4,
+                Center(
                   child: Container(
-                    margin:
-                        EdgeInsets.only(top: 20, left: 26, right: 26, bottom: 15),
+                    margin: EdgeInsets.only(
+                        top: 20, left: 26, right: 26, bottom: 15),
                     child: InkWell(
                       onTap: () {
                         if (checkNull()) {
@@ -328,21 +335,17 @@ class _SetupStepOneState extends State<SetupStepOne> {
                             _errorName = "";
                           });
 
-                      final _phone = widget.phone;
-                      final _fbId = widget.fbId;
-                      final _fbName = widget.fbName;
-                      final _fbEmail = widget.fbEmail;
-                      final _fbPicUrl = widget.fbPicUrl;
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SetupStepTwo(
-                                phone: _phone,
-                                fbId: _fbId,
-                                fbName: _fbName,
-                                fbEmail: _fbEmail,
-                                fbPicUrl: _fbPicUrl,
-                                loginType: widget.loginType,
+                          if (validateName()) {
+                            if (imageFile == null &&
+                                widget.loginType == "otp") {
+                              imageValidationDialog();
+                            } else {
+                              navigateToStepTwo();
+                            }
+                          }
 
-                              )));
+                          // navigateToStepTwo();
+
                         } else {
                           setState(() {
                             _errorName = "You should fill out this field !";
@@ -356,7 +359,8 @@ class _SetupStepOneState extends State<SetupStepOne> {
                             gradient: LinearGradient(
                               colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
                             'Next'.toUpperCase(),
@@ -383,6 +387,60 @@ class _SetupStepOneState extends State<SetupStepOne> {
       return false;
     } else {
       return true;
+    }
+  }
+
+  navigateToStepTwo() {
+    final _phone = widget.phone;
+    final _fbId = widget.fbId;
+    final _fbName = widget.fbName;
+    final _fbEmail = widget.fbEmail;
+    final _fbPicUrl = widget.fbPicUrl;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => SetupStepTwo(
+              phone: _phone,
+              fbId: _fbId,
+              fbName: _fbName,
+              fbEmail: _fbEmail,
+              fbPicUrl: _fbPicUrl,
+              loginType: widget.loginType,
+            )));
+  }
+
+  Future<bool> imageValidationDialog() {
+    return showDialog(
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('You must Pick an image !'),
+        actions: <Widget>[
+          FlatButton(
+            color: Colors.orange,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
+      context: context,
+    );
+  }
+
+  bool validateName() {
+    if (_name.text.length >= 6) {
+      print("valid Name");
+      return true;
+    } else {
+      setState(() {
+        _errorName = "This should long 6 characters or higher!";
+      });
+      return false;
     }
   }
 }
