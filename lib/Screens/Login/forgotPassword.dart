@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:folk/Screens/Login/resetPassword.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Controllers/ApiServices/SendResetMailService.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key key}) : super(key: key);
@@ -15,6 +16,8 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _email = TextEditingController();
   String _errorTxt = '';
+  bool isLoaidng = false;
+  ProgressDialog pr;
 
   @override
   void initState() {
@@ -26,11 +29,31 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+    // pr.style(message: 'Sending Email..');
+
+    pr.style(
+        message: 'Sending Email...',
+        borderRadius: 10.0,
+        progressWidget: Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/emailSend.gif'),
+                    fit: BoxFit.cover))),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(fontFamily: 'Montserrat'));
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
+          setState(() {
+            _errorTxt = "";
+          });
         },
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -124,7 +147,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         if (checkNull()) {
                           setState(() {
                             _errorTxt = "";
+                            isLoaidng = true;
                           });
+                          
+                         if(validateEmail()){
+                           pr.show();
 
                           final body = {"email": _email.text};
 
@@ -132,21 +159,25 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               .then((success) {
                             if (success) {
                               log('email sent successfully');
+                              pr.hide();
 
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ResetPassword(
                                         resetEmail: _email.text,
                                       )));
+                              
                             }
-                            else{
-                              log('email not sent! check the mail u entered again !');
+                            else
+                            {
+                              pr.hide();
+                               _errorTxt = "This Email doesnt blongs to an account !";
                             }
                           });
-
-                          log('Clikced on send req btn');
-                          // Navigator.of(context).pushNamed("/resetpw");
+                         }
+                          
 
                         } else {
+                          pr.hide();
                           setState(() {
                             _errorTxt = "You should fill out this field !";
                           });
@@ -191,6 +222,24 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       return false;
     } else {
       return true;
+    }
+  }
+
+///function tht validate the email
+   bool validateEmail(){
+    String email= _email.text;
+    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    if(emailValid){
+
+      print("Valid email !");
+      log("Valid email !");
+      return true;
+    }
+    else{
+        setState(() {
+          _errorTxt= "This is not a valid email !";
+        });
+       return false; 
     }
   }
 }

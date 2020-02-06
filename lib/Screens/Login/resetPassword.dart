@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:folk/Controllers/ApiServices/VerifyEmailService.dart';
+import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class ResetPassword extends StatefulWidget {
   final resetEmail;
@@ -16,6 +18,7 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   final _resetCode = TextEditingController();
   String _errorTxt = '';
+  ProgressDialog prd;
 
   @override
   void initState() {
@@ -28,11 +31,31 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
+    prd = new ProgressDialog(context, type: ProgressDialogType.Normal);
+    // pr.style(message: 'Sending Email..');
+
+    prd.style(
+        message: 'Verifying Your Account...',
+        borderRadius: 10.0,
+        progressWidget: Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/loading2.gif'),
+                    fit: BoxFit.cover))),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(fontFamily: 'Montserrat',fontSize: 4));
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
+          setState(() {
+            _errorTxt = "";
+          });
         },
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -97,6 +120,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                       const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
                   child: TextField(
                     controller: _resetCode,
+                    maxLength: 6,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         border: new OutlineInputBorder(
                             borderSide:
@@ -128,27 +153,31 @@ class _ResetPasswordState extends State<ResetPassword> {
                             _errorTxt = "";
                           });
 
+                          prd.show();
+                          log('clicked on reset btn');
+
                           final body = {
                             "email": widget.resetEmail,
                             "code": _resetCode.text
                           };
 
-                          VerifyEmailService.VerifyEmail(body).then((success){
-                              if(success) {
-                                log('account verified');
-                                
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => VerifyingScreen()));
+                          VerifyEmailService.VerifyEmail(body).then((success) {
+                            if (success) {
+                              log('account verified');
 
-                              }
-                              else
-                              {
-                                log('invalid code !');
-                              }
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Homepage()));
+                            } else {
+                              prd.hide();
+                              setState(() {
+                                _errorTxt = "Invalid Code! Check Again";
+                              });
+                            }
                           });
 
                           // Navigator.of(context).pushNamed("/resetpw");
                         } else {
+                          prd.hide();
                           setState(() {
                             _errorTxt = "You should fill out this field !";
                           });
@@ -195,4 +224,6 @@ class _ResetPasswordState extends State<ResetPassword> {
       return true;
     }
   }
+
+  
 }
