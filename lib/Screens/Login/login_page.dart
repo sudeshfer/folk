@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: InkWell(
                         onTap: () {
                           log('Clikced on Login with 4n btn');
-                          CircularProgressIndicator();
+                          // CircularProgressIndicator();
                           setState(() {
                             login_Type = "otp";
                           });

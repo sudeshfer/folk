@@ -224,16 +224,19 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Container(
-                          height: 54,
-                          width: MediaQuery.of(context).size.width / 1.5,
-                          // margin: EdgeInsets.only(top: 15),
-                          child: TextField(
-                            controller: _birthday,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: 'Your Birthday',
+                        Padding(
+                          padding: const EdgeInsets.only(left:10.0),
+                          child: Container(
+                            height: 54,
+                            width: MediaQuery.of(context).size.width / 1.5,
+                            // margin: EdgeInsets.only(top: 15),
+                            child: TextField(
+                              controller: _birthday,
+                              enabled: false,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: 'Your Birthday',
+                              ),
                             ),
                           ),
                         ),

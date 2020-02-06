@@ -126,7 +126,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                         children: <Widget>[
                                           new Container(
                                             margin: EdgeInsets.only(right: 7),
-                                            height: 20,
+                                            height: 30,
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width /
