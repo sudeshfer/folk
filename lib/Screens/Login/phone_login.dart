@@ -75,6 +75,9 @@ class _PhoneLoginState extends State<PhoneLogin> {
       body: InkWell(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
+          setState(() {
+            _errorTxt = "";
+          });
         },
         child: SingleChildScrollView(
           child: Container(
@@ -205,8 +208,9 @@ class _PhoneLoginState extends State<PhoneLogin> {
                               _errorTxt = "";
                               isClicked = true;
                             });
-
-                           phoneNum =  _countrycode + _phoneNo.text;
+                           if(validatePhone())
+                           {
+                             phoneNum =  _countrycode + _phoneNo.text;
                             print(phoneNum);
 
                             final body = {"phone": phoneNum};
@@ -226,13 +230,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                     print('login status - ' + _loginStatus);
                                     //otp login old user
                                     navigateToVerifyingScreen();
-                                    // Navigator.of(context).push(
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => SentScreen(
-                                    //             loginStatus: _loginStatus,
-                                    //             phone: phoneNum,
-                                    //             newotp: code,
-                                    //             loginType: _loginType)));
+
                                   } else {
                                     setState(() {
                                       _loginStatus = "otpnewuser";
@@ -267,25 +265,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
 
                                   navigateToVerifyingScreen();
 
-                                  // otp.sendOtp(phoneNum);
-                                  // int code = otp.get_otp();
-
-                                  // final _fbId = widget.fbId;
-                                  // final _fbName = widget.fbName;
-                                  // final _fbEmail = widget.fbEmail;
-                                  // final _fbPicUrl = widget.fbPicUrl;
-                                  // final _loginType = widget.loginType;
-
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => SentScreen(
-                                  //         fbId: _fbId,
-                                  //         fbName: _fbName,
-                                  //         fbEmail: _fbEmail,
-                                  //         fbPicUrl: _fbPicUrl,
-                                  //         // phone: phoneNum,
-                                  //         // newotp: code,
-                                  //         loginType: _loginType,
-                                  //         loginStatus: _loginStatus)));
                                 } else {
                                   
 
@@ -317,9 +296,13 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                 }
                               });
                             }
+                           }
+
+                           
 
                             // Navigator.of(context).pushNamed("/pincode");
-                          } else {
+                          } 
+                          else {
                             setState(() {
                               _errorTxt = "You should fill out this field !";
                             });
@@ -365,6 +348,20 @@ class _PhoneLoginState extends State<PhoneLogin> {
     } else {
       return true;
     }
+  }
+
+  bool validatePhone(){
+    if(_phoneNo.text.length >= 9){
+      print("valid 4n number");
+      return true;
+    }
+    else{
+      setState(() {
+        _errorTxt = "This should long 9 digits or higher!";
+      });
+      return false;
+    }
+    
   }
 
   // Future<bool> navigateToLogin() {
