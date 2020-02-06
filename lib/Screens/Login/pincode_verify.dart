@@ -161,7 +161,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                 ),
                 InkWell(
                   onTap: () {
-                    if (widget.newotp != enteredOtp) {
+                    if (widget.newotp == enteredOtp) {
                           final login_type = widget.loginType;
                           final login_status = widget.loginStatus;
 
@@ -198,41 +198,6 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                       );
                       log("Invalid OTP");
                     }
-                    // final _phone = widget.phone;
-                    //   final _fbId = widget.fbId;
-                    //   final _fbName = widget.fbName;
-                    //   final _fbEmail = widget.fbEmail;
-                    //   final _fbPicUrl = widget.fbPicUrl;
-                    //   Navigator.of(context).push(MaterialPageRoute(
-                    //       builder: (context) => SetupStepOne(
-                    //             phone: _phone,
-                    //             fbId: _fbId,
-                    //             fbName: _fbName,
-                    //             fbEmail: _fbEmail,
-                    //             fbPicUrl: _fbPicUrl,
-                    //             loginType: widget.loginType,
-                    //           )));
-                    // if (widget.newotp == enteredOtp) {
-                    //   final _phone = widget.phone;
-                    //   final _fbId = widget.fbId;
-                    //   final _fbName = widget.fbName;
-                    //   final _fbEmail = widget.fbEmail;
-                    //   final _fbPicUrl = widget.fbPicUrl;
-                    //   Navigator.of(context).push(MaterialPageRoute(
-                    //       builder: (context) => SetupStepOne(
-                    //             phone: _phone,
-                    //             fbId: _fbId,
-                    //             fbName: _fbName,
-                    //             fbEmail: _fbEmail,
-                    //             fbPicUrl: _fbPicUrl,
-                    //           )));
-                    // } else {
-                    //   showAlert(
-                    //     context: context,
-                    //     title: "Empty or Invalid OTP",
-                    //   );
-                    //   log("Invalid OTP");
-                    // }
                   },
                   child: FadeAnimation(
                     1.2,
