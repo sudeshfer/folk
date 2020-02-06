@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:folk/Screens/Login/resetPassword.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
+import 'package:folk/Controllers/ApiServices/SendResetMailService.dart';
 
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key key}) : super(key: key);
@@ -11,9 +13,8 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-
- final _email = TextEditingController();
- String _errorTxt = '';
+  final _email = TextEditingController();
+  String _errorTxt = '';
 
   @override
   void initState() {
@@ -46,7 +47,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     iconSize: 38,
                     onPressed: () {
                       log('Clikced on back btn');
-                    Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     },
                   ),
                   alignment: Alignment.centerLeft,
@@ -54,7 +55,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
 
               SizedBox(height: 12),
-              FadeAnimation(0.8, Padding(
+              FadeAnimation(
+                0.8,
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: Text(
@@ -68,7 +71,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                 ),
               ),
-              FadeAnimation(0.9, Padding(
+              FadeAnimation(
+                0.9,
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: RichText(
@@ -76,7 +81,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         text:
                             "Pleace enter your email below to receive your \npassword reset instructions.",
                         style: TextStyle(
-                            color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
+                            color: Color.fromRGBO(64, 75, 105, 1),
+                            fontSize: 16)),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -84,42 +90,61 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               SizedBox(
                 height: 30,
               ),
-              FadeAnimation(0.1, Padding(
+              FadeAnimation(
+                0.1,
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
                   child: TextField(
                     controller: _email,
                     decoration: InputDecoration(
                         border: new OutlineInputBorder(
-                            borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
+                            borderSide:
+                                new BorderSide(color: Color(0xFFE0E0E0))),
                         labelText: 'Email',
                         errorText: _errorTxt,
                         errorBorder: _errorTxt.isEmpty
-                                    ? OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Color(0xFFE0E0E0)))
-                                    : null,
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFE0E0E0)))
-                        ),
+                            ? OutlineInputBorder(
+                                borderSide:
+                                    new BorderSide(color: Color(0xFFE0E0E0)))
+                            : null,
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFE0E0E0)))),
                   ),
                 ),
               ),
 
-              FadeAnimation(1.2, Container(
+              FadeAnimation(
+                1.2,
+                Container(
                   padding: EdgeInsets.only(top: 32),
                   child: Center(
                     child: InkWell(
                       onTap: () {
-
                         if (checkNull()) {
                           setState(() {
                             _errorTxt = "";
                           });
 
-                        log('Clikced on send req btn');
-                        Navigator.of(context).pushNamed("/resetpw");
+                          final body = {"email": _email.text};
+
+                          SendResetMailService.SendResetEmail(body)
+                              .then((success) {
+                            if (success) {
+                              log('email sent successfully');
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ResetPassword(
+                                        resetEmail: _email.text,
+                                      )));
+                            }
+                            else{
+                              log('email not sent! check the mail u entered again !');
+                            }
+                          });
+
+                          log('Clikced on send req btn');
+                          // Navigator.of(context).pushNamed("/resetpw");
 
                         } else {
                           setState(() {
@@ -134,7 +159,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             gradient: LinearGradient(
                               colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
                             'Send request'.toUpperCase(),

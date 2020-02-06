@@ -1,29 +1,30 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:folk/Controllers/ApiServices/VerifyEmailService.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
+import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 
 class ResetPassword extends StatefulWidget {
-  ResetPassword({Key key}) : super(key: key);
+  final resetEmail;
+  ResetPassword({Key key, this.resetEmail}) : super(key: key);
 
   @override
   _ResetPasswordState createState() => _ResetPasswordState();
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
+  final _resetCode = TextEditingController();
+  String _errorTxt = '';
 
-
-final _resetCode = TextEditingController();
-String _errorTxt = '';
-
- @override
+  @override
   void initState() {
     setState(() {
       _errorTxt = "";
     });
+    log(widget.resetEmail);
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +48,16 @@ String _errorTxt = '';
                     iconSize: 38,
                     onPressed: () {
                       log('Clikced on back btn');
-                    Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     },
                   ),
                   alignment: Alignment.centerLeft,
                 ),
               ),
               SizedBox(height: 12),
-              FadeAnimation(0.8, Padding(
+              FadeAnimation(
+                0.8,
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: Text(
@@ -68,7 +71,9 @@ String _errorTxt = '';
                   ),
                 ),
               ),
-              FadeAnimation(0.9, Padding(
+              FadeAnimation(
+                0.9,
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: RichText(
@@ -76,7 +81,8 @@ String _errorTxt = '';
                         text: "Reset code was sent your email. Please \n"
                             "enter ther code and create new password.",
                         style: TextStyle(
-                            color: Color.fromRGBO(64, 75, 105, 1), fontSize: 16)),
+                            color: Color.fromRGBO(64, 75, 105, 1),
+                            fontSize: 16)),
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -84,30 +90,35 @@ String _errorTxt = '';
               SizedBox(
                 height: 30,
               ),
-              FadeAnimation(1.1, Padding(
+              FadeAnimation(
+                1.1,
+                Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 7.0, horizontal: 25),
                   child: TextField(
                     controller: _resetCode,
                     decoration: InputDecoration(
                         border: new OutlineInputBorder(
-                            borderSide: new BorderSide(color: Color(0xFFE0E0E0))),
+                            borderSide:
+                                new BorderSide(color: Color(0xFFE0E0E0))),
                         labelText: 'Reset Code',
                         errorText: _errorTxt,
                         errorBorder: _errorTxt.isEmpty
-                                    ? OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Color(0xFFE0E0E0)))
-                                    : null,
-                                focusedBorder:_errorTxt.isNotEmpty? OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFE0E0E0))):null
-                        ),
-                        
+                            ? OutlineInputBorder(
+                                borderSide:
+                                    new BorderSide(color: Color(0xFFE0E0E0)))
+                            : null,
+                        focusedBorder: _errorTxt.isNotEmpty
+                            ? OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xFFE0E0E0)))
+                            : null),
                   ),
                 ),
               ),
-              FadeAnimation(1.2, Container(
+              FadeAnimation(
+                1.2,
+                Container(
                   padding: EdgeInsets.only(top: 32),
                   child: Center(
                     child: InkWell(
@@ -117,8 +128,26 @@ String _errorTxt = '';
                             _errorTxt = "";
                           });
 
-                        Navigator.of(context).pushNamed("/resetpw");
+                          final body = {
+                            "email": widget.resetEmail,
+                            "code": _resetCode.text
+                          };
 
+                          VerifyEmailService.VerifyEmail(body).then((success){
+                              if(success) {
+                                log('account verified');
+                                
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => VerifyingScreen()));
+
+                              }
+                              else
+                              {
+                                log('invalid code !');
+                              }
+                          });
+
+                          // Navigator.of(context).pushNamed("/resetpw");
                         } else {
                           setState(() {
                             _errorTxt = "You should fill out this field !";
@@ -132,7 +161,8 @@ String _errorTxt = '';
                             gradient: LinearGradient(
                               colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(50))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
                             'Change Phone number'.toUpperCase(),
@@ -157,6 +187,7 @@ String _errorTxt = '';
       ),
     );
   }
+
   bool checkNull() {
     if (_resetCode.text == '') {
       return false;
