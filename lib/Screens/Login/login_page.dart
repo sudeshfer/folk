@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_alert/flutter_alert.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:folk/Screens/Login/phone_login.dart';
@@ -10,6 +11,7 @@ import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Animations/delayed_reveal.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 import 'package:http/http.dart' as http;
+import 'package:progress_dialog/progress_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -22,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoggedIn = false;
   var profileData;
   String login_Type = "";
+  ProgressDialog pr;
 
   var facebookLogin = FacebookLogin();
 
@@ -56,13 +59,30 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+
+    pr.style(
+        message: 'Please wait...',
+        borderRadius: 10.0,
+        progressWidget: Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/loading2.gif'),
+                    fit: BoxFit.cover))),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(fontFamily: 'Montserrat'));
+
     return WillPopScope(
       onWillPop: _onBackPressed,
-          child: Scaffold(
+      child: Scaffold(
         body: Stack(
           children: <Widget>[
-            FadeAnimation(1.5,
-                         Container(
+            FadeAnimation(
+              1.5,
+              Container(
                 child: new Image.asset(
                   'assets/images/bg-white.png',
                   width: MediaQuery.of(context).size.width,
@@ -186,7 +206,8 @@ class _LoginPageState extends State<LoginPage> {
                                       color: Colors.white,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         'Login with phone number'.toUpperCase(),
                                         style: TextStyle(
@@ -270,10 +291,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
- void initiateFacebookLogin() async {
+  void initiateFacebookLogin() async {
     var facebookLoginResult =
         await facebookLogin.logInWithReadPermissions(['email']);
-
+    pr.show();
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
         onLoginStatusChanged(false);
@@ -295,6 +316,7 @@ class _LoginPageState extends State<LoginPage> {
         final _fbEmail = "${profileData['email']}";
         // final _gender = "${profileData['user_gender']}";
         final _fbPicUrl = profileData['picture']['data']['url'];
+
         final body = {
           "email": _fbEmail,
         };
@@ -305,27 +327,32 @@ class _LoginPageState extends State<LoginPage> {
               print("fb old user");
               //Fb login old user
               //  Navigator.of(context).pushNamed("/home");
+              pr.hide();
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => VerifyingScreen(
-                    fbId: _fbId,
-                    fbName: _fbName,
-                    fbEmail: _fbEmail,
-                    fbPicUrl: _fbPicUrl,
-                    loginType: login_Type)));
-              
+                  builder: (context) => VerifyingScreen(
+                      fbId: _fbId,
+                      fbName: _fbName,
+                      fbEmail: _fbEmail,
+                      fbPicUrl: _fbPicUrl,
+                      loginType: login_Type)));
             } else {
               print("fb new  user");
               //Fb login new user
+              pr.hide();
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PhoneLogin(
-                    fbId: _fbId,
-                    fbName: _fbName,
-                    fbEmail: _fbEmail,
-                    fbPicUrl: _fbPicUrl,
-                    loginType: login_Type)));
+                  builder: (context) => PhoneLogin(
+                      fbId: _fbId,
+                      fbName: _fbName,
+                      fbEmail: _fbEmail,
+                      fbPicUrl: _fbPicUrl,
+                      loginType: login_Type)));
             }
           });
         } else {
+          showAlert(
+            context: context,
+            title: "Something Went wrong",
+          );
           print("something went wrong ");
         }
 
