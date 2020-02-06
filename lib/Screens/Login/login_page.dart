@@ -294,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
   void initiateFacebookLogin() async {
     var facebookLoginResult =
         await facebookLogin.logInWithReadPermissions(['email']);
-    pr.show();
+    
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
         onLoginStatusChanged(false);
@@ -303,6 +303,7 @@ class _LoginPageState extends State<LoginPage> {
         onLoginStatusChanged(false);
         break;
       case FacebookLoginStatus.loggedIn:
+      pr.show();
         var graphResponse = await http.get(
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(400)&access_token=${facebookLoginResult.accessToken.token}');
 
