@@ -82,7 +82,7 @@ class _GetLocationState extends State<GetLocation> {
           ),
           Positioned(
             top: 30.0,
-            left: (MediaQuery.of(context).size.width) / 13,
+            // left: (MediaQuery.of(context).size.width) / 13,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +100,7 @@ class _GetLocationState extends State<GetLocation> {
                   ),
                   FadeAnimation(0.9, Center(
                       child: Container(
-                        margin: EdgeInsets.only(top: 2, left: 10),
+                        margin: EdgeInsets.only(top: 2),
                         child: Text(
                           "Where are you?",
                           textAlign: TextAlign.center,
@@ -114,16 +114,18 @@ class _GetLocationState extends State<GetLocation> {
                       ),
                     ),
                   ),
-                  FadeAnimation(1, Center(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 18),
-                        child: Text(
-                          "Your location service need to be turned on\norder for this to work",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: 'Montserrat',
+                  Center(
+                    child: FadeAnimation(1, Center(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 18),
+                          child: Text(
+                            "Your location service need to be turned on\norder for this to work",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Montserrat',
+                            ),
                           ),
                         ),
                       ),
