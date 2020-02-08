@@ -9,7 +9,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -17,12 +16,14 @@ class _SplashScreenState extends State<SplashScreen> {
       Duration(seconds: 3),
       () {
         Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),
-        ),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
         );
       },
     );
-
   }
 
   @override
@@ -33,23 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Color.fromRGBO(245, 246, 250, 1),
       body: DelayedReveal(
         delay: Duration(milliseconds: 1200),
-              child: Center(
-          child: Image.asset('assets/images/logo.png',width: 280,height: 280,),
+        child: Center(
+          child: Image.asset(
+            'assets/images/logo.png',
+            width: 280,
+            height: 280,
+          ),
         ),
       ),
-
-      // body: Center(
-      //   child: Container(
-      //     height: 300,
-      //     width: 300,
-      //     decoration: BoxDecoration(
-      //       image:DecorationImage(
-      //         image:AssetImage('assets/images/sent.gif'),
-      //         fit: BoxFit.cover
-      //       )
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
