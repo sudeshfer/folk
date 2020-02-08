@@ -693,32 +693,46 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     ),
                   ),
                 ),
-                FadeAnimation(
-                  1.4,
-                  InkWell(
-                    onTap: () {
-                      log('Clikced on trouble with login');
-                      Navigator.of(context).pushNamed("/location");
-                    },
-                    child: Container(
-                      padding: EdgeInsets.only(top: 35, bottom: 25),
-                      child: Center(
+                
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar:PreferredSize(
+                   preferredSize: Size.fromHeight(60.0),
+                  child: Container(
+                    height: 100,
+                    // decoration: BoxDecoration(
+                    //   color:Colors.red
+                    // ),
+                    child: FadeAnimation(
+                      1.4,
+                      InkWell(
+                        onTap: () {
+                          log('Clikced on trouble with login');
+                          Navigator.of(context).pushNamed("/location");
+                        },
                         child: Container(
-                          height: 51,
-                          width: MediaQuery.of(context).size.width / 1.12,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
+                          // padding: EdgeInsets.only(top: 35, bottom: 25),
                           child: Center(
-                            child: Text(
-                              'Next'.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                fontFamily: 'Montserrat',
+                            child: Container(
+                              height: 51,
+                              width: MediaQuery.of(context).size.width / 1.12,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50))),
+                              child: Center(
+                                child: Text(
+                                  'Next'.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontFamily: 'Montserrat',
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -726,10 +740,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ));
+        ),
+        );
   }
 }
