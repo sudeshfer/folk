@@ -156,7 +156,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                               child: TextField(
                                 keyboardType: TextInputType.number,
                                 controller: _phoneNo,
-                                maxLength: 15,
+                                // maxLength: 15,
                                 decoration: InputDecoration(
                                     border: new OutlineInputBorder(
                                         borderSide: new BorderSide(
@@ -217,6 +217,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                             final _loginType = widget.loginType;
 
                             if (_loginType == "otp") {
+                              
                               otp.sendOtp(phoneNum);
                               int code = otp.get_otp();
                               if (code != null) {
@@ -304,7 +305,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                           } 
                           else {
                             setState(() {
-                              _errorTxt = "You should fill out this field !";
+                              _errorTxt = "Country Code & phone number needed !";
                             });
                           }
                         },
@@ -350,8 +351,27 @@ class _PhoneLoginState extends State<PhoneLogin> {
     }
   }
 
+  // isCountryCode(){
+  //   if(_countrycode == ''){
+  //     setState(() {
+  //       _errorTxt = "Select your country code";
+  //     });
+  //   }
+  //   else{
+  //     setState(() {
+  //       _errorTxt = "";
+  //     });
+  //   }
+  // }
+
   bool validatePhone(){
-    if(_phoneNo.text.length >= 9){
+    if(_countrycode== ''){
+      setState(() {
+        _errorTxt = "Select your country code";
+      });
+      return false;
+    }
+    else if(_phoneNo.text.length >= 9){
       print("valid 4n number");
       return true;
     }

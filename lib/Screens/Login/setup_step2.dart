@@ -1,10 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:folk/Controllers/ApiServices/registerUserService.dart';
 import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class SetupStepTwo extends StatefulWidget {
   final phone;
@@ -13,6 +17,8 @@ class SetupStepTwo extends StatefulWidget {
   final fbEmail;
   final fbPicUrl;
   final loginType;
+  String imgSource;
+  String base_64;
   SetupStepTwo(
       {Key key,
       this.phone,
@@ -20,7 +26,9 @@ class SetupStepTwo extends StatefulWidget {
       this.fbName,
       this.fbEmail,
       this.fbPicUrl,
-      this.loginType})
+      this.loginType,
+      this.imgSource,
+      this.base_64})
       : super(key: key);
 
   @override
@@ -35,14 +43,13 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   String _gender = "";
   bool isMaleClicked = false;
   bool isFemaleClicked = false;
+  ProgressDialog pr;
 
   @override
   void initState() {
     isFemaleClicked = true;
     // String _gender = "female";
     _initiateEmailController();
-
-    _birthday.text = "";
 
     super.initState();
   }
@@ -54,17 +61,36 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
       });
       print(_email);
     } else {
-      _email.text = widget.fbEmail;
+      setState(() {
+        _email.text = widget.fbEmail;
+      });
       print(_email.text);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+
+    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+
+    pr.style(
+        message: 'Please wait...',
+        borderRadius: 10.0,
+        progressWidget: Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/loading2.gif'),
+                    fit: BoxFit.cover))),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(fontFamily: 'Montserrat'));
+
     return Scaffold(
       resizeToAvoidBottomPadding: false, // this avoids the overflow error
       resizeToAvoidBottomInset: true,
-      body: InkWell(
+      body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
           setState(() {
@@ -222,7 +248,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 25.0, right: 25.0, bottom: 10, top: 30),
-                  child: InkWell(
+                  child: GestureDetector(
                     onTap: () {
                       showDatePicker();
                     },
@@ -309,10 +335,9 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
 
                           if (validateEmail()) {
                             print(_birthday.text);
-                            navigateToStepThree();
-                          }
 
-                          // Navigator.of(context).pushNamed("/pincode");
+                            postUserData();
+                          }
                         } else {
                           setState(() {
                             _errorTxt = "You should fill out this field !";
@@ -361,7 +386,11 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   bool validateEmail() {
     String email = _email.text;
     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-    if (emailValid) {
+    if(_birthday.text == ''){
+      bdayValidationDialog();
+      return false;
+    }
+    else if (emailValid) {
       print("Valid email !");
       log("Valid email !");
       return true;
@@ -373,29 +402,29 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
     }
   }
 
-  navigateToStepThree() {
-    String bday = _birthday.text;
-    String gender = _gender;
-    String email = _email.text;
-    final _phone = widget.phone;
-    final _fbId = widget.fbId;
-    final _fbName = widget.fbName;
-    final _fbEmail = widget.fbEmail;
-    final _fbPicUrl = widget.fbPicUrl;
-
-    print(bday + gender + email);
-    //passing data to next screens
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => SetupStepThree(
-              bday: bday,
-              gender: gender,
-              email: email,
-              phone: _phone,
-              fbId: _fbId,
-              fbName: _fbName,
-              fbEmail: _fbEmail,
-              fbPicUrl: _fbPicUrl,
-            )));
+  Future<bool> bdayValidationDialog() {
+    return showDialog(
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('Select Your birthday !'),
+        actions: <Widget>[
+          FlatButton(
+            color: Colors.orange,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
+      context: context,
+    );
   }
 
   showDatePicker() {
@@ -419,5 +448,46 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
       //print the bday
       print('confirm ' + selecteddate.toString());
     }, locale: LocaleType.en);
+  }
+
+  postUserData() {
+    pr.show();
+    String bday = _birthday.text;
+    String gender = _gender;
+    String email = _email.text;
+    final _phone = widget.phone;
+    final _fbId = widget.fbId;
+    final _fbName = widget.fbName;
+    final _fbEmail = _email.text;
+    final _fbPicUrl = widget.fbPicUrl;
+
+    print(_fbName + _fbEmail);
+
+    final body = {
+      "name": _fbName,
+      "gender": gender,
+      "bday": bday,
+      "email": _fbEmail,
+      "phone": _phone,
+      "imagesource": widget.imgSource,
+      "base_64": widget.base_64,
+      "fb_url": _fbPicUrl
+    };
+    print(body);
+    RegisterUserService.RegisterUser(body).then((success) {
+      if (success) {
+        print('Register Success');
+        //passing data to next screens
+        pr.hide();
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => SetupStepThree()));
+
+        // Navigator.of(context).pushNamed("/pincode");
+
+      } else {
+        pr.hide();
+        print('Register Failed');
+      }
+    });
   }
 }

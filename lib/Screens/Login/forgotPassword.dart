@@ -29,8 +29,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
+
     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
-    // pr.style(message: 'Sending Email..');
 
     pr.style(
         message: 'Sending Email...',
@@ -149,8 +149,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             _errorTxt = "";
                             isLoaidng = true;
                           });
-                          
-                         if(validateEmail()){
+
+                          if(validateEmail()){
                            pr.show();
 
                           final body = {"email": _email.text};
@@ -174,7 +174,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             }
                           });
                          }
-                          
 
                         } else {
                           pr.hide();
@@ -225,7 +224,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     }
   }
 
-///function tht validate the email
+ ///function tht validate the email
    bool validateEmail(){
     String email= _email.text;
     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
@@ -242,4 +241,5 @@ class _ForgotPasswordState extends State<ForgotPassword> {
        return false; 
     }
   }
+
 }

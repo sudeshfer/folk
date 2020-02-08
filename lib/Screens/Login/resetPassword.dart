@@ -152,8 +152,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                           setState(() {
                             _errorTxt = "";
                           });
-
-                          prd.show();
+                          
+                          if(validatePhone()){
+                             prd.show();
                           log('clicked on reset btn');
 
                           final body = {
@@ -174,6 +175,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                               });
                             }
                           });
+                          }
+                          
 
                           // Navigator.of(context).pushNamed("/resetpw");
                         } else {
@@ -223,6 +226,20 @@ class _ResetPasswordState extends State<ResetPassword> {
     } else {
       return true;
     }
+  }
+
+  bool validatePhone(){
+    if(_resetCode.text.length == 6){
+      print("valid code");
+      return true;
+    }
+    else{
+      setState(() {
+        _errorTxt = "The reset code must contain 6 digits !";
+      });
+      return false;
+    }
+    
   }
 
   

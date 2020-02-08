@@ -4,24 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 
 class SetupStepThree extends StatefulWidget {
-  final bday;
-  final gender;
-  final email;
-  final phone;
-  final fbId;
-  final fbName;
-  final fbEmail;
-  final fbPicUrl;
+  // final bday;
+  // final gender;
+  // final email;
+  // final phone;
+  // final fbId;
+  // final fbName;
+  // final fbEmail;
+  // final fbPicUrl;
   // PincodeVerify({Key key}) : super(key: key);
   SetupStepThree(
-      {this.bday,
-      this.gender,
-      this.email,
-      this.phone,
-      this.fbId,
-      this.fbName,
-      this.fbEmail,
-      this.fbPicUrl});
+      // {
+        //this.bday,
+      // this.gender,
+      // this.email,
+      // this.phone,
+      // this.fbId,
+      // this.fbName,
+      // this.fbEmail,
+      // this.fbPicUrl
+      // }
+      );
 
   @override
   _SetupStepThreeState createState() => _SetupStepThreeState();

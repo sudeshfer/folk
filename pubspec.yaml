@@ -38,6 +38,7 @@ dependencies:
   # location: ^2.3.5
   intl: ^0.16.1
   progress_dialog: ^1.2.0
+  
 
 
 

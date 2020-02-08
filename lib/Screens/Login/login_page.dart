@@ -59,7 +59,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+
+     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
 
     pr.style(
         message: 'Please wait...',
@@ -77,12 +78,11 @@ class _LoginPageState extends State<LoginPage> {
 
     return WillPopScope(
       onWillPop: _onBackPressed,
-      child: Scaffold(
+          child: Scaffold(
         body: Stack(
           children: <Widget>[
-            FadeAnimation(
-              1.5,
-              Container(
+            FadeAnimation(1.5,
+                         Container(
                 child: new Image.asset(
                   'assets/images/bg-white.png',
                   width: MediaQuery.of(context).size.width,
@@ -206,8 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                                       color: Colors.white,
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         'Login with phone number'.toUpperCase(),
                                         style: TextStyle(
@@ -291,10 +290,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void initiateFacebookLogin() async {
+ void initiateFacebookLogin() async {
     var facebookLoginResult =
         await facebookLogin.logInWithReadPermissions(['email']);
-    
+
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
         onLoginStatusChanged(false);
@@ -317,7 +316,6 @@ class _LoginPageState extends State<LoginPage> {
         final _fbEmail = "${profileData['email']}";
         // final _gender = "${profileData['user_gender']}";
         final _fbPicUrl = profileData['picture']['data']['url'];
-
         final body = {
           "email": _fbEmail,
         };
@@ -330,23 +328,24 @@ class _LoginPageState extends State<LoginPage> {
               //  Navigator.of(context).pushNamed("/home");
               pr.hide();
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => VerifyingScreen(
-                      fbId: _fbId,
-                      fbName: _fbName,
-                      fbEmail: _fbEmail,
-                      fbPicUrl: _fbPicUrl,
-                      loginType: login_Type)));
+                builder: (context) => VerifyingScreen(
+                    fbId: _fbId,
+                    fbName: _fbName,
+                    fbEmail: _fbEmail,
+                    fbPicUrl: _fbPicUrl,
+                    loginType: login_Type)));
+              
             } else {
               print("fb new  user");
               //Fb login new user
               pr.hide();
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PhoneLogin(
-                      fbId: _fbId,
-                      fbName: _fbName,
-                      fbEmail: _fbEmail,
-                      fbPicUrl: _fbPicUrl,
-                      loginType: login_Type)));
+                builder: (context) => PhoneLogin(
+                    fbId: _fbId,
+                    fbName: _fbName,
+                    fbEmail: _fbEmail,
+                    fbPicUrl: _fbPicUrl,
+                    loginType: login_Type)));
             }
           });
         } else {

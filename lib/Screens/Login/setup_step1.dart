@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -35,11 +36,20 @@ class _SetupStepOneState extends State<SetupStepOne> {
   final _name = TextEditingController();
   String _errorName = "";
   File imageFile;
-
+  String base64Image;
+  String imgSource;
+  String fbName;
   //asynce function to pick an image from gallery
   _openGallery(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    // List<int> imageBytes = picture.readAsBytesSync();
+
+    // base64Image = base64Encode(imageBytes);
+    // print(imageBytes);
     if (picture != null) {
+      // print("base 64 string : " + base64Image);
+
       File croppedFile = await ImageCropper.cropImage(
         sourcePath: picture.path,
         aspectRatioPresets: Platform.isAndroid
@@ -67,6 +77,9 @@ class _SetupStepOneState extends State<SetupStepOne> {
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
       );
+      List<int> imageBytes = croppedFile.readAsBytesSync();
+
+      base64Image = base64Encode(imageBytes);
 
       this.setState(() {
         //  imageFile = croppedFile;
@@ -82,7 +95,13 @@ class _SetupStepOneState extends State<SetupStepOne> {
 //asynce function to pick an image from camera
   _openCamera(BuildContext context) async {
     var picture = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    // List<int> imageBytes = picture.readAsBytesSync();
+    // print(imageBytes);
+    // base64Image = base64Encode(imageBytes);
+
     if (picture != null) {
+      // print("base 64 string : " + base64Image);
       File croppedFile = await ImageCropper.cropImage(
         sourcePath: picture.path,
         aspectRatioPresets: Platform.isAndroid
@@ -110,6 +129,9 @@ class _SetupStepOneState extends State<SetupStepOne> {
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
       );
+      List<int> imageBytes = croppedFile.readAsBytesSync();
+
+      base64Image = base64Encode(imageBytes);
 
       this.setState(() {
         imageFile = croppedFile;
@@ -182,22 +204,39 @@ class _SetupStepOneState extends State<SetupStepOne> {
 
     if ((imageFile == null) && (imguUrl == null)) {
       // return Image.network(imguUrl);
+      imgSource="none";
       return Image.asset('assets/images/btn_upload_cover.png',
           width: 220.0, height: 220.0, fit: BoxFit.cover);
     }
     if ((imguUrl != null) && (imageFile == null)) {
+
+      imgSource="fb";
       return Image.network(imguUrl,
-          width: 220.0, height: 220.0, fit: BoxFit.fill);
-      // return Image.asset('assets/images/btn_upload_cover.png',
-      //     width: 220.0, height: 220.0, fit: BoxFit.cover);
+          width: 220.0, height: 220.0, fit: BoxFit.fill);      
     }
     if ((imguUrl == null) && (imageFile != null)) {
-      return Image.file(
-        imageFile,
+
+      imgSource="userimage";
+
+      print("print with base 64");
+      return Image.memory(
+        base64Decode(base64Image),        
         width: 220,
         height: 220,
         fit: BoxFit.fill,
-      );
+        );
+    }
+    if ((imguUrl != null) && (imageFile != null)) {
+
+      imgSource="userimage";
+
+      print("print with base 64");
+      return Image.memory(
+        base64Decode(base64Image),        
+        width: 220,
+        height: 220,
+        fit: BoxFit.fill,
+        );
     }
   }
 
@@ -209,24 +248,15 @@ class _SetupStepOneState extends State<SetupStepOne> {
       });
       print("name controller is empty");
     } else {
-      _name.text = widget.fbName;
+      setState(() {
+        _name.text = widget.fbName;
+      });
       print(_name.text);
     }
   }
 
   @override
   void initState() {
-    // print(widget.fbId +
-    //     "\n" +
-    //     widget.fbName +
-    //     "\n" +
-    //     widget.fbEmail +
-    //     "\n" +
-    //     widget.fbPicUrl +
-    //     "\n" +
-    //     widget.phone+
-    //     "\n" +
-    //     widget.loginType);
     print(widget.loginType);
     _initiateNameController();
     super.initState();
@@ -242,7 +272,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
     return Scaffold(
       resizeToAvoidBottomPadding: false, // this avoids the overflow error
       resizeToAvoidBottomInset: true,
-      body: InkWell(
+      body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
           setState(() {
@@ -343,9 +373,6 @@ class _SetupStepOneState extends State<SetupStepOne> {
                               navigateToStepTwo();
                             }
                           }
-
-                          // navigateToStepTwo();
-
                         } else {
                           setState(() {
                             _errorName = "You should fill out this field !";
@@ -393,17 +420,21 @@ class _SetupStepOneState extends State<SetupStepOne> {
   navigateToStepTwo() {
     final _phone = widget.phone;
     final _fbId = widget.fbId;
-    final _fbName = widget.fbName;
+    final _fbName = widget.loginType =="fb" ? widget.fbName :_name.text;
     final _fbEmail = widget.fbEmail;
     final _fbPicUrl = widget.fbPicUrl;
+
+    print(_fbName);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => SetupStepTwo(
               phone: _phone,
-              fbId: _fbId,
-              fbName: _fbName,
-              fbEmail: _fbEmail,
-              fbPicUrl: _fbPicUrl,
-              loginType: widget.loginType,
+                                    fbId: _fbId,
+                                    fbName: _fbName,
+                                    fbEmail: _fbEmail,
+                                    fbPicUrl: _fbPicUrl,
+                                    loginType: widget.loginType,
+                                    imgSource:imgSource,
+                                    base_64 : base64Image
             )));
   }
 
@@ -443,4 +474,5 @@ class _SetupStepOneState extends State<SetupStepOne> {
       return false;
     }
   }
+
 }

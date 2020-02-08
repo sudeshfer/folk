@@ -9,6 +9,7 @@ import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Screens/Login/setup_step2.dart';
 import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Screens/Splash_screen/splash_screen.dart';
+
 import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 
@@ -18,10 +19,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Folk',
-      theme:new ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
       home: new SplashScreen(),
