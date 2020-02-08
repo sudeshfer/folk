@@ -55,7 +55,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                 FadeAnimation(
                   0.8,
                   Container(
-                    margin: EdgeInsets.only(top: 20, left: 30),
+                    margin: EdgeInsets.only(top: 30, left: 30,bottom: 20),
                     child: Text(
                       "Choose Interests",
                       textAlign: TextAlign.center,
