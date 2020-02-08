@@ -40,7 +40,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   final _email = TextEditingController();
   String _errorTxt = '';
   // String _errorBday = "";
-  String _gender = "";
+  String _gender = "female";
   bool isMaleClicked = false;
   bool isFemaleClicked = false;
   ProgressDialog pr;
@@ -328,6 +328,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                         top: 25, left: 26, right: 26, bottom: 25),
                     child: InkWell(
                       onTap: () {
+                        log(_gender);
                         if (checkNull()) {
                           setState(() {
                             _errorTxt = "";
