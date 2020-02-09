@@ -1,7 +1,7 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alert/flutter_alert.dart';
 import 'package:folk/Controllers/ApiServices/registerUserService.dart';
 import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
@@ -487,6 +487,10 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
 
       } else {
         pr.hide();
+         showAlert(
+            context: context,
+            title: "Something Went wrong",
+          );
         print('Register Failed');
       }
     });
