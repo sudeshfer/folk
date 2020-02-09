@@ -7,6 +7,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:folk/Screens/Login/phone_login.dart';
 import 'package:folk/Controllers/ApiServices/FbLoginService.dart';
+import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Animations/delayed_reveal.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
@@ -59,8 +60,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
+    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
 
     pr.style(
         message: 'Please wait...',
@@ -78,11 +78,12 @@ class _LoginPageState extends State<LoginPage> {
 
     return WillPopScope(
       onWillPop: _onBackPressed,
-          child: Scaffold(
+      child: Scaffold(
         body: Stack(
           children: <Widget>[
-            FadeAnimation(1.5,
-                         Container(
+            FadeAnimation(
+              1.5,
+              Container(
                 child: new Image.asset(
                   'assets/images/bg-white.png',
                   width: MediaQuery.of(context).size.width,
@@ -180,6 +181,10 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   PhoneLogin(loginType: login_Type)));
+
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) =>
+                          //         SetupStepThree()));
                         },
                         child: Center(
                           child: Padding(
@@ -206,7 +211,8 @@ class _LoginPageState extends State<LoginPage> {
                                       color: Colors.white,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         'Login with phone number'.toUpperCase(),
                                         style: TextStyle(
@@ -290,7 +296,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
- void initiateFacebookLogin() async {
+  void initiateFacebookLogin() async {
     var facebookLoginResult =
         await facebookLogin.logInWithReadPermissions(['email']);
 
@@ -302,7 +308,7 @@ class _LoginPageState extends State<LoginPage> {
         onLoginStatusChanged(false);
         break;
       case FacebookLoginStatus.loggedIn:
-      pr.show();
+        pr.show();
         var graphResponse = await http.get(
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.width(400)&access_token=${facebookLoginResult.accessToken.token}');
 
@@ -328,24 +334,23 @@ class _LoginPageState extends State<LoginPage> {
               //  Navigator.of(context).pushNamed("/home");
               pr.hide();
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => VerifyingScreen(
-                    fbId: _fbId,
-                    fbName: _fbName,
-                    fbEmail: _fbEmail,
-                    fbPicUrl: _fbPicUrl,
-                    loginType: login_Type)));
-              
+                  builder: (context) => VerifyingScreen(
+                      fbId: _fbId,
+                      fbName: _fbName,
+                      fbEmail: _fbEmail,
+                      fbPicUrl: _fbPicUrl,
+                      loginType: login_Type)));
             } else {
               print("fb new  user");
               //Fb login new user
               pr.hide();
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PhoneLogin(
-                    fbId: _fbId,
-                    fbName: _fbName,
-                    fbEmail: _fbEmail,
-                    fbPicUrl: _fbPicUrl,
-                    loginType: login_Type)));
+                  builder: (context) => PhoneLogin(
+                      fbId: _fbId,
+                      fbName: _fbName,
+                      fbEmail: _fbEmail,
+                      fbPicUrl: _fbPicUrl,
+                      loginType: login_Type)));
             }
           });
         } else {
