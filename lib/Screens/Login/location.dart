@@ -89,7 +89,7 @@ class _GetLocationState extends State<GetLocation> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   FadeAnimation(0.8, Container(
-                      // margin: EdgeInsets.only(left:25,right: 20),
+                      margin: EdgeInsets.only(left:20,right: 20),
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage('assets/images/location_ico.jpg'),
