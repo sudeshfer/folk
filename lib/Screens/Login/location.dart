@@ -24,22 +24,10 @@ class _GetLocationState extends State<GetLocation> {
     PermissionHandler()
         .checkPermissionStatus(PermissionGroup.locationWhenInUse)
         .then(_updateStatus);
-    // print(widget.fbId +
-    //     "\n" +
-    //     widget.fbName +
-    //     "\n" +
-    //     widget.fbEmail +
-    //     "\n" +
-    //     widget.fbPicUrl);
+  
     super.initState();
-    // currentLocation['latitude'] = 0.0;
-    // currentLocation['longintube'] = 0.0;
-    // initPlatformState();
-    // locationSubscription = location.onLocationChanged().listen((Map<String,double> result){
-    //   setState(() {
-    //     currentLocation = result;
-    //   });
-    // } );
+    
+      
   }
 
   void _updateStatus(PermissionStatus status) {
@@ -54,17 +42,24 @@ class _GetLocationState extends State<GetLocation> {
   void _askPermission() {
     PermissionHandler().requestPermissions(
         [PermissionGroup.locationWhenInUse]).then(_onStatusRequested);
+        
   }
 
   void _onStatusRequested(Map<PermissionGroup, PermissionStatus> statuses) {
     final status = statuses[PermissionGroup.locationWhenInUse];
-    // if(status != PermissionStatus.granted){
-    //   PermissionHandler().openAppSettings();
-    // }
-    // else{
-    //   _updateStatus(status);
-    // }
-    _updateStatus(status);
+    // _updateStatus(status);
+    if (status != PermissionStatus.granted){
+      PermissionHandler().openAppSettings();
+      
+    } else {
+      _navigateToHome();
+      _updateStatus(status);
+    }
+    // _updateStatus(status);
+  }
+
+   _navigateToHome() {
+      Navigator.of(context).pushNamed("/home");
   }
 
   @override
@@ -88,17 +83,22 @@ class _GetLocationState extends State<GetLocation> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  FadeAnimation(0.8, Container(
-                      margin: EdgeInsets.only(left:20,right: 20),
+                  FadeAnimation(
+                    0.8,
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage('assets/images/location_ico.jpg'),
+                              image:
+                                  AssetImage('assets/images/location_ico.jpg'),
                               fit: BoxFit.cover)),
                       height: 340.0,
                       width: 340.0,
                     ),
                   ),
-                  FadeAnimation(0.9, Center(
+                  FadeAnimation(
+                    0.9,
+                    Center(
                       child: Container(
                         margin: EdgeInsets.only(top: 2),
                         child: Text(
@@ -115,7 +115,9 @@ class _GetLocationState extends State<GetLocation> {
                     ),
                   ),
                   Center(
-                    child: FadeAnimation(1, Center(
+                    child: FadeAnimation(
+                      1,
+                      Center(
                         child: Container(
                           margin: EdgeInsets.only(top: 18),
                           child: Text(
@@ -131,9 +133,13 @@ class _GetLocationState extends State<GetLocation> {
                       ),
                     ),
                   ),
-                  FadeAnimation(1.2, InkWell(
-                      onTap: (){
+                  FadeAnimation(
+                    1.2,
+                    InkWell(
+                      onTap: () {
                         _askPermission();
+                     
+                                    
                       },
                       child: Center(
                         child: Padding(

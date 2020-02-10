@@ -72,7 +72,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
     return new Scaffold(
       resizeToAvoidBottomPadding: false, // this avoids the overflow error
       resizeToAvoidBottomInset: true,
-      body: InkWell(
+      body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
           setState(() {
