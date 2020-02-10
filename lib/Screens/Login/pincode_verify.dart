@@ -200,14 +200,14 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   1,
                   Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 7.0, horizontal: 25),
+                          vertical: 7.0,horizontal: 5.0),
                       child: PinCodeTextField(
                         length: 6,
                         obsecureText: false,
-                        shape: PinCodeFieldShape.box,
-                        fieldHeight: 57,
+                        shape: PinCodeFieldShape.underline,
+                        fieldHeight: 50,
                         backgroundColor: Colors.white,
-                        fieldWidth: 57,
+                        fieldWidth: 50,
                         onCompleted: (v) {
                           print("Completed");
                         },
@@ -260,8 +260,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   InkWell(
                     onTap: () {
                       log('Clikced on back btn');
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
+                      signIn();
                     },
                     child: RichText(
                       textAlign: TextAlign.center,

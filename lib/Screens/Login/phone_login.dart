@@ -113,7 +113,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                         children: <Widget>[
                           Container(
                             width: MediaQuery.of(context).size.width / 3.7,
-                            margin: EdgeInsets.only(top: 40),
+                            margin: EdgeInsets.only(top: 20),
                             child: CountryPicker(
                               dense: false,
                               showFlag: true, //displays flag, true by default
