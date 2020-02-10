@@ -1,20 +1,18 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:folk/Controllers/OTP.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 import 'package:folk/Utils/Login_utils/pin_code_fields.dart';
 
-FlutterOtp otp = FlutterOtp();
 String result;
-int enteredOtp;
+String enteredOtp;
 
 class PincodeVerify extends StatefulWidget {
   final String phone;
-  final int newotp;
   final fbId;
   final fbName;
   final fbEmail;
@@ -24,7 +22,6 @@ class PincodeVerify extends StatefulWidget {
   // PincodeVerify({Key key}) : super(key: key);
   PincodeVerify(
       {this.phone,
-      this.newotp,
       this.fbId,
       this.fbName,
       this.fbEmail,
@@ -36,8 +33,11 @@ class PincodeVerify extends StatefulWidget {
 }
 
 class _PincodeVerifyState extends State<PincodeVerify> {
+  String smsCode;
+  String verificationId;
   @override
   void initState() {
+    verifyPhone();
     setState(() {
       // _errorTxt = "";
     });
@@ -66,13 +66,69 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     Navigator.of(context).pop();
   }
 
+  Future<void> verifyPhone() async {
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
+      this.verificationId = verID;
+    };
+    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
+      this.verificationId = verId;
+    };
+    final PhoneVerificationCompleted verifiedSuccess =
+        (AuthCredential phoneAuthCredential) {
+      print('verified');
+    };
+    final PhoneVerificationFailed verifyFailed = (AuthException exception) {
+      print('${exception.message}');
+    };
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: widget.phone,
+        timeout: const Duration(seconds: 5),
+        verificationCompleted: verifiedSuccess,
+        verificationFailed: verifyFailed,
+        codeSent: smsCodeSent,
+        codeAutoRetrievalTimeout: autoRetrieve);
+
+    log("OTP sent");
+  }
+
+  signIn() {
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: verificationId,
+      smsCode: enteredOtp,
+    );
+    FirebaseAuth.instance.signInWithCredential(credential).then((user) {
+      final login_type = widget.loginType;
+      final login_status = widget.loginStatus;
+      if (login_type == "otp" && login_status == "otpolduser") {
+        log("otp old user // has otp login // should go to home");
+        navigateToVerifyingScreen();
+      } else if (login_type == "otp" && login_status == "otpnewuser") {
+        log("otp new user // no otp login // should go to stepOne ");
+        navigateToStepOne();
+      } else if (login_type == "fb" && login_status == "fbnewuserOtpOld") {
+        log("fb new user // has otp login // should go to home ");
+        navigateToHome();
+      } else if (login_type == "fb" && login_status == "fbnewuserOtpNew") {
+        log("fb new user // no otp login // should go to stepOne ");
+        navigateToStepOne();
+      } else {
+        log("somehting went wrong");
+      }
+    }).catchError((e) {
+      showAlert(
+        context: context,
+        title: "Empty or Invalid OTP",
+      );
+      log("Invalid OTP");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    log("OTP sent");
-
     return WillPopScope(
-         onWillPop: _onBackPressed,
-          child: Scaffold(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
         backgroundColor: Colors.white,
         body: GestureDetector(
           onTap: () {
@@ -118,8 +174,8 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                 FadeAnimation(
                   0.9,
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 8),
                     child: RichText(
                       text: TextSpan(
                           text: "A verification code has been sent to ",
@@ -131,7 +187,8 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)),
                           ],
-                          style: TextStyle(color: Colors.black54, fontSize: 18)),
+                          style:
+                              TextStyle(color: Colors.black54, fontSize: 18)),
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -145,59 +202,23 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 7.0, horizontal: 25),
                       child: PinCodeTextField(
-                        length: 4,
+                        length: 6,
                         obsecureText: false,
                         shape: PinCodeFieldShape.box,
                         fieldHeight: 57,
                         backgroundColor: Colors.white,
-                        fieldWidth: 67,
+                        fieldWidth: 57,
                         onCompleted: (v) {
                           print("Completed");
                         },
                         onChanged: (val) {
-                          enteredOtp = int.parse(val);
+                          enteredOtp = val;
                         },
                       )),
                 ),
                 InkWell(
                   onTap: () {
-                    if (widget.newotp != enteredOtp) {
-                          final login_type = widget.loginType;
-                          final login_status = widget.loginStatus;
-
-                          if (login_type == "otp" && login_status == "otpolduser") 
-                          {
-                            log("otp old user // has otp login // should go to home");
-                            navigateToVerifyingScreen();
-
-                          } 
-                          else if (login_type == "otp" && login_status == "otpnewuser") {
-                            log("otp new user // no otp login // should go to stepOne ");
-                            navigateToStepOne();
-
-                          } 
-                          else if (login_type == "fb" && login_status == "fbnewuserOtpOld") {
-                            log("fb new user // has otp login // should go to home ");
-                            navigateToHome();
-
-                          } 
-                          else if (login_type == "fb" && login_status == "fbnewuserOtpNew") {
-                            log("fb new user // no otp login // should go to stepOne ");
-                            navigateToStepOne();
-                          } 
-                          else
-                          {
-                            log("somehting went wrong");
-                          }
-                    } 
-                    else 
-                    {
-                      showAlert(
-                        context: context,
-                        title: "Empty or Invalid OTP",
-                      );
-                      log("Invalid OTP");
-                    }
+                    signIn();
                   },
                   child: FadeAnimation(
                     1.2,
@@ -288,13 +309,13 @@ class _PincodeVerifyState extends State<PincodeVerify> {
             onPressed: () {
               navigateToVerifyingScreen();
             },
-            child: Text('OK',
-                style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.bold
-                        ),
+            child: Text(
+              'OK',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold),
             ),
           )
         ],
@@ -323,8 +344,8 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     );
   }
 
-   navigateToStepOne() {
-     final _phone = widget.phone;
+  navigateToStepOne() {
+    final _phone = widget.phone;
     final _fbId = widget.fbId;
     final _fbName = widget.fbName;
     final _fbEmail = widget.fbEmail;
@@ -332,12 +353,13 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SetupStepOne(phone: _phone,
-          fbId: _fbId,
-          fbName: _fbName,
-          fbEmail: _fbEmail,
-          fbPicUrl: _fbPicUrl,
-          loginType: widget.loginType),
+        builder: (context) => SetupStepOne(
+            phone: _phone,
+            fbId: _fbId,
+            fbName: _fbName,
+            fbEmail: _fbEmail,
+            fbPicUrl: _fbPicUrl,
+            loginType: widget.loginType),
       ),
     );
   }

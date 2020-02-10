@@ -1,8 +1,9 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_country_picker/flutter_country_picker.dart';
-import 'package:folk/Controllers/OTP.dart';
+
 import 'package:folk/Controllers/ApiServices/OtpLoginService.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
@@ -26,7 +27,6 @@ class PhoneLogin extends StatefulWidget {
   _PhoneLoginState createState() => _PhoneLoginState();
 }
 
-FlutterOtp otp = FlutterOtp();
 
 class _PhoneLoginState extends State<PhoneLogin> {
   final _phoneNo = TextEditingController();
@@ -36,6 +36,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
   String _loginStatus = "";
   String phoneNum = "";
   bool isClicked = false;
+
 
   @override
   void initState() {
@@ -54,18 +55,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
     super.initState();
   }
 
-  // showLoader() {
-  //   return Center(
-  //     child: Container(
-  //       height: 150,
-  //       width: 150,
-  //       decoration: BoxDecoration(
-  //           image: DecorationImage(
-  //               image: AssetImage('assets/images/otpsend.gif'),
-  //               fit: BoxFit.cover)),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -208,19 +197,14 @@ class _PhoneLoginState extends State<PhoneLogin> {
                               _errorTxt = "";
                               isClicked = true;
                             });
-                           if(validatePhone())
-                           {
-                             phoneNum =  _countrycode + _phoneNo.text;
-                            print(phoneNum);
+                            if (validatePhone()) {
+                              phoneNum = _countrycode + _phoneNo.text;
+                              print(phoneNum);
 
-                            final body = {"phone": phoneNum};
-                            final _loginType = widget.loginType;
+                              final body = {"phone": phoneNum};
+                              final _loginType = widget.loginType;
 
-                            if (_loginType == "otp") {
-                              
-                              otp.sendOtp(phoneNum);
-                              int code = otp.get_otp();
-                              if (code != null) {
+                              if (_loginType == "otp") {
                                 LoginwithOtpService.LoginWithOtp(body)
                                     .then((success) {
                                   if (success) {
@@ -231,7 +215,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                     print('login status - ' + _loginStatus);
                                     //otp login old user
                                     navigateToVerifyingScreen();
-
                                   } else {
                                     setState(() {
                                       _loginStatus = "otpnewuser";
@@ -243,69 +226,58 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                         MaterialPageRoute(
                                             builder: (context) => SentScreen(
                                                 phone: phoneNum,
-                                                newotp: code,
                                                 loginStatus: _loginStatus,
                                                 loginType: _loginType)));
                                   }
                                 });
                               } else {
-                                print("something went wrong otp not sent");
-                                //if otp isnt sent
+                                //fb login new user
+                                LoginwithOtpService.LoginWithOtp(body)
+                                    .then((success) {
+                                  if (success) {
+                                    setState(() {
+                                      _loginStatus = "fbnewuserOtpOld";
+                                      //should go to home after verify
+                                    });
+                                    print("login status - " + _loginStatus);
+                                    log("fb new user who already have an otp login");
+
+                                    navigateToVerifyingScreen();
+                                  } else {
+                                    setState(() {
+                                      _loginStatus = "fbnewuserOtpNew";
+                                      //should go to stepone after verify
+                                    });
+                                    
+
+                                    print("login status - " + _loginStatus);
+                                    log("fb new user who doesnt hvae an otp login");
+
+                                    final _fbId = widget.fbId;
+                                    final _fbName = widget.fbName;
+                                    final _fbEmail = widget.fbEmail;
+                                    final _fbPicUrl = widget.fbPicUrl;
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => SentScreen(
+                                                  phone: phoneNum,
+                                                  fbId: _fbId,
+                                                  fbName: _fbName,
+                                                  fbEmail: _fbEmail,
+                                                  fbPicUrl: _fbPicUrl,
+                                                  loginType: widget.loginType,
+                                                  loginStatus: _loginStatus,
+                                                )));
+                                  }
+                                });
                               }
-                            } else {
-                              //fb login new user
-                              LoginwithOtpService.LoginWithOtp(body)
-                                  .then((success) {
-                                if (success) {
-                                  setState(() {
-                                    _loginStatus = "fbnewuserOtpOld";
-                                    //should go to home after verify
-                                  });
-                                  print("login status - " + _loginStatus);
-                                  log("fb new user who already have an otp login");
-
-                                  navigateToVerifyingScreen();
-
-                                } else {
-                                  
-
-                                  setState(() {
-                                    _loginStatus = "fbnewuserOtpNew";
-                                    //should go to stepone after verify
-                                  });
-                                  otp.sendOtp(phoneNum);
-                                  int code = otp.get_otp();
-
-                                  print("login status - " + _loginStatus);
-                                  log("fb new user who doesnt hvae an otp login");
-
-                                  final _fbId = widget.fbId;
-                                  final _fbName = widget.fbName;
-                                  final _fbEmail = widget.fbEmail;
-                                  final _fbPicUrl = widget.fbPicUrl;
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => SentScreen(
-                                            phone: phoneNum,
-                                            newotp: code,
-                                            fbId: _fbId,
-                                            fbName: _fbName,
-                                            fbEmail: _fbEmail,
-                                            fbPicUrl: _fbPicUrl,
-                                            loginType: widget.loginType,
-                                            loginStatus: _loginStatus,
-                                          )));
-                                }
-                              });
                             }
-                           }
-
-                           
 
                             // Navigator.of(context).pushNamed("/pincode");
-                          } 
-                          else {
+                          } else {
                             setState(() {
-                              _errorTxt = "Country Code & phone number needed !";
+                              _errorTxt =
+                                  "Country Code & phone number needed !";
                             });
                           }
                         },
@@ -364,24 +336,21 @@ class _PhoneLoginState extends State<PhoneLogin> {
   //   }
   // }
 
-  bool validatePhone(){
-    if(_countrycode== ''){
+  bool validatePhone() {
+    if (_countrycode == '') {
       setState(() {
         _errorTxt = "Select your country code";
       });
       return false;
-    }
-    else if(_phoneNo.text.length >= 9){
+    } else if (_phoneNo.text.length >= 9) {
       print("valid 4n number");
       return true;
-    }
-    else{
+    } else {
       setState(() {
         _errorTxt = "This should long 9 digits or higher!";
       });
       return false;
     }
-    
   }
 
   // Future<bool> navigateToLogin() {

@@ -5,7 +5,6 @@ import 'package:folk/Screens/Login/pincode_verify.dart';
 
 class SettingUpScreen extends StatefulWidget {
   final String phone;
-  final int newotp;
   final fbId;
   final fbName;
   final fbEmail;
@@ -15,7 +14,6 @@ class SettingUpScreen extends StatefulWidget {
   SettingUpScreen(
       {Key key,
       this.phone,
-      this.newotp,
       this.fbId,
       this.fbName,
       this.fbEmail,
@@ -47,19 +45,19 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
         final _fbPicUrl = widget.fbPicUrl;
         final _loginType = widget.loginType;
         final _loginStatus = widget.loginStatus;
-        final code = widget.newotp;
         final phoneNum = widget.phone;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Homepage(fbId: _fbId,
-                                          fbName: _fbName,
-                                          fbEmail: _fbEmail,
-                                          fbPicUrl: _fbPicUrl,
-                                          loginType: _loginType,
-                                          loginStatus: _loginStatus,
-                                          phone: phoneNum,
-                                                newotp: code,),
+            builder: (context) => Homepage(
+              fbId: _fbId,
+              fbName: _fbName,
+              fbEmail: _fbEmail,
+              fbPicUrl: _fbPicUrl,
+              loginType: _loginType,
+              loginStatus: _loginStatus,
+              phone: phoneNum,
+            ),
           ),
         );
       },
@@ -143,14 +141,15 @@ class _SentScreenState extends State<SentScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PincodeVerify(fbId: _fbId,
-                                          fbName: _fbName,
-                                          fbEmail: _fbEmail,
-                                          fbPicUrl: _fbPicUrl,
-                                          loginType: _loginType,
-                                          loginStatus: _loginStatus,
-                                          phone: phoneNum,
-                                                newotp: code,),
+            builder: (context) => PincodeVerify(
+              fbId: _fbId,
+              fbName: _fbName,
+              fbEmail: _fbEmail,
+              fbPicUrl: _fbPicUrl,
+              loginType: _loginType,
+              loginStatus: _loginStatus,
+              phone: phoneNum,
+            ),
           ),
         );
       },
@@ -174,13 +173,11 @@ class _SentScreenState extends State<SentScreen> {
                       fit: BoxFit.cover)),
             ),
             Container(
-              child:Text("Otp Sent !",
-                  style: TextStyle(
+                child: Text("Otp Sent !",
+                    style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 15,
-                    )
-              )
-            )
+                    )))
           ],
         ),
       ),
@@ -190,28 +187,28 @@ class _SentScreenState extends State<SentScreen> {
 
 class VerifyingScreen extends StatefulWidget {
   final String phone;
-  final int newotp;
   final fbId;
   final fbName;
   final fbEmail;
   final fbPicUrl;
   final loginType;
   final loginStatus;
-  VerifyingScreen({Key key,this.phone,
-      this.newotp,
+  VerifyingScreen(
+      {Key key,
+      this.phone,
       this.fbId,
       this.fbName,
       this.fbEmail,
       this.fbPicUrl,
       this.loginType,
-      this.loginStatus}) : super(key: key);
+      this.loginStatus})
+      : super(key: key);
 
   @override
   _VerifyingScreenState createState() => _VerifyingScreenState();
 }
 
 class _VerifyingScreenState extends State<VerifyingScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -230,19 +227,19 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
         final _fbPicUrl = widget.fbPicUrl;
         final _loginType = widget.loginType;
         final _loginStatus = widget.loginStatus;
-        final code = widget.newotp;
         final phoneNum = widget.phone;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Homepage(fbId: _fbId,
-                                          fbName: _fbName,
-                                          fbEmail: _fbEmail,
-                                          fbPicUrl: _fbPicUrl,
-                                          loginType: _loginType,
-                                          loginStatus: _loginStatus,
-                                          phone: phoneNum,
-                                                newotp: code,),
+            builder: (context) => Homepage(
+              fbId: _fbId,
+              fbName: _fbName,
+              fbEmail: _fbEmail,
+              fbPicUrl: _fbPicUrl,
+              loginType: _loginType,
+              loginStatus: _loginStatus,
+              phone: phoneNum,
+            ),
           ),
         );
       },
@@ -284,29 +281,29 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
 
 class WelcomeScreen extends StatefulWidget {
   final String phone;
-  final int newotp;
   final fbId;
   final fbName;
   final fbEmail;
   final fbPicUrl;
   final loginType;
   final loginStatus;
-  WelcomeScreen({Key key,this.phone,
-      this.newotp,
+  WelcomeScreen(
+      {Key key,
+      this.phone,
       this.fbId,
       this.fbName,
       this.fbEmail,
       this.fbPicUrl,
       this.loginType,
-      this.loginStatus}) : super(key: key);
+      this.loginStatus})
+      : super(key: key);
 
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-
-   @override
+  @override
   void initState() {
     // log(widget.fbName);
     navigate();
@@ -335,7 +332,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       },
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -362,13 +359,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           fontFamily: 'Montserrat',
                           fontSize: 15,
                         )),
-                        Text(
-                          widget.fbName,
-                          style: TextStyle(
+                    Text(widget.fbName,
+                        style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 15,
-                        )
-                        ),
+                        )),
                   ],
                 ),
               ),
