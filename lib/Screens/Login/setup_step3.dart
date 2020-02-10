@@ -33,8 +33,7 @@ class SetupStepThree extends StatefulWidget {
 }
 
 class _SetupStepThreeState extends State<SetupStepThree> {
-
-  List _selectedIndexs =[];
+  List _selectedIndexs = [];
 
   bool isClicked = false;
 
@@ -112,12 +111,17 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              "Select All",
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 16,
-                                  color: Color.fromRGBO(255, 112, 67, 1)),
+                            GestureDetector(
+                              onTap: (){
+                                
+                              },
+                              child: Text(
+                                "Select All",
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 16,
+                                    color: Color.fromRGBO(255, 112, 67, 1)),
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 5.0),
@@ -150,12 +154,13 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) {
-                                      final _isSelected = _selectedIndexs.contains(index);
+                                      final _isSelected =
+                                          _selectedIndexs.contains(index);
                                       return Wrap(
                                         direction: Axis.vertical,
                                         children: <Widget>[
                                           GestureDetector(
-                                            onTap: (){
+                                            onTap: () {
                                               // final inte_id =  "${datalist[index]['_id']}";
                                               // log(inte_id);
 
@@ -163,10 +168,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                               //   isClicked = true;
                                               // });
                                               setState(() {
-                                                if(_isSelected){
+                                                if (_isSelected) {
                                                   _selectedIndexs.remove(index);
-                                                }
-                                                else{
+                                                } else {
                                                   _selectedIndexs.add(index);
                                                 }
                                               });
@@ -179,7 +183,9 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                                       .width /
                                                   5.2,
                                               decoration: BoxDecoration(
-                                                  color: _isSelected? Colors.white : Color(0xFFFFEBE7),
+                                                  color: _isSelected
+                                                      ? Colors.white
+                                                      : Color(0xFFFFEBE7),
                                                   border: Border.all(
                                                       color: Color(0xFFE0E0E0)),
                                                   borderRadius:
