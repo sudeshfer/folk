@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "609452034791",
+    "firebase_url": "https://folkotp.firebaseio.com",
+    "project_id": "folkotp",
+    "storage_bucket": "folkotp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609452034791:android:f5d87b8a3643cda7693042",
+        "android_client_info": {
+          "package_name": "com.hardcode.folk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609452034791-7ne3kf981qlg453bd4s5bduc9i0pigg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvAGmMvXEJWBxq9mHiqckPAuhc0yZ3Fqk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609452034791-7ne3kf981qlg453bd4s5bduc9i0pigg9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
