@@ -178,13 +178,13 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             login_Type = "otp";
                           });
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  PhoneLogin(loginType: login_Type)));
-
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) =>
-                          //         SetupStepThree()));
+                          //         PhoneLogin(loginType: login_Type)));
+
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  SetupStepThree()));
                         },
                         child: Center(
                           child: Padding(

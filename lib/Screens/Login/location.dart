@@ -1,6 +1,9 @@
 // import 'package:location/location.dart';
 // import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alert/flutter_alert.dart';
+import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -12,54 +15,92 @@ class GetLocation extends StatefulWidget {
 }
 
 class _GetLocationState extends State<GetLocation> {
-  // Map<String,double> currentLocation = new Map();
-  // StreamSubscription<Map<String,double>> locationSubscription;
-
-  // Location location = new Location();
-  String error;
   PermissionStatus _status;
 
   @override
   void initState() {
+    super.initState();
+
     PermissionHandler()
         .checkPermissionStatus(PermissionGroup.locationWhenInUse)
         .then(_updateStatus);
-  
-    super.initState();
-    
-      
   }
 
   void _updateStatus(PermissionStatus status) {
     if (status != _status) {
-      setState(() {
-        _status = status;
-      });
-      print(_status);
+      _status = status;
     }
+    print(status);
   }
 
   void _askPermission() {
     PermissionHandler().requestPermissions(
-        [PermissionGroup.locationWhenInUse]).then(_onStatusRequested);
-        
+        [PermissionGroup.locationWhenInUse]).then(_onStatusrequested);
   }
 
-  void _onStatusRequested(Map<PermissionGroup, PermissionStatus> statuses) {
+  void _onStatusrequested(Map<PermissionGroup, PermissionStatus> statuses) {
     final status = statuses[PermissionGroup.locationWhenInUse];
-    // _updateStatus(status);
-    if (status != PermissionStatus.granted){
-      PermissionHandler().openAppSettings();
-      
+    if (status != PermissionStatus.granted || status == PermissionStatus.neverAskAgain) {
+      openSettingsDialog();
     } else {
-      _navigateToHome();
       _updateStatus(status);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage()));
+      // navigateToHome();
     }
-    // _updateStatus(status);
   }
 
-   _navigateToHome() {
-      Navigator.of(context).pushNamed("/home");
+  // navigateToHome() {
+  //   if (_status == PermissionStatus.granted) {
+  //     Navigator.of(context)
+  //         .push(MaterialPageRoute(builder: (context) => Homepage()));
+  //   } else {
+  //     print("permission denied");
+  //   }
+  // }
+
+  Future<bool> openSettingsDialog() {
+    return showDialog(
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('You have to enable your location for whole experience !'),
+        content: Column(
+          children: <Widget>[
+            Text("click ok to veify & sign in !"),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            color: Colors.orange,
+            onPressed: () {
+              PermissionHandler().openAppSettings();
+            },
+            child: Text(
+              'Open Settings',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          FlatButton(
+            color: Colors.orangeAccent,
+            onPressed: () {
+              Navigator.of(context).pop();
+              // navigateToHome();
+            },
+            child: Text(
+              'close',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
+      context: context,
+    );
   }
 
   @override
@@ -138,8 +179,6 @@ class _GetLocationState extends State<GetLocation> {
                     InkWell(
                       onTap: () {
                         _askPermission();
-                     
-                                    
                       },
                       child: Center(
                         child: Padding(
