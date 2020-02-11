@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:folk/Controllers/ApiServices/variables.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginwithFBService {
   static Future<bool> LoginWithFB(body) async {
@@ -22,6 +23,10 @@ class LoginwithFBService {
     Map<String, dynamic> res_data = jsonDecode(data);
     log(res_data['loginstatus']);
     if (res_data['loginstatus'] == 'olduser') {
+      final _token = res_data['token'];
+      print(_token);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("token", _token);
       return true;
     } else {
       return false;

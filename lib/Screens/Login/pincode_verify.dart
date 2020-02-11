@@ -38,6 +38,9 @@ class _PincodeVerifyState extends State<PincodeVerify> {
   @override
   void initState() {
     verifyPhone();
+    print( widget.loginStatus);
+    print(widget.loginType);
+
     setState(() {
       // _errorTxt = "";
     });
@@ -75,6 +78,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     };
     final PhoneVerificationCompleted verifiedSuccess =
         (AuthCredential phoneAuthCredential) {
+      navigate();
       print('verified');
     };
     final PhoneVerificationFailed verifyFailed = (AuthException exception) {
@@ -92,29 +96,34 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     log("OTP sent");
   }
 
+  navigate() {
+    final login_type = widget.loginType;
+    final login_status = widget.loginStatus;
+    print(login_type + login_status);
+    if (login_type == "otp" && login_status == "otpolduser") {
+      print("otp old user // has otp login // should go to home");
+      navigateToVerifyingScreen();
+    } else if (login_type == "otp" && login_status == "otpnewuser") {
+      print("otp new user // no otp login // should go to stepOne ");
+      navigateToStepOne();
+    } else if (login_type == "fb" && login_status == "fbnewuserOtpOld") {
+      print("fb new user // has otp login // should go to home ");
+      navigateToHome();
+    } else if (login_type == "fb" && login_status == "fbnewuserOtpNew") {
+      print("fb new user // no otp login // should go to stepOne ");
+      navigateToStepOne();
+    } else {
+      print("somehting went wrong");
+    }
+  }
+
   signIn() {
     final AuthCredential credential = PhoneAuthProvider.getCredential(
       verificationId: verificationId,
       smsCode: enteredOtp,
     );
     FirebaseAuth.instance.signInWithCredential(credential).then((user) {
-      final login_type = widget.loginType;
-      final login_status = widget.loginStatus;
-      if (login_type == "otp" && login_status == "otpolduser") {
-        log("otp old user // has otp login // should go to home");
-        navigateToVerifyingScreen();
-      } else if (login_type == "otp" && login_status == "otpnewuser") {
-        log("otp new user // no otp login // should go to stepOne ");
-        navigateToStepOne();
-      } else if (login_type == "fb" && login_status == "fbnewuserOtpOld") {
-        log("fb new user // has otp login // should go to home ");
-        navigateToHome();
-      } else if (login_type == "fb" && login_status == "fbnewuserOtpNew") {
-        log("fb new user // no otp login // should go to stepOne ");
-        navigateToStepOne();
-      } else {
-        log("somehting went wrong");
-      }
+      navigate();
     }).catchError((e) {
       showAlert(
         context: context,
@@ -200,11 +209,11 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   1,
                   Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 7.0,horizontal: 5.0),
+                          vertical: 7.0, horizontal: 7.0),
                       child: PinCodeTextField(
                         length: 6,
                         obsecureText: false,
-                        shape: PinCodeFieldShape.underline,
+                        shape: PinCodeFieldShape.box,
                         fieldHeight: 50,
                         backgroundColor: Colors.white,
                         fieldWidth: 50,
@@ -259,8 +268,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   1.4,
                   InkWell(
                     onTap: () {
-                      log('Clikced on back btn');
-                      signIn();
+                      verifyPhone();
                     },
                     child: RichText(
                       textAlign: TextAlign.center,

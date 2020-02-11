@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:folk/Screens/Home_page/home_page.dart';
 import 'dart:async';
 import 'package:folk/Screens/Login/login_page.dart';
 import 'package:folk/Utils/Animations/delayed_reveal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -9,21 +11,40 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  SharedPreferences prefs;
+  
   @override
   void initState() {
+
+    checkLoginStatus();
+    
     super.initState();
+  }
+
+  navigateToLogin(){
     Future.delayed(
       Duration(seconds: 3),
       () {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginPage(),
-          ),
-        );
+        // Navigator.pop(context);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>LoginPage()), (Route<dynamic> route) =>false);
       },
     );
+  }
+
+  navigateToHome(){
+   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>Homepage()), (Route<dynamic> route) =>false);
+    
+  }
+  checkLoginStatus() async {
+    prefs = await SharedPreferences.getInstance();
+    if(prefs.getString("token") == null){
+       navigateToLogin();
+    }
+    else{
+      navigateToHome();
+    }
+    
   }
 
   @override

@@ -10,3 +10,6 @@ image_cropper=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\image_cropper-1
 image_picker=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\image_picker-0.6.3+1\\
 location=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\location-2.3.5\\
 permission_handler=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\permission_handler-4.2.0+hotfix.3\\
+shared_preferences=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences-0.5.6+1\\
+shared_preferences_macos=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+4\\
+shared_preferences_web=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_web-0.1.2+3\\

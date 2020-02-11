@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_country_picker/flutter_country_picker.dart';
 
 import 'package:folk/Controllers/ApiServices/OtpLoginService.dart';
+import 'package:folk/Screens/Login/pincode_verify.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 
@@ -397,12 +398,14 @@ class _PhoneLoginState extends State<PhoneLogin> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => VerifyingScreen(
+        builder: (context) => PincodeVerify(
           phone: _phone,
           fbId: _fbId,
           fbName: _fbName,
           fbEmail: _fbEmail,
           fbPicUrl: _fbPicUrl,
+          loginStatus:_loginStatus,
+          loginType:widget.loginType
         ),
       ),
     );
