@@ -1,11 +1,14 @@
 // import 'package:location/location.dart';
 // import 'package:flutter/services.dart';
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 
 class GetLocation extends StatefulWidget {
   GetLocation({Key key}) : super(key: key);
@@ -16,21 +19,46 @@ class GetLocation extends StatefulWidget {
 
 class _GetLocationState extends State<GetLocation> {
   PermissionStatus _status;
+  bool isPermissionIgnored = false;
+  bool isGoTOSettingsClicked = false;
 
   @override
   void initState() {
     super.initState();
-
+    TimerFunction();
     PermissionHandler()
         .checkPermissionStatus(PermissionGroup.locationWhenInUse)
         .then(_updateStatus);
   }
 
+  TimerFunction() {
+    const oneSec = const Duration(seconds: 1);
+    new Timer.periodic(oneSec, (Timer t) => {
+      print("timer running"),
+       PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+        .then(_updateStatus),
+
+      
+      if(_status==PermissionStatus.granted){
+        t.cancel(),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage()))        
+      }
+    });
+  }
+
   void _updateStatus(PermissionStatus status) {
     if (status != _status) {
       _status = status;
+      print(_status);
     }
     print(status);
+  }
+
+  Future<PermissionStatus> _onBackPressed() {
+    PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+        .then(_updateStatus);
   }
 
   void _askPermission() {
@@ -40,11 +68,12 @@ class _GetLocationState extends State<GetLocation> {
 
   void _onStatusrequested(Map<PermissionGroup, PermissionStatus> statuses) {
     final status = statuses[PermissionGroup.locationWhenInUse];
-    if (status != PermissionStatus.granted || status == PermissionStatus.neverAskAgain) {
+    if (status != PermissionStatus.granted) {
       openSettingsDialog();
     } else {
       _updateStatus(status);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => Homepage()));
       // navigateToHome();
     }
   }
@@ -85,7 +114,11 @@ class _GetLocationState extends State<GetLocation> {
           FlatButton(
             color: Colors.orangeAccent,
             onPressed: () {
+              _updateStatus(_status);
               Navigator.of(context).pop();
+              setState(() {
+                isPermissionIgnored = true;
+              });
               // navigateToHome();
             },
             child: Text(
@@ -142,16 +175,27 @@ class _GetLocationState extends State<GetLocation> {
                     Center(
                       child: Container(
                         margin: EdgeInsets.only(top: 2),
-                        child: Text(
-                          "Where are you?",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 35,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        child: isPermissionIgnored
+                            ? Text(
+                                "Oops !",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 35,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            : Text(
+                                "Where are you?",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 35,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -161,50 +205,95 @@ class _GetLocationState extends State<GetLocation> {
                       Center(
                         child: Container(
                           margin: EdgeInsets.only(top: 18),
-                          child: Text(
-                            "Your location service need to be turned on\norder for this to work",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Montserrat',
-                            ),
-                          ),
+                          child: isPermissionIgnored
+                              ? Text(
+                                  "Your location service need to be turned on\norder for this to work",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Montserrat',
+                                  ),
+                                )
+                              : Text(
+                                  "Your location service need to be turned in\norder for this to work",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Montserrat',
+                                  ),
+                                ),
                         ),
                       ),
                     ),
                   ),
                   FadeAnimation(
                     1.2,
-                    InkWell(
-                      onTap: () {
-                        _askPermission();
-                      },
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 40.0),
-                          child: Container(
-                            height: 55,
-                            width: MediaQuery.of(context).size.width / 1.4,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50))),
+                    isPermissionIgnored
+                        ? InkWell(
+                            onTap: () {
+                              setState(() {
+                                isGoTOSettingsClicked = true;
+                              });
+                              PermissionHandler().openAppSettings();
+                            },
                             child: Center(
-                              child: Text(
-                                'Enable location'.toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: 'Montserrat',
-                                    // fontWeight: FontWeight.w600,
-                                    // letterSpacing: 0.2,
-                                    height: 1),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 40.0),
+                                child: Container(
+                                  height: 55,
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.4,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(50))),
+                                  child: Center(
+                                    child: Text(
+                                      'Go To Settings'.toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'Montserrat',
+                                          // fontWeight: FontWeight.w600,
+                                          // letterSpacing: 0.2,
+                                          height: 1),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              _askPermission();
+                            },
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 40.0),
+                                child: Container(
+                                  height: 55,
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.4,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(50))),
+                                  child: Center(
+                                    child: Text(
+                                      'Enable location'.toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'Montserrat',
+                                          // fontWeight: FontWeight.w600,
+                                          // letterSpacing: 0.2,
+                                          height: 1),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),

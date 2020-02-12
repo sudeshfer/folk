@@ -39,7 +39,7 @@ dependencies:
   progress_dialog: ^1.2.0
   firebase_auth: ^0.15.4
   shared_preferences:
-  permission_handler: 4.2.0
+  permission_handler: 4.0.0
   
 
 
