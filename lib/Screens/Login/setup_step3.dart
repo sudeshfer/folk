@@ -34,10 +34,25 @@ class SetupStepThree extends StatefulWidget {
 
 class _SetupStepThreeState extends State<SetupStepThree> {
   List _selectedIndexs = [];
+  List interests = [];
+  List filteredInterests = [];
   final _search = TextEditingController();
 
   bool isClicked = false;
   bool isSearchFocused = false;
+
+  @override
+  void initState() { 
+    super.initState();
+    GetInterests.getInterests().then((interestsFromServer){
+      interests = interestsFromServer;
+      filteredInterests = interests;
+        print(interests);
+        print(interests);
+
+    });
+    
+  }
 
   Future<bool> _onBackPressed() {
     return AwesomeDialog(
@@ -56,8 +71,8 @@ class _SetupStepThreeState extends State<SetupStepThree> {
         false;
   }
 
-  _clearSearch(){
-      _search.clear();
+  _clearSearch() {
+    _search.clear();
   }
 
   @override
@@ -106,11 +121,18 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                               ]),
                           child: TextField(
                             keyboardType: TextInputType.text,
-                            controller: _search,
+                            // controller: _search,
                             onTap: () {
                               setState(() {
                                 isSearchFocused = true;
                               });
+                            },
+                            onChanged: (string){
+                              setState(() {
+                                filteredInterests = interests.where((I)=>
+                                (I.filteredInterests['index']['iname'].toString().contains(string.toString()) )).toList();
+                              });
+        
                             },
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -121,7 +143,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                               ),
                               suffixIcon: isSearchFocused
                                   ? GestureDetector(
-                                    onTapUp:_clearSearch() ,
+                                      onTapUp: _clearSearch(),
                                       child: Icon(
                                         Icons.close,
                                         color: Colors.orange,
@@ -155,119 +177,126 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     0.9,
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 30.0, right: 8.0, top: 18),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Hobby",
-                            style: TextStyle(
+                          left: 15.0, right: 15.0, top: 18),
+                      child: ExpansionTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Hobby",
+                              style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 18,
-                                color: Color.fromRGBO(255, 112, 67, 1)),
-                          ),
-                          IconButton(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              iconSize: 38,
-                              onPressed: () {})
-                        ],
-                      ),
-                    ),
-                  ),
-                  FadeAnimation(
-                    1,
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 25.0, right: 25.0, top: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                              ),
+                            ),
+                          ],
+                        ),
                         children: <Widget>[
-                          FutureBuilder(
-                            future: GetInterests.getInterests(),
-                            builder: (context, snapshot) {
-                              final datalist = snapshot.data;
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                return Expanded(
-                                  child: SizedBox(
-                                    height: 35,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        final _isSelected =
-                                            _selectedIndexs.contains(index);
-                                        return Wrap(
-                                          direction: Axis.vertical,
-                                          children: <Widget>[
-                                            GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  if (_isSelected) {
+                          FadeAnimation(
+                            0.5,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 16, bottom: 30.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  FutureBuilder(
+                                    future: GetInterests.getInterests(),
+                                    builder: (context, snapshot) {
+                                      final filteredInterests = snapshot.data;
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        return Expanded(
+                                          child: SizedBox(
+                                            height: 35,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) {
+                                                final _isSelected =
                                                     _selectedIndexs
-                                                        .remove(index);
-                                                  } else {
-                                                    _selectedIndexs.add(index);
-                                                  }
-                                                });
+                                                        .contains(index);
+                                                 final user = "${filteredInterests[index]['iname']}";       
+                                                return Wrap(
+                                                  direction: Axis.vertical,
+                                                  children: <Widget>[
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          if (_isSelected) {
+                                                            _selectedIndexs
+                                                                .remove(index);
+                                                          } else {
+                                                            _selectedIndexs
+                                                                .add(index);
+                                                          }
+                                                        });
+                                                      },
+                                                      child: new Container(
+                                                        margin: EdgeInsets.only(
+                                                            right: 7),
+                                                        height: 30,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            5.2,
+                                                        decoration: BoxDecoration(
+                                                            color: _isSelected
+                                                                ? Colors.white
+                                                                : Color(
+                                                                    0xFFFFEBE7),
+                                                            border: Border.all(
+                                                                color: Color(
+                                                                    0xFFE0E0E0)),
+                                                            borderRadius: BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        50.0),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        50.0),
+                                                                bottomRight:
+                                                                    Radius.circular(
+                                                                        50.0),
+                                                                bottomLeft:
+                                                                    Radius.circular(
+                                                                        0.0))),
+                                                        child: Center(
+                                                          child: Text(
+                                                            "${filteredInterests[index]['iname']}",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'Montserrat',
+                                                                color: Color(
+                                                                    0xFFFF5E3A),
+                                                                fontSize: 13),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
                                               },
-                                              child: new Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 7),
-                                                height: 30,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    5.2,
-                                                decoration: BoxDecoration(
-                                                    color: _isSelected
-                                                        ? Colors.white
-                                                        : Color(0xFFFFEBE7),
-                                                    border: Border.all(
-                                                        color: Color(
-                                                            0xFFE0E0E0)),
-                                                    borderRadius: BorderRadius
-                                                        .only(
-                                                            topLeft: Radius
-                                                                .circular(50.0),
-                                                            topRight: Radius
-                                                                .circular(50.0),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    50.0),
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    0.0))),
-                                                child: Center(
-                                                  child: Text(
-                                                    "${datalist[index]['iname']}",
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        color:
-                                                            Color(0xFFFF5E3A),
-                                                        fontSize: 13),
-                                                  ),
-                                                ),
-                                              ),
+                                              itemCount: filteredInterests.length,
                                             ),
-                                          ],
+                                          ),
                                         );
-                                      },
-                                      itemCount: datalist.length,
-                                    ),
-                                  ),
-                                );
-                              }
-                              return Padding(
-                                padding: const EdgeInsets.only(left: 140.0),
-                                child: Center(
-                                  child: isClicked
-                                      ? CircularProgressIndicator()
-                                      : null,
-                                ),
-                              );
-                            },
-                          )
+                                      }
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 140.0),
+                                        child: Center(
+                                          child: isClicked
+                                              ? CircularProgressIndicator()
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -276,69 +305,400 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     1.1,
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 30.0, right: 8.0, top: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          left: 15.0, right: 15.0, top: 30),
+                      child: ExpansionTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Sport,Activity,Fitness",
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                         children: <Widget>[
-                          Text(
-                            "Sport,Activity,Fitness",
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
+                          FadeAnimation(
+                            0.5,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 16, bottom: 30.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(right: 7),
+                                    // padding: const EdgeInsets.all(12.0),
+                                    // margin: const EdgeInsets.only(right: 5),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: Color(0xFFE0E0E0)),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          IconButton(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              iconSize: 38,
-                              onPressed: () {})
                         ],
                       ),
                     ),
                   ),
-                  
                   FadeAnimation(
                     1.2,
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 30.0, right: 8.0, top: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          left: 20.0, right: 20.0, top: 30),
+                      child: ExpansionTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Family",
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                         children: <Widget>[
-                          Text(
-                            "Family",
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
+                          FadeAnimation(
+                            0.5,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 16, bottom: 30.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(right: 7),
+                                    // padding: const EdgeInsets.all(12.0),
+                                    // margin: const EdgeInsets.only(right: 5),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: Color(0xFFE0E0E0)),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          IconButton(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              iconSize: 38,
-                              onPressed: () {})
                         ],
                       ),
                     ),
                   ),
-                  
                   FadeAnimation(
                     1.3,
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 30.0, right: 8.0, top: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          left: 20.0, right: 20.0, top: 30),
+                      child: ExpansionTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Sports",
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                         children: <Widget>[
-                          Text(
-                            "Family",
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
+                           FadeAnimation(
+                            0.5,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 16, bottom: 30.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(right: 7),
+                                    // padding: const EdgeInsets.all(12.0),
+                                    // margin: const EdgeInsets.only(right: 5),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: Color(0xFFE0E0E0)),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    // padding: const EdgeInsets.all(12.0),
+                                    margin: EdgeInsets.only(right: 7),
+                                    height: 35,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5.2,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFffebee),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0),
+                                            bottomRight: Radius.circular(50.0),
+                                            bottomLeft: Radius.circular(0.0))),
+                                    child: Center(
+                                      child: Text(
+                                        "culture",
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            color:
+                                                Color.fromRGBO(255, 112, 67, 1),
+                                            fontSize: 13),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          IconButton(
-                              icon: Icon(Icons.keyboard_arrow_down),
-                              iconSize: 38,
-                              onPressed: () {})
                         ],
                       ),
                     ),
