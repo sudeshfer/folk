@@ -13,6 +13,7 @@ import 'package:folk/Utils/Animations/delayed_reveal.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -26,6 +27,9 @@ class _LoginPageState extends State<LoginPage> {
   var profileData;
   String login_Type = "";
   ProgressDialog pr;
+
+  SharedPreferences prefs;
+
 
   var facebookLogin = FacebookLogin();
 
@@ -178,13 +182,13 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             login_Type = "otp";
                           });
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  PhoneLogin(loginType: login_Type)));
-
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) =>
-                          //         SetupStepThree()));
+                          //         PhoneLogin(loginType: login_Type)));
+
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  SetupStepThree()));
                         },
                         child: Center(
                           child: Padding(
@@ -327,11 +331,17 @@ class _LoginPageState extends State<LoginPage> {
         };
 
         if (_fbEmail != null) {
-          LoginwithFBService.LoginWithFB(body).then((success) {
+          LoginwithFBService.LoginWithFB(body).then((success) async {
             if (success) {
               print("fb old user");
               //Fb login old user
               //  Navigator.of(context).pushNamed("/home");
+               SharedPreferences prefs = await SharedPreferences.getInstance();
+              final _token = prefs.getString("gettoken");
+              print(_token);
+
+              SharedPreferences prefs2 = await SharedPreferences.getInstance();
+              prefs2.setString("token", _token);
               pr.hide();
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => VerifyingScreen(
@@ -343,6 +353,7 @@ class _LoginPageState extends State<LoginPage> {
             } else {
               print("fb new  user");
               //Fb login new user
+             
               pr.hide();
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PhoneLogin(

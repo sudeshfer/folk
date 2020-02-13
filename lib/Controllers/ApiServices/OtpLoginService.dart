@@ -25,7 +25,7 @@ class LoginwithOtpService {
       final _token = res_data['token'];
       print(_token);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("token", _token);
+      prefs.setString("gettoken", _token);
       return true;
     } else {
       return false;

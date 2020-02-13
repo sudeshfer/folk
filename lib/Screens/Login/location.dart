@@ -8,6 +8,7 @@ import 'package:flutter_alert/flutter_alert.dart';
 import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class GetLocation extends StatefulWidget {
@@ -21,6 +22,7 @@ class _GetLocationState extends State<GetLocation> {
   PermissionStatus _status;
   bool isPermissionIgnored = false;
   bool isGoTOSettingsClicked = false;
+  SharedPreferences prefs;
 
   @override
   void initState() {
@@ -30,6 +32,17 @@ class _GetLocationState extends State<GetLocation> {
         .checkPermissionStatus(PermissionGroup.locationWhenInUse)
         .then(_updateStatus);
   }
+
+  Future<void> initializeToken() async {
+    
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var _token = prefs.getString('gettoken');
+      print(_token);
+
+      SharedPreferences prefs2 = await SharedPreferences.getInstance();
+      prefs2.setString("token", _token);
+    }
+
 
   TimerFunction() {
     const oneSec = const Duration(seconds: 1);
@@ -42,6 +55,7 @@ class _GetLocationState extends State<GetLocation> {
       
       if(_status==PermissionStatus.granted){
         t.cancel(),
+        initializeToken(),
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage()))        
       }
     });

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:folk/Screens/Login/login_page.dart';
@@ -48,7 +50,7 @@ class _HomepageState extends State<Homepage> {
         false;
   }
 
-  navigateToLogin() async{
+  logOut() async{
       SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.remove("token");
                     Navigator.pushReplacement(
@@ -70,7 +72,8 @@ class _HomepageState extends State<Homepage> {
                 Text("Welcome to home page"),
                 GestureDetector(
                   onTap: () {
-                    navigateToLogin();
+                    logOut();
+                    log("logged Out");
                   },
                   child: Container(
                     height: 51,

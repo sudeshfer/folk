@@ -10,8 +10,8 @@ class GetInterests {
     // final data = response.body;
 
     if (response != null) {
-      log("Interests are fetched");
-      print(json.decode(response.body));
+      // log("Interests are fetched");
+      // print(json.decode(response.body));
       return json.decode(response.body);
     } else {
       return null;

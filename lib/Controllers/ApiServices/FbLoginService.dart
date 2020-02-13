@@ -18,15 +18,15 @@ class LoginwithFBService {
 
     var data = response.body;
     // print(body);
-    print(json.decode(data));
+    // print(json.decode(data));
 
     Map<String, dynamic> res_data = jsonDecode(data);
-    log(res_data['loginstatus']);
+    // log(res_data['loginstatus']);
     if (res_data['loginstatus'] == 'olduser') {
       final _token = res_data['token'];
-      print(_token);
+      // print(_token);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("token", _token);
+      prefs.setString("gettoken", _token);
       return true;
     } else {
       return false;

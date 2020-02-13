@@ -7,6 +7,7 @@ import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 import 'package:folk/Utils/Login_utils/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String result;
 String enteredOtp;
@@ -35,6 +36,8 @@ class PincodeVerify extends StatefulWidget {
 class _PincodeVerifyState extends State<PincodeVerify> {
   String smsCode;
   String verificationId;
+  SharedPreferences prefs;
+
   @override
   void initState() {
     verifyPhone();
@@ -96,25 +99,55 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     log("OTP sent");
   }
 
-  navigate() {
+  navigate() async {
     final login_type = widget.loginType;
     final login_status = widget.loginStatus;
     print(login_type + login_status);
-    if (login_type == "otp" && login_status == "otpolduser") {
+
+    if (login_type == "otp" && login_status == "otpolduser") 
+    {
+
       print("otp old user // has otp login // should go to home");
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final _token = prefs.getString("gettoken");
+      log(_token);
+
+      SharedPreferences prefs2 = await SharedPreferences.getInstance();
+      prefs2.setString("token", _token);
+
       navigateToVerifyingScreen();
-    } else if (login_type == "otp" && login_status == "otpnewuser") {
+
+    } 
+    else if (login_type == "otp" && login_status == "otpnewuser")
+     {
+
       print("otp new user // no otp login // should go to stepOne ");
       navigateToStepOne();
-    } else if (login_type == "fb" && login_status == "fbnewuserOtpOld") {
+    } 
+    else if (login_type == "fb" && login_status == "fbnewuserOtpOld") 
+    {
       print("fb new user // has otp login // should go to home ");
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final _token = prefs.getString("gettoken");
+      log(_token);
+
+      SharedPreferences prefs2 = await SharedPreferences.getInstance();
+      prefs2.setString("token", _token);
+
       navigateToHome();
-    } else if (login_type == "fb" && login_status == "fbnewuserOtpNew") {
+
+    } 
+    else if (login_type == "fb" && login_status == "fbnewuserOtpNew") 
+    {
       print("fb new user // no otp login // should go to stepOne ");
       navigateToStepOne();
-    } else {
-      print("somehting went wrong");
     }
+     else 
+     {
+      print("somehting went wrong");
+     }
   }
 
   signIn() {

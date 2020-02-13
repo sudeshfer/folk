@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:folk/Screens/Home_page/home_page.dart';
 import 'dart:async';
@@ -12,7 +14,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  SharedPreferences prefs;
+  SharedPreferences prefs2;
   
   @override
   void initState() {
@@ -37,11 +39,14 @@ class _SplashScreenState extends State<SplashScreen> {
     
   }
   checkLoginStatus() async {
-    prefs = await SharedPreferences.getInstance();
-    if(prefs.getString("token") == null){
+    prefs2 = await SharedPreferences.getInstance();
+    if(prefs2.getString("token") == null){
        navigateToLogin();
     }
     else{
+      prefs2 = await SharedPreferences.getInstance();
+      final _token = prefs2.getString("token");
+      log(_token);
       navigateToHome();
     }
     
