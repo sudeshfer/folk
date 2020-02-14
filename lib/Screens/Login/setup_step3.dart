@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:folk/Controllers/ApiServices/fetch_Interests.dart';
 import 'package:flutter/material.dart';
+import 'package:folk/Controllers/ApiServices/GetInterestsService.dart';
+import 'package:folk/Models/interestModel.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 
 class SetupStepThree extends StatefulWidget {
@@ -32,26 +34,41 @@ class SetupStepThree extends StatefulWidget {
   _SetupStepThreeState createState() => _SetupStepThreeState();
 }
 
+class Debouncer {
+  final int milliseconds;
+  VoidCallback action;
+  Timer _timer;
+
+  Debouncer({this.milliseconds});
+
+  run(VoidCallback action) {
+    if (null != _timer) {
+      _timer.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
+}
+
 class _SetupStepThreeState extends State<SetupStepThree> {
+  final _debouncer = Debouncer(milliseconds: 500);
+  List<Interest> interest = List();
+  List<Interest> filteredInterests = List();
+
   List _selectedIndexs = [];
-  List interests = [];
-  List filteredInterests = [];
   final _search = TextEditingController();
 
   bool isClicked = false;
   bool isSearchFocused = false;
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
-    GetInterests.getInterests().then((interestsFromServer){
-      interests = interestsFromServer;
-      filteredInterests = interests;
-        print(interests);
-        print(interests);
-
+    GetInterestService.getInterests().then((interestFromServer) {
+      setState(() {
+        interest = interestFromServer;
+        filteredInterests = interest;
+      });
     });
-    
   }
 
   Future<bool> _onBackPressed() {
@@ -127,12 +144,17 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                 isSearchFocused = true;
                               });
                             },
-                            onChanged: (string){
-                              setState(() {
-                                filteredInterests = interests.where((I)=>
-                                (I.filteredInterests['index']['iname'].toString().contains(string.toString()) )).toList();
+                            onChanged: (string) {
+                              _debouncer.run(() {
+                                setState(() {
+                                  filteredInterests = interest
+                                      .where((u) => (u.intName
+                                              .toLowerCase()
+                                              .contains(string.toLowerCase())
+                                          ))
+                                      .toList();
+                                });
                               });
-        
                             },
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -141,15 +163,13 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                 color: Colors.grey,
                                 size: 30,
                               ),
-                              suffixIcon: isSearchFocused
-                                  ? GestureDetector(
-                                      onTapUp: _clearSearch(),
-                                      child: Icon(
-                                        Icons.close,
-                                        color: Colors.orange,
-                                      ),
-                                    )
-                                  : null,
+                              // suffixIcon:isSearchFocused?
+                              //      Icon(
+                              //       Icons.close,
+                              //       color: Colors.orange,
+                              //     )
+                              //     :null,
+                                
                               hintText: 'Search',
                             ),
                           ),
@@ -187,6 +207,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 18,
+                                color: Colors.black
                               ),
                             ),
                           ],
@@ -198,100 +219,80 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                               padding:
                                   const EdgeInsets.only(top: 16, bottom: 30.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  FutureBuilder(
-                                    future: GetInterests.getInterests(),
-                                    builder: (context, snapshot) {
-                                      final filteredInterests = snapshot.data;
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.done) {
-                                        return Expanded(
-                                          child: SizedBox(
-                                            height: 35,
-                                            child: ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemBuilder: (context, index) {
-                                                final _isSelected =
-                                                    _selectedIndexs
-                                                        .contains(index);
-                                                 final user = "${filteredInterests[index]['iname']}";       
-                                                return Wrap(
-                                                  direction: Axis.vertical,
-                                                  children: <Widget>[
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (_isSelected) {
-                                                            _selectedIndexs
-                                                                .remove(index);
-                                                          } else {
-                                                            _selectedIndexs
-                                                                .add(index);
-                                                          }
-                                                        });
-                                                      },
-                                                      child: new Container(
-                                                        margin: EdgeInsets.only(
-                                                            right: 7),
-                                                        height: 30,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width /
-                                                            5.2,
-                                                        decoration: BoxDecoration(
-                                                            color: _isSelected
-                                                                ? Colors.white
-                                                                : Color(
-                                                                    0xFFFFEBE7),
-                                                            border: Border.all(
-                                                                color: Color(
-                                                                    0xFFE0E0E0)),
-                                                            borderRadius: BorderRadius.only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        50.0),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        50.0),
-                                                                bottomRight:
-                                                                    Radius.circular(
-                                                                        50.0),
-                                                                bottomLeft:
-                                                                    Radius.circular(
-                                                                        0.0))),
-                                                        child: Center(
-                                                          child: Text(
-                                                            "${filteredInterests[index]['iname']}",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'Montserrat',
-                                                                color: Color(
-                                                                    0xFFFF5E3A),
-                                                                fontSize: 13),
-                                                          ),
-                                                        ),
-                                                      ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: 35,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          final _isSelected =
+                                              _selectedIndexs.contains(index);
+                                          return Wrap(
+                                            direction: Axis.vertical,
+                                            children: <Widget>[
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    if (_isSelected) {
+                                                      _selectedIndexs
+                                                          .remove(index);
+                                                    } else {
+                                                      _selectedIndexs
+                                                          .add(index);
+                                                    }
+                                                  });
+                                                },
+                                                child: new Container(
+                                                  margin:
+                                                      EdgeInsets.only(right: 7),
+                                                  height: 30,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      5.2,
+                                                  decoration: BoxDecoration(
+                                                      color: _isSelected
+                                                          ? Colors.white
+                                                          : Color(0xFFFFEBE7),
+                                                      border: Border.all(
+                                                          color: Color(
+                                                              0xFFE0E0E0)),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                      50.0),
+                                                              topRight:
+                                                                  Radius.circular(
+                                                                      50.0),
+                                                              bottomRight: Radius
+                                                                  .circular(
+                                                                      50.0),
+                                                              bottomLeft: Radius
+                                                                  .circular(
+                                                                      0.0))),
+                                                  child: Center(
+                                                    child: Text(
+                                                      filteredInterests[index]
+                                                          .intName,
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              'Montserrat',
+                                                          color:
+                                                              Color(0xFFFF5E3A),
+                                                          fontSize: 13),
                                                     ),
-                                                  ],
-                                                );
-                                              },
-                                              itemCount: filteredInterests.length,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 140.0),
-                                        child: Center(
-                                          child: isClicked
-                                              ? CircularProgressIndicator()
-                                              : null,
-                                        ),
-                                      );
-                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                        itemCount: filteredInterests.length,
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
@@ -315,6 +316,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,
+                                color: Colors.black
                               ),
                             ),
                           ],
@@ -449,6 +451,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,
+                                color: Colors.black
                               ),
                             ),
                           ],
@@ -583,12 +586,13 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,
+                                color: Colors.black
                               ),
                             ),
                           ],
                         ),
                         children: <Widget>[
-                           FadeAnimation(
+                          FadeAnimation(
                             0.5,
                             Padding(
                               padding:
