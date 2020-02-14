@@ -5,6 +5,7 @@ import 'package:folk/Screens/Home_page/home_page.dart';
 import 'dart:async';
 import 'package:folk/Screens/Login/login_page.dart';
 import 'package:folk/Utils/Animations/delayed_reveal.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,7 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
     checkLoginStatus();
     
     super.initState();
+
+    
   }
+
+    
 
   navigateToLogin(){
     Future.delayed(
