@@ -12,6 +12,9 @@ import 'package:folk/Screens/Splash_screen/splash_screen.dart';
 
 import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'app_localizations.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,6 +23,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      supportedLocales: [Locale('en'), Locale('it')],
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          print(supportedLocale.languageCode);
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
       debugShowCheckedModeBanner: false,
       title: 'Folk',
       theme: ThemeData(
@@ -30,7 +49,7 @@ class MyApp extends StatelessWidget {
         // login and resgistration routes
         "/login": (BuildContext context) => new LoginPage(),
         "/phonelogin": (BuildContext context) => new PhoneLogin(),
-         "/forgotpw": (BuildContext context) => new ForgotPassword(),
+        "/forgotpw": (BuildContext context) => new ForgotPassword(),
         "/resetpw": (BuildContext context) => new ResetPassword(),
         "/pincode": (BuildContext context) => new PincodeVerify(),
         "/setupstep1": (BuildContext context) => new SetupStepOne(),
@@ -38,7 +57,7 @@ class MyApp extends StatelessWidget {
         "/setupstep3": (BuildContext context) => new SetupStepThree(),
         "/location": (BuildContext context) => new GetLocation(),
         "/SettingUpScreen": (BuildContext context) => new SettingUpScreen(),
-        
+
         //homepage routes
         "/home": (BuildContext context) => new Homepage(),
       },
