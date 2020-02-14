@@ -464,14 +464,15 @@ class _SetupStepOneState extends State<SetupStepOne> {
   }
 
   bool validateName() {
-    if (_name.text.length >= 6) {
+    if (_name.text.contains(' ')) {
       print("valid Name");
-      return true;
-    } else {
-      setState(() {
-        _errorName = "This should long 6 characters or higher!";
+       setState(() {
+        _errorName = "White spaces are not allowed in the name field !";
       });
       return false;
+    } else {
+     
+      return true;
     }
   }
 
