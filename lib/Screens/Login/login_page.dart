@@ -7,7 +7,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:folk/Screens/Login/phone_login.dart';
 import 'package:folk/Controllers/ApiServices/FbLoginService.dart';
-import 'package:folk/Screens/Login/setup_step3.dart';
+import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Animations/delayed_reveal.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
@@ -182,13 +182,13 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             login_Type = "otp";
                           });
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) =>
-                          //         PhoneLogin(loginType: login_Type)));
-
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
-                                  SetupStepThree()));
+                                  PhoneLogin(loginType: login_Type)));
+
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) =>
+                          //         SetupStepOne()));
                         },
                         child: Center(
                           child: Padding(
@@ -322,7 +322,7 @@ class _LoginPageState extends State<LoginPage> {
         onLoginStatusChanged(true, profileData: profile);
 
         final _fbId = "${profileData['id']}";
-        final _fbName = "${profileData['name']}";
+        final _fbName = "${profileData['first_name']}";
         final _fbEmail = "${profileData['email']}";
         // final _gender = "${profileData['user_gender']}";
         final _fbPicUrl = profileData['picture']['data']['url'];
