@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
@@ -44,6 +45,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   bool isMaleClicked = false;
   bool isFemaleClicked = false;
   ProgressDialog pr;
+
+  int age ;
 
   @override
   void initState() {
@@ -337,7 +340,13 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                           if (validateEmail()) {
                             print(_birthday.text);
 
-                            postUserData();
+                            if(age<5840){
+                              ageErrorDialog();
+                              print("get out junior");
+                            }
+                            else{
+                              postUserData();
+                            }
                           }
                         } else {
                           setState(() {
@@ -428,15 +437,44 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
     );
   }
 
+  Future<bool> ageErrorDialog() {
+    return showDialog(
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('Sorry ! We cannot allow you to register !'),
+        content: Text('your age is not suitable for this place!'),
+        actions: <Widget>[
+          FlatButton(
+            color: Colors.orange,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
+      context: context,
+    );
+  }
+
   showDatePicker() {
     DatePicker.showDatePicker(context,
         showTitleActions: true,
         minTime: DateTime(1980, 12, 31),
-        maxTime: DateTime(2020, 12, 31), onChanged: (date) {
+        maxTime: DateTime.now(), onChanged: (date) {
       //print the date
       print('change $date');
     }, onConfirm: (date) {
       final bday = "$date";
+
+      age = (date.difference(DateTime.now()).inDays)*-1;
+      print("age in days:"+ age.toString());
 
       var formatter = new DateFormat('yyyy-MM-dd');
       var selecteddate = formatter.format(date);
