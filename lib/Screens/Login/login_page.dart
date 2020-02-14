@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -12,6 +13,7 @@ import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Animations/delayed_reveal.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   var profileData;
   String login_Type = "";
   ProgressDialog pr;
+  
+  PermissionStatus _status;
 
   SharedPreferences prefs;
 
@@ -43,6 +47,79 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
+    PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+        .then(_updateStatus);
+
+        _askPermission();
+  }
+  
+  void _updateStatus(PermissionStatus status) {
+    if (status != _status) {
+      _status = status;
+      print(_status);
+    }
+    print(status);
+  }
+
+  void _askPermission() {
+    PermissionHandler().requestPermissions(
+        [PermissionGroup.locationWhenInUse]).then(_onStatusrequested);
+  }
+
+  void _onStatusrequested(Map<PermissionGroup, PermissionStatus> statuses) {
+    final status = statuses[PermissionGroup.locationWhenInUse];
+    if (status != PermissionStatus.granted) {
+      openSettingsDialog();
+    } else {
+      _updateStatus(status);
+      // Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (context) => Homepage()));
+      // navigateToHome();
+    }
+  }
+
+  Future<bool> openSettingsDialog() {
+    return showDialog(
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('You have to enable your location for whole experience !'),
+
+        actions: <Widget>[
+          FlatButton(
+            color: Colors.orange,
+            onPressed: () {
+              PermissionHandler().openAppSettings();
+            },
+            child: Text(
+              'Open Settings',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          FlatButton(
+            color: Colors.orangeAccent,
+            onPressed: () {
+              _updateStatus(_status);
+              Navigator.of(context).pop();
+              // navigateToHome();
+            },
+            child: Text(
+              'close',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
+      context: context,
+    );
   }
 
   Future<bool> _onBackPressed() {
