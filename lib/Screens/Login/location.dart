@@ -9,7 +9,7 @@ import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:folk/app_localizations.dart';
 
 class GetLocation extends StatefulWidget {
   GetLocation({Key key}) : super(key: key);
@@ -34,31 +34,31 @@ class _GetLocationState extends State<GetLocation> {
   }
 
   Future<void> initializeToken() async {
-    
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var _token = prefs.getString('gettoken');
-      print(_token);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var _token = prefs.getString('gettoken');
+    print(_token);
 
-      SharedPreferences prefs2 = await SharedPreferences.getInstance();
-      prefs2.setString("token", _token);
-    }
-
+    SharedPreferences prefs2 = await SharedPreferences.getInstance();
+    prefs2.setString("token", _token);
+  }
 
   TimerFunction() {
     const oneSec = const Duration(seconds: 1);
-    new Timer.periodic(oneSec, (Timer t) => {
-      print("timer running"),
-       PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
-        .then(_updateStatus),
-
-      
-      if(_status==PermissionStatus.granted){
-        t.cancel(),
-        initializeToken(),
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Homepage()))        
-      }
-    });
+    new Timer.periodic(
+        oneSec,
+        (Timer t) => {
+              print("timer running"),
+              PermissionHandler()
+                  .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+                  .then(_updateStatus),
+              if (_status == PermissionStatus.granted)
+                {
+                  t.cancel(),
+                  initializeToken(),
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Homepage()))
+                }
+            });
   }
 
   void _updateStatus(PermissionStatus status) {
@@ -104,10 +104,10 @@ class _GetLocationState extends State<GetLocation> {
   Future<bool> openSettingsDialog() {
     return showDialog(
       builder: (context) => CupertinoAlertDialog(
-        title: Text('You have to enable your location for whole experience !'),
+        title: Text(AppLocalizations.of(context).translate('have_to_enable')),
         content: Column(
           children: <Widget>[
-            Text("click ok to veify & sign in !"),
+            Text(AppLocalizations.of(context).translate('click_verify')),
           ],
         ),
         actions: <Widget>[
@@ -117,7 +117,7 @@ class _GetLocationState extends State<GetLocation> {
               PermissionHandler().openAppSettings();
             },
             child: Text(
-              'Open Settings',
+              AppLocalizations.of(context).translate('open_settings'),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -136,7 +136,7 @@ class _GetLocationState extends State<GetLocation> {
               // navigateToHome();
             },
             child: Text(
-              'close',
+              AppLocalizations.of(context).translate('close'),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -191,7 +191,7 @@ class _GetLocationState extends State<GetLocation> {
                         margin: EdgeInsets.only(top: 2),
                         child: isPermissionIgnored
                             ? Text(
-                                "Oops !",
+                                AppLocalizations.of(context).translate('oops'),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
@@ -201,7 +201,8 @@ class _GetLocationState extends State<GetLocation> {
                                 ),
                               )
                             : Text(
-                                "Where are you?",
+                                AppLocalizations.of(context)
+                                    .translate('where_you'),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
@@ -221,7 +222,8 @@ class _GetLocationState extends State<GetLocation> {
                           margin: EdgeInsets.only(top: 18),
                           child: isPermissionIgnored
                               ? Text(
-                                  "Your location service need to be turned on\norder for this to work",
+                                  AppLocalizations.of(context)
+                                      .translate('need_enabled'),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -230,7 +232,8 @@ class _GetLocationState extends State<GetLocation> {
                                   ),
                                 )
                               : Text(
-                                  "Your location service need to be turned in\norder for this to work",
+                                  AppLocalizations.of(context)
+                                      .translate('need_enabled'),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
@@ -265,7 +268,9 @@ class _GetLocationState extends State<GetLocation> {
                                           Radius.circular(50))),
                                   child: Center(
                                     child: Text(
-                                      'Go To Settings'.toUpperCase(),
+                                      AppLocalizations.of(context)
+                                          .translate('goto_settings')
+                                          .toUpperCase(),
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontFamily: 'Montserrat',
@@ -295,7 +300,9 @@ class _GetLocationState extends State<GetLocation> {
                                           Radius.circular(50))),
                                   child: Center(
                                     child: Text(
-                                      'Enable location'.toUpperCase(),
+                                      AppLocalizations.of(context)
+                                          .translate('enable_location')
+                                          .toUpperCase(),
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontFamily: 'Montserrat',

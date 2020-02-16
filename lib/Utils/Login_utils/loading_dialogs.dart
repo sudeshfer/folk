@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:folk/Screens/Home_page/home_page.dart';
+import 'package:folk/Screens/Login/location.dart';
 import 'dart:async';
 import 'package:folk/Screens/Login/pincode_verify.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SettingUpScreen extends StatefulWidget {
   final String phone;
@@ -209,11 +211,48 @@ class VerifyingScreen extends StatefulWidget {
 }
 
 class _VerifyingScreenState extends State<VerifyingScreen> {
+
+  PermissionStatus _status;
+
   @override
   void initState() {
     super.initState();
     //  print(widget.fbName);
-    navigate();
+    PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+        .then(_updateStatus);
+
+        TimerFunction();
+    // navigate();
+
+  }
+
+    TimerFunction() {
+    const oneSec = const Duration(seconds: 1);
+    new Timer.periodic(oneSec, (Timer t) => {
+      print("timer running"),
+       PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+        .then(_updateStatus),
+
+      
+      if(_status==PermissionStatus.denied || _status== PermissionStatus.neverAskAgain){
+        t.cancel(),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetLocation()))        
+      }
+      else{
+        print("location permission enabled !"),
+        t.cancel(),
+        navigate(),
+      }
+    });
+  }
+
+  void _updateStatus(PermissionStatus status) {
+    if (status != _status) {
+      _status = status;
+      print(_status);
+    }
   }
 
   navigate() {

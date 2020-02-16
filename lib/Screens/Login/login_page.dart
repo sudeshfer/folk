@@ -51,10 +51,10 @@ class _LoginPageState extends State<LoginPage> {
             dialogType: DialogType.WARNING,
             // customHeader: Image.asset("assets/images/macha.gif"),
             animType: AnimType.TOPSLIDE,
-            btnOkText: "yes",
-            btnCancelText: "Hell No..",
-            tittle: 'Are you sure ?',
-            desc: 'Do you want to exit an App',
+            btnOkText: AppLocalizations.of(context).translate('yes'),
+            btnCancelText: AppLocalizations.of(context).translate('no'),
+            tittle: AppLocalizations.of(context).translate('you_sure'),
+            desc: AppLocalizations.of(context).translate('exit_app'),
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               exit(0);
@@ -251,7 +251,9 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.of(context).pushNamed("/forgotpw");
                             },
                             child: Container(
-                              child: Text('Trouble Logging In',
+                              child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('trouble_login'),
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Montserrat',
@@ -268,7 +270,9 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0),
                           child: Container(
-                            child: Text('By clicking start, you agree to our',
+                            child: Text(
+                                AppLocalizations.of(context)
+                                    .translate('by_clicking'),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Montserrat',
@@ -284,7 +288,9 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 4.0),
                           child: Container(
-                            child: Text('Terms and Conditions',
+                            child: Text(
+                                AppLocalizations.of(context)
+                                    .translate('terms_conditions'),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'Montserrat',
@@ -371,7 +377,7 @@ class _LoginPageState extends State<LoginPage> {
         } else {
           showAlert(
             context: context,
-            title: "Something Went wrong",
+            title: AppLocalizations.of(context).translate('went_wrong'),
           );
           print("something went wrong ");
         }

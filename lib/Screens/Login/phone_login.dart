@@ -8,6 +8,7 @@ import 'package:folk/Controllers/ApiServices/OtpLoginService.dart';
 import 'package:folk/Screens/Login/pincode_verify.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
+import 'package:folk/app_localizations.dart';
 
 class PhoneLogin extends StatefulWidget {
   final fbId;
@@ -28,16 +29,14 @@ class PhoneLogin extends StatefulWidget {
   _PhoneLoginState createState() => _PhoneLoginState();
 }
 
-
 class _PhoneLoginState extends State<PhoneLogin> {
   final _phoneNo = TextEditingController();
-  Country _selected;
+  Country _selected = Country.IT;
   String _countrycode = '';
   String _errorTxt = '';
   String _loginStatus = "";
   String phoneNum = "";
   bool isClicked = false;
-
 
   @override
   void initState() {
@@ -55,7 +54,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
     log("LoginType = " + widget.loginType);
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +90,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     child: Container(
                       margin: EdgeInsets.only(top: 30),
                       child: Text(
-                        "Enter Your Phone Number",
+                        AppLocalizations.of(context).translate('enter_phone'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color.fromRGBO(64, 75, 105, 1),
@@ -151,7 +149,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                     border: new OutlineInputBorder(
                                         borderSide: new BorderSide(
                                             color: Color(0xFFE0E0E0))),
-                                    labelText: 'Phone Number',
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('phone_no'),
                                     errorText: _errorTxt,
                                     errorBorder: _errorTxt.isEmpty
                                         ? OutlineInputBorder(
@@ -175,7 +174,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     child: Container(
                       margin: EdgeInsets.only(top: 30, left: 28, right: 28),
                       child: Text(
-                        "Tap Next to receive an SMS confirmation from \n Account Kit powered by Facebook. Folk uses \n Facebook technology to keep you sign in.",
+                        AppLocalizations.of(context).translate('tap_next_to'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color(0xFF404B69),
@@ -249,7 +248,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                       _loginStatus = "fbnewuserOtpNew";
                                       //should go to stepone after verify
                                     });
-                                    
 
                                     print("login status - " + _loginStatus);
                                     log("fb new user who doesnt hvae an otp login");
@@ -277,8 +275,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
                             // Navigator.of(context).pushNamed("/pincode");
                           } else {
                             setState(() {
-                              _errorTxt =
-                                  "Country Code & phone number needed !";
+                              _errorTxt = AppLocalizations.of(context)
+                                  .translate('c_code_needed');
                             });
                           }
                         },
@@ -293,7 +291,9 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                   BorderRadius.all(Radius.circular(50))),
                           child: Center(
                             child: Text(
-                              'Next'.toUpperCase(),
+                              AppLocalizations.of(context)
+                                  .translate('next_btn')
+                                  .toUpperCase(),
                               style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -340,7 +340,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
   bool validatePhone() {
     if (_countrycode == '') {
       setState(() {
-        _errorTxt = "Select your country code";
+        _errorTxt = AppLocalizations.of(context).translate('err_select_c_code');
       });
       return false;
     } else if (_phoneNo.text.length >= 9) {
@@ -348,7 +348,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
       return true;
     } else {
       setState(() {
-        _errorTxt = "This should long 9 digits or higher!";
+        _errorTxt = AppLocalizations.of(context).translate('err_shoub_be_9');
       });
       return false;
     }
@@ -399,14 +399,13 @@ class _PhoneLoginState extends State<PhoneLogin> {
       context,
       MaterialPageRoute(
         builder: (context) => PincodeVerify(
-          phone: _phone,
-          fbId: _fbId,
-          fbName: _fbName,
-          fbEmail: _fbEmail,
-          fbPicUrl: _fbPicUrl,
-          loginStatus:_loginStatus,
-          loginType:widget.loginType
-        ),
+            phone: _phone,
+            fbId: _fbId,
+            fbName: _fbName,
+            fbEmail: _fbEmail,
+            fbPicUrl: _fbPicUrl,
+            loginStatus: _loginStatus,
+            loginType: widget.loginType),
       ),
     );
   }

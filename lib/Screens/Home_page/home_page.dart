@@ -1,10 +1,11 @@
+import 'dart:io';
+import 'dart:async';
 import 'dart:developer';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:folk/Screens/Login/location.dart';
 import 'package:folk/Screens/Login/login_page.dart';
-import 'dart:io';
-
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Homepage extends StatefulWidget {
@@ -33,6 +34,49 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+
+ PermissionStatus _status;
+
+  @override
+  void initState() {
+    super.initState();
+    //  print(widget.fbName);
+    PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+        .then(_updateStatus);
+
+        TimerFunction();
+
+  }
+
+   TimerFunction() {
+    const oneSec = const Duration(seconds: 1);
+    new Timer.periodic(oneSec, (Timer t) => {
+      print("timer running"),
+       PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+        .then(_updateStatus),
+
+      
+      if(_status==PermissionStatus.denied){
+        t.cancel(),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetLocation()))        
+      }
+      else{
+        print("location permission already enabled !"),
+        t.cancel(),
+      }
+    });
+  }
+
+  void _updateStatus(PermissionStatus status) {
+    if (status != _status) {
+      _status = status;
+      print(_status);
+    }
+  }
+
+
   Future<bool> _onBackPressed() {
     return AwesomeDialog(
             context: context,

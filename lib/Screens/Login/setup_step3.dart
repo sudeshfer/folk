@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:folk/Controllers/ApiServices/GetInterestsService.dart';
 import 'package:folk/Models/interestModel.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
+import 'package:folk/app_localizations.dart';
 
 class SetupStepThree extends StatefulWidget {
   // final bday;
@@ -59,6 +60,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
 
   bool isClicked = false;
   bool isSearchFocused = false;
+  String isExpanded = "";
 
   @override
   void initState() {
@@ -69,6 +71,10 @@ class _SetupStepThreeState extends State<SetupStepThree> {
         filteredInterests = interest;
       });
     });
+
+    setState(() {
+      isExpanded = "true";
+    });
   }
 
   Future<bool> _onBackPressed() {
@@ -77,10 +83,10 @@ class _SetupStepThreeState extends State<SetupStepThree> {
             dialogType: DialogType.WARNING,
             // customHeader: Image.asset("assets/images/macha.gif"),
             animType: AnimType.TOPSLIDE,
-            btnOkText: "yes",
-            btnCancelText: "Hell No..",
-            tittle: 'Are you sure ?',
-            desc: 'Do you want to exit an App',
+            btnOkText: AppLocalizations.of(context).translate('yes'),
+            btnCancelText: AppLocalizations.of(context).translate('no'),
+            tittle: AppLocalizations.of(context).translate('you_sure'),
+            desc: AppLocalizations.of(context).translate('exit_app'),
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               exit(0);
@@ -88,8 +94,16 @@ class _SetupStepThreeState extends State<SetupStepThree> {
         false;
   }
 
-  _clearSearch() {
-    _search.clear();
+  // _clearSearch() {
+  //   _search.clear();
+  // }
+
+  changeIcon(){
+   setState(() {
+     isExpanded= "false";
+   });
+   print(isExpanded);
+    
   }
 
   @override
@@ -149,9 +163,8 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                 setState(() {
                                   filteredInterests = interest
                                       .where((u) => (u.intName
-                                              .toLowerCase()
-                                              .contains(string.toLowerCase())
-                                          ))
+                                          .toLowerCase()
+                                          .contains(string.toLowerCase())))
                                       .toList();
                                 });
                               });
@@ -169,8 +182,8 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                               //       color: Colors.orange,
                               //     )
                               //     :null,
-                                
-                              hintText: 'Search',
+
+                              hintText: AppLocalizations.of(context).translate('search'),
                             ),
                           ),
                         ),
@@ -182,7 +195,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     Container(
                       margin: EdgeInsets.only(top: 30, left: 30, bottom: 20),
                       child: Text(
-                        "Choose Interests",
+                        AppLocalizations.of(context).translate('choose_intrst'),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Color.fromRGBO(64, 75, 105, 1),
@@ -205,13 +218,19 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                             Text(
                               "Hobby",
                               style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 18,
-                                color: Colors.black
-                              ),
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 18,
+                                  color: Colors.black),
                             ),
                           ],
                         ),
+                        onExpansionChanged: changeIcon(),
+                        trailing: Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 35,
+                          color: isExpanded== "false"? Colors.black : Colors.black,
+                        ),
+                        initiallyExpanded: true,
                         children: <Widget>[
                           FadeAnimation(
                             0.5,
@@ -314,12 +333,16 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                             Text(
                               "Sport,Activity,Fitness",
                               style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 16,
-                                color: Colors.black
-                              ),
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 16,
+                                  color: Colors.black),
                             ),
                           ],
+                        ),
+                         trailing: Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 35,
+                          color: isExpanded== "false"? Colors.black : Colors.black,
                         ),
                         children: <Widget>[
                           FadeAnimation(
@@ -441,7 +464,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     1.2,
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 30),
+                          left: 15.0, right: 15.0, top: 30),
                       child: ExpansionTile(
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -449,12 +472,16 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                             Text(
                               "Family",
                               style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 16,
-                                color: Colors.black
-                              ),
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 16,
+                                  color: Colors.black),
                             ),
                           ],
+                        ),
+                         trailing: Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 35,
+                          color: isExpanded== "false"? Colors.black : Colors.black,
                         ),
                         children: <Widget>[
                           FadeAnimation(
@@ -576,7 +603,7 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                     1.3,
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 30),
+                          left: 15.0, right: 15.0, top: 30),
                       child: ExpansionTile(
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -584,12 +611,16 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                             Text(
                               "Sports",
                               style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 16,
-                                color: Colors.black
-                              ),
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 16,
+                                  color: Colors.black),
                             ),
                           ],
+                        ),
+                         trailing: Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 35,
+                          color: isExpanded== "false"? Colors.black : Colors.black,
                         ),
                         children: <Widget>[
                           FadeAnimation(

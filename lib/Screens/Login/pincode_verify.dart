@@ -7,6 +7,7 @@ import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
 import 'package:folk/Utils/Login_utils/pin_code_fields.dart';
+import 'package:folk/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String result;
@@ -41,7 +42,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
   @override
   void initState() {
     verifyPhone();
-    print( widget.loginStatus);
+    print(widget.loginStatus);
     print(widget.loginType);
 
     setState(() {
@@ -104,9 +105,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     final login_status = widget.loginStatus;
     print(login_type + login_status);
 
-    if (login_type == "otp" && login_status == "otpolduser") 
-    {
-
+    if (login_type == "otp" && login_status == "otpolduser") {
       print("otp old user // has otp login // should go to home");
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -117,16 +116,10 @@ class _PincodeVerifyState extends State<PincodeVerify> {
       prefs2.setString("token", _token);
 
       navigateToVerifyingScreen();
-
-    } 
-    else if (login_type == "otp" && login_status == "otpnewuser")
-     {
-
+    } else if (login_type == "otp" && login_status == "otpnewuser") {
       print("otp new user // no otp login // should go to stepOne ");
       navigateToStepOne();
-    } 
-    else if (login_type == "fb" && login_status == "fbnewuserOtpOld") 
-    {
+    } else if (login_type == "fb" && login_status == "fbnewuserOtpOld") {
       print("fb new user // has otp login // should go to home ");
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -137,17 +130,12 @@ class _PincodeVerifyState extends State<PincodeVerify> {
       prefs2.setString("token", _token);
 
       navigateToHome();
-
-    } 
-    else if (login_type == "fb" && login_status == "fbnewuserOtpNew") 
-    {
+    } else if (login_type == "fb" && login_status == "fbnewuserOtpNew") {
       print("fb new user // no otp login // should go to stepOne ");
       navigateToStepOne();
-    }
-     else 
-     {
+    } else {
       print("somehting went wrong");
-     }
+    }
   }
 
   signIn() {
@@ -160,7 +148,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
     }).catchError((e) {
       showAlert(
         context: context,
-        title: "Empty or Invalid OTP",
+        title: AppLocalizations.of(context).translate('err_empty_invalid'),
       );
       log("Invalid OTP");
     });
@@ -204,7 +192,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
-                      'Enter the code',
+                      AppLocalizations.of(context).translate('enter_code'),
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Montserrat',
@@ -220,7 +208,8 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                         horizontal: 30.0, vertical: 8),
                     child: RichText(
                       text: TextSpan(
-                          text: "A verification code has been sent to ",
+                          text: AppLocalizations.of(context)
+                              .translate('has_sent_to'),
                           children: [
                             TextSpan(
                                 text: widget.phone,
@@ -278,7 +267,9 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                                   BorderRadius.all(Radius.circular(50))),
                           child: Center(
                             child: Text(
-                              'Continue'.toUpperCase(),
+                              AppLocalizations.of(context)
+                                  .translate('continue')
+                                  .toUpperCase(),
                               style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -306,15 +297,17 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                          text: "I didn't get a code",
+                          text: AppLocalizations.of(context)
+                              .translate('i_did_not'),
                           style: TextStyle(
                               color: Color(0xFFf45d27),
                               fontSize: 17.5,
                               fontFamily: 'Montserrat'),
                           children: [
                             TextSpan(
-                                text:
-                                    " \n Tap Continue to accept Facebook's Terms",
+                                text: " \n " +
+                                    AppLocalizations.of(context)
+                                        .translate('tap_continue'),
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 14,
@@ -337,10 +330,10 @@ class _PincodeVerifyState extends State<PincodeVerify> {
   Future<bool> navigateToHome() {
     return showDialog(
       builder: (context) => CupertinoAlertDialog(
-        title: Text('You already have an account with this number !'),
+        title: Text(AppLocalizations.of(context).translate('already_have')),
         content: Column(
           children: <Widget>[
-            Text("click ok to veify & sign in !"),
+            Text(AppLocalizations.of(context).translate('click_ok_to')),
           ],
         ),
         actions: <Widget>[
@@ -350,7 +343,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
               navigateToVerifyingScreen();
             },
             child: Text(
-              'OK',
+              AppLocalizations.of(context).translate('txt_ok'),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,

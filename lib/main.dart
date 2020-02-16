@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:folk/Screens/Login/location.dart';
 import 'package:folk/Screens/Login/login_page.dart';
 import 'package:folk/Screens/Login/phone_login.dart';
@@ -9,10 +10,8 @@ import 'package:folk/Screens/Login/setup_step1.dart';
 import 'package:folk/Screens/Login/setup_step2.dart';
 import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Screens/Splash_screen/splash_screen.dart';
-
 import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app_localizations.dart';
 
@@ -28,7 +27,8 @@ class MyApp extends StatelessWidget {
         // ... app-specific localization delegate[s] here
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       localeResolutionCallback: (locale, supportedLocales) {
         for (var supportedLocale in supportedLocales) {

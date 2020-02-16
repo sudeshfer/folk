@@ -5,6 +5,7 @@ import 'package:folk/Screens/Login/resetPassword.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Controllers/ApiServices/SendResetMailService.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:folk/app_localizations.dart';
 
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key key}) : super(key: key);
@@ -29,11 +30,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
-
     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
 
     pr.style(
-        message: 'Sending Email...',
+        message: AppLocalizations.of(context).translate('sending_email'),
         borderRadius: 10.0,
         progressWidget: Container(
             height: 40,
@@ -84,7 +84,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: Text(
-                    'Forgot Password?',
+                    AppLocalizations.of(context).translate('forgot_password'),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(64, 75, 105, 1),
@@ -101,8 +101,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: RichText(
                     text: TextSpan(
-                        text:
-                            "Pleace enter your email below to receive your \npassword reset instructions.",
+                        text: AppLocalizations.of(context)
+                            .translate('please_enter'),
                         style: TextStyle(
                             color: Color.fromRGBO(64, 75, 105, 1),
                             fontSize: 16)),
@@ -124,7 +124,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         border: new OutlineInputBorder(
                             borderSide:
                                 new BorderSide(color: Color(0xFFE0E0E0))),
-                        labelText: 'Email',
+                        labelText:
+                            AppLocalizations.of(context).translate('email'),
                         errorText: _errorTxt,
                         errorBorder: _errorTxt.isEmpty
                             ? OutlineInputBorder(
@@ -150,35 +151,33 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             isLoaidng = true;
                           });
 
-                          if(validateEmail()){
-                           pr.show();
+                          if (validateEmail()) {
+                            pr.show();
 
-                          final body = {"email": _email.text};
+                            final body = {"email": _email.text};
 
-                          SendResetMailService.SendResetEmail(body)
-                              .then((success) {
-                            if (success) {
-                              log('email sent successfully');
-                              pr.hide();
+                            SendResetMailService.SendResetEmail(body)
+                                .then((success) {
+                              if (success) {
+                                log('email sent successfully');
+                                pr.hide();
 
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ResetPassword(
-                                        resetEmail: _email.text,
-                                      )));
-                              
-                            }
-                            else
-                            {
-                              pr.hide();
-                               _errorTxt = "This Email doesnt blongs to an account !";
-                            }
-                          });
-                         }
-
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ResetPassword(
+                                          resetEmail: _email.text,
+                                        )));
+                              } else {
+                                pr.hide();
+                                _errorTxt = AppLocalizations.of(context)
+                                    .translate('dont_belong');
+                              }
+                            });
+                          }
                         } else {
                           pr.hide();
                           setState(() {
-                            _errorTxt = "You should fill out this field !";
+                            _errorTxt = AppLocalizations.of(context)
+                                .translate('fill_out');
                           });
                         }
                       },
@@ -193,7 +192,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
-                            'Send request'.toUpperCase(),
+                            AppLocalizations.of(context)
+                                .translate('send_request')
+                                .toUpperCase(),
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -224,22 +225,21 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     }
   }
 
- ///function tht validate the email
-   bool validateEmail(){
-    String email= _email.text;
-    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-    if(emailValid){
-
+  ///function tht validate the email
+  bool validateEmail() {
+    String email = _email.text;
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    if (emailValid) {
       print("Valid email !");
       log("Valid email !");
       return true;
-    }
-    else{
-        setState(() {
-          _errorTxt= "This is not a valid email !";
-        });
-       return false; 
+    } else {
+      setState(() {
+        _errorTxt = AppLocalizations.of(context).translate('not_valid');
+      });
+      return false;
     }
   }
-
 }

@@ -1,10 +1,9 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:folk/Controllers/ApiServices/VerifyEmailService.dart';
 import 'package:folk/Screens/Home_page/home_page.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
-import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
+import 'package:folk/app_localizations.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -35,7 +34,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     // pr.style(message: 'Sending Email..');
 
     prd.style(
-        message: 'Verifying Your Account...',
+        message: AppLocalizations.of(context).translate('verifying_acc'),
         borderRadius: 10.0,
         progressWidget: Container(
             height: 40,
@@ -46,7 +45,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     fit: BoxFit.cover))),
         elevation: 10.0,
         insetAnimCurve: Curves.easeInOut,
-        progressTextStyle: TextStyle(fontFamily: 'Montserrat',fontSize: 4));
+        progressTextStyle: TextStyle(fontFamily: 'Montserrat', fontSize: 4));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -84,7 +83,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: Text(
-                    'Reset Password',
+                    AppLocalizations.of(context).translate('reset_password'),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(64, 75, 105, 1),
@@ -101,8 +100,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                       const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                   child: RichText(
                     text: TextSpan(
-                        text: "Reset code was sent your email. Please \n"
-                            "enter ther code and create new password.",
+                        text: AppLocalizations.of(context)
+                                .translate('reset_was_sent') +
+                            "\n" +
+                            AppLocalizations.of(context)
+                                .translate('enter_the_code'),
                         style: TextStyle(
                             color: Color.fromRGBO(64, 75, 105, 1),
                             fontSize: 16)),
@@ -126,7 +128,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                         border: new OutlineInputBorder(
                             borderSide:
                                 new BorderSide(color: Color(0xFFE0E0E0))),
-                        labelText: 'Reset Code',
+                        labelText: AppLocalizations.of(context)
+                            .translate('reset_code'),
                         errorText: _errorTxt,
                         errorBorder: _errorTxt.isEmpty
                             ? OutlineInputBorder(
@@ -152,37 +155,39 @@ class _ResetPasswordState extends State<ResetPassword> {
                           setState(() {
                             _errorTxt = "";
                           });
-                          
-                          if(validatePhone()){
-                             prd.show();
-                          log('clicked on reset btn');
 
-                          final body = {
-                            "email": widget.resetEmail,
-                            "code": _resetCode.text
-                          };
+                          if (validatePhone()) {
+                            prd.show();
+                            log('clicked on reset btn');
 
-                          VerifyEmailService.VerifyEmail(body).then((success) {
-                            if (success) {
-                              log('account verified');
+                            final body = {
+                              "email": widget.resetEmail,
+                              "code": _resetCode.text
+                            };
 
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Homepage()));
-                            } else {
-                              prd.hide();
-                              setState(() {
-                                _errorTxt = "Invalid Code! Check Again";
-                              });
-                            }
-                          });
+                            VerifyEmailService.VerifyEmail(body)
+                                .then((success) {
+                              if (success) {
+                                log('account verified');
+
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => Homepage()));
+                              } else {
+                                prd.hide();
+                                setState(() {
+                                  _errorTxt = AppLocalizations.of(context)
+                                      .translate('invalid_check_again');
+                                });
+                              }
+                            });
                           }
-                          
 
                           // Navigator.of(context).pushNamed("/resetpw");
                         } else {
                           prd.hide();
                           setState(() {
-                            _errorTxt = "You should fill out this field !";
+                            _errorTxt = AppLocalizations.of(context)
+                                .translate('err_should_fill');
                           });
                         }
                       },
@@ -197,7 +202,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
-                            'Change Phone number'.toUpperCase(),
+                            AppLocalizations.of(context)
+                                .translate('change_phn_no')
+                                .toUpperCase(),
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -228,19 +235,15 @@ class _ResetPasswordState extends State<ResetPassword> {
     }
   }
 
-  bool validatePhone(){
-    if(_resetCode.text.length == 6){
+  bool validatePhone() {
+    if (_resetCode.text.length == 6) {
       print("valid code");
       return true;
-    }
-    else{
+    } else {
       setState(() {
-        _errorTxt = "The reset code must contain 6 digits !";
+        _errorTxt = AppLocalizations.of(context).translate('err_must_contail');
       });
       return false;
     }
-    
   }
-
-  
 }

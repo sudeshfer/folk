@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:folk/app_localizations.dart';
 
 class SetupStepTwo extends StatefulWidget {
   final phone;
@@ -46,7 +47,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   bool isFemaleClicked = false;
   ProgressDialog pr;
 
-  int age ;
+  int age;
 
   @override
   void initState() {
@@ -73,11 +74,10 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
 
   @override
   Widget build(BuildContext context) {
-
     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
 
     pr.style(
-        message: 'Please wait...',
+        message: AppLocalizations.of(context).translate('please_wait'),
         borderRadius: 10.0,
         progressWidget: Container(
             height: 30,
@@ -121,7 +121,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                 Container(
                   margin: EdgeInsets.only(top: 25, left: 30),
                   child: Text(
-                    "Introduce Yourself",
+                    AppLocalizations.of(context)
+                        .translate('introduce_yourself'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color.fromRGBO(64, 75, 105, 1),
@@ -137,7 +138,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                 Container(
                   margin: EdgeInsets.only(top: 30, left: 30),
                   child: Text(
-                    "Gender",
+                    AppLocalizations.of(context).translate('gender'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color.fromRGBO(64, 75, 105, 1),
@@ -194,7 +195,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                             padding: const EdgeInsets.only(top: 5, left: 60.0),
                             child: Container(
                                 decoration: BoxDecoration(color: Colors.white),
-                                child: Text("Male")),
+                                child: Text(AppLocalizations.of(context)
+                                    .translate('g_male'))),
                           )
                         ],
                       ),
@@ -238,7 +240,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                             padding: const EdgeInsets.only(top: 5, right: 60.0),
                             child: Container(
                                 decoration: BoxDecoration(color: Colors.white),
-                                child: Text("Female")),
+                                child: Text(AppLocalizations.of(context)
+                                    .translate('g_female'))),
                           )
                         ],
                       ),
@@ -273,7 +276,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                                 enabled: false,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  labelText: 'Your Birthday',
+                                  labelText: AppLocalizations.of(context)
+                                      .translate('bday'),
                                 ),
                               ),
                             ),
@@ -308,7 +312,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                             border: new OutlineInputBorder(
                                 borderSide:
                                     new BorderSide(color: Color(0xFFE0E0E0))),
-                            labelText: 'Email',
+                            labelText:
+                                AppLocalizations.of(context).translate('email'),
                             errorText: _errorTxt,
                             errorBorder: _errorTxt.isEmpty
                                 ? OutlineInputBorder(
@@ -340,17 +345,17 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                           if (validateEmail()) {
                             print(_birthday.text);
 
-                            if(age<5840){
+                            if (age < 5840) {
                               ageErrorDialog();
                               print("get out junior");
-                            }
-                            else{
+                            } else {
                               postUserData();
                             }
                           }
                         } else {
                           setState(() {
-                            _errorTxt = "You should fill out this field !";
+                            _errorTxt = AppLocalizations.of(context)
+                                .translate('err_should_fill');
                           });
                         }
                       },
@@ -365,7 +370,9 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
                                 BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
-                            'Next'.toUpperCase(),
+                            AppLocalizations.of(context)
+                                .translate('next_btn')
+                                .toUpperCase(),
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -395,18 +402,19 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
 
   bool validateEmail() {
     String email = _email.text;
-    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-    if(_birthday.text == ''){
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    if (_birthday.text == '') {
       bdayValidationDialog();
       return false;
-    }
-    else if (emailValid) {
+    } else if (emailValid) {
       print("Valid email !");
       log("Valid email !");
       return true;
     } else {
       setState(() {
-        _errorTxt = "This is not a valid email !";
+        _errorTxt = AppLocalizations.of(context).translate('not_valid');
       });
       return false;
     }
@@ -415,7 +423,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   Future<bool> bdayValidationDialog() {
     return showDialog(
       builder: (context) => CupertinoAlertDialog(
-        title: Text('Select Your birthday !'),
+        title: Text(AppLocalizations.of(context).translate('select_bday')),
         actions: <Widget>[
           FlatButton(
             color: Colors.orange,
@@ -423,7 +431,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
               Navigator.of(context).pop();
             },
             child: Text(
-              'OK',
+              AppLocalizations.of(context).translate('txt_ok'),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -440,8 +448,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
   Future<bool> ageErrorDialog() {
     return showDialog(
       builder: (context) => CupertinoAlertDialog(
-        title: Text('Sorry ! We cannot allow you to register !'),
-        content: Text('your age is not suitable for this place!'),
+        title: Text(AppLocalizations.of(context).translate('sorry_cant_allow')),
+        content: Text(AppLocalizations.of(context).translate('age_n_suitable')),
         actions: <Widget>[
           FlatButton(
             color: Colors.orange,
@@ -449,7 +457,7 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
               Navigator.of(context).pop();
             },
             child: Text(
-              'OK',
+              AppLocalizations.of(context).translate('txt_ok'),
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -473,8 +481,8 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
     }, onConfirm: (date) {
       final bday = "$date";
 
-      age = (date.difference(DateTime.now()).inDays)*-1;
-      print("age in days:"+ age.toString());
+      age = (date.difference(DateTime.now()).inDays) * -1;
+      print("age in days:" + age.toString());
 
       var formatter = new DateFormat('yyyy-MM-dd');
       var selecteddate = formatter.format(date);
@@ -525,10 +533,10 @@ class _SetupStepTwoState extends State<SetupStepTwo> {
 
       } else {
         pr.hide();
-         showAlert(
-            context: context,
-            title: "Something Went wrong",
-          );
+        showAlert(
+          context: context,
+          title: AppLocalizations.of(context).translate('went_wrong'),
+        );
         print('Register Failed');
       }
     });

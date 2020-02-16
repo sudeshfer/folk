@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:folk/Screens/Login/setup_step2.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
+import 'package:folk/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -71,7 +72,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
                 CropAspectRatioPreset.ratio16x9
               ],
         androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Crop Your photo',
+            toolbarTitle: AppLocalizations.of(context).translate('crop_your_p'),
             toolbarColor: Color(0xFFFF9006),
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
@@ -123,7 +124,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
                 CropAspectRatioPreset.ratio16x9
               ],
         androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Crop Yor Photo',
+            toolbarTitle: AppLocalizations.of(context).translate('crop_your_p'),
             toolbarColor: Color(0xFFFF9006),
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
@@ -149,7 +150,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              'Make a Choice',
+              AppLocalizations.of(context).translate('make_choice'),
               style: TextStyle(
                   fontSize: 20,
                   fontFamily: 'Montserrat',
@@ -170,7 +171,8 @@ class _SetupStepOneState extends State<SetupStepOne> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 25.0),
                         child: Text(
-                          "From Galery",
+                          AppLocalizations.of(context)
+                              .translate('from_gallery'),
                           style: TextStyle(
                             fontFamily: 'Montserrat',
                           ),
@@ -183,7 +185,7 @@ class _SetupStepOneState extends State<SetupStepOne> {
                         child: Image.asset('assets/images/camera.png'),
                       ),
                       Text(
-                        "From Camera",
+                        AppLocalizations.of(context).translate('from_camera'),
                         style: TextStyle(
                           fontFamily: 'Montserrat',
                         ),
@@ -204,39 +206,36 @@ class _SetupStepOneState extends State<SetupStepOne> {
 
     if ((imageFile == null) && (imguUrl == null)) {
       // return Image.network(imguUrl);
-      imgSource="none";
+      imgSource = "none";
       return Image.asset('assets/images/btn_upload_cover.png',
           width: 220.0, height: 220.0, fit: BoxFit.cover);
     }
     if ((imguUrl != null) && (imageFile == null)) {
-
-      imgSource="fb";
+      imgSource = "fb";
       return Image.network(imguUrl,
-          width: 220.0, height: 220.0, fit: BoxFit.fill);      
+          width: 220.0, height: 220.0, fit: BoxFit.fill);
     }
     if ((imguUrl == null) && (imageFile != null)) {
-
-      imgSource="userimage";
+      imgSource = "userimage";
 
       print("print with base 64");
       return Image.memory(
-        base64Decode(base64Image),        
+        base64Decode(base64Image),
         width: 220,
         height: 220,
         fit: BoxFit.fill,
-        );
+      );
     }
     if ((imguUrl != null) && (imageFile != null)) {
-
-      imgSource="userimage";
+      imgSource = "userimage";
 
       print("print with base 64");
       return Image.memory(
-        base64Decode(base64Image),        
+        base64Decode(base64Image),
         width: 220,
         height: 220,
         fit: BoxFit.fill,
-        );
+      );
     }
   }
 
@@ -300,7 +299,8 @@ class _SetupStepOneState extends State<SetupStepOne> {
                 Container(
                   margin: EdgeInsets.only(top: 30, left: 30),
                   child: Text(
-                    "Introduce Yourself",
+                    AppLocalizations.of(context)
+                        .translate('introduce_yourself'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color.fromRGBO(64, 75, 105, 1),
@@ -339,7 +339,8 @@ class _SetupStepOneState extends State<SetupStepOne> {
                         border: new OutlineInputBorder(
                             borderSide:
                                 new BorderSide(color: Color(0xFFF5F5F5))),
-                        labelText: 'Name',
+                        labelText:
+                            AppLocalizations.of(context).translate('name'),
                         errorText: _errorName,
                         errorBorder: _errorName.isEmpty
                             ? OutlineInputBorder(
@@ -375,7 +376,8 @@ class _SetupStepOneState extends State<SetupStepOne> {
                           }
                         } else {
                           setState(() {
-                            _errorName = "You should fill out this field !";
+                            _errorName = AppLocalizations.of(context)
+                                .translate('err_should_fill');
                           });
                         }
                       },
@@ -390,7 +392,9 @@ class _SetupStepOneState extends State<SetupStepOne> {
                                 BorderRadius.all(Radius.circular(50))),
                         child: Center(
                           child: Text(
-                            'Next'.toUpperCase(),
+                            AppLocalizations.of(context)
+                                .translate('next_btn')
+                                .toUpperCase(),
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -420,28 +424,27 @@ class _SetupStepOneState extends State<SetupStepOne> {
   navigateToStepTwo() {
     final _phone = widget.phone;
     final _fbId = widget.fbId;
-    final _fbName = widget.loginType =="fb" ? widget.fbName :_name.text;
+    final _fbName = widget.loginType == "fb" ? widget.fbName : _name.text;
     final _fbEmail = widget.fbEmail;
     final _fbPicUrl = widget.fbPicUrl;
 
     print(_fbName);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => SetupStepTwo(
-              phone: _phone,
-                                    fbId: _fbId,
-                                    fbName: _fbName,
-                                    fbEmail: _fbEmail,
-                                    fbPicUrl: _fbPicUrl,
-                                    loginType: widget.loginType,
-                                    imgSource:imgSource,
-                                    base_64 : base64Image
-            )));
+            phone: _phone,
+            fbId: _fbId,
+            fbName: _fbName,
+            fbEmail: _fbEmail,
+            fbPicUrl: _fbPicUrl,
+            loginType: widget.loginType,
+            imgSource: imgSource,
+            base_64: base64Image)));
   }
 
   Future<bool> imageValidationDialog() {
     return showDialog(
       builder: (context) => CupertinoAlertDialog(
-        title: Text('You must Pick an image !'),
+        title: Text(AppLocalizations.of(context).translate('err_pick_image')),
         actions: <Widget>[
           FlatButton(
             color: Colors.orange,
@@ -466,14 +469,12 @@ class _SetupStepOneState extends State<SetupStepOne> {
   bool validateName() {
     if (_name.text.contains(' ')) {
       print("valid Name");
-       setState(() {
-        _errorName = "White spaces are not allowed in the name field !";
+      setState(() {
+        _errorName = AppLocalizations.of(context).translate('err_w_space');
       });
       return false;
     } else {
-     
       return true;
     }
   }
-
 }
