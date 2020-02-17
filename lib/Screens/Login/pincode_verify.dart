@@ -39,6 +39,8 @@ class _PincodeVerifyState extends State<PincodeVerify> {
   String verificationId;
   SharedPreferences prefs;
 
+  bool isLoading = false;
+
   @override
   void initState() {
     verifyPhone();
@@ -74,19 +76,36 @@ class _PincodeVerifyState extends State<PincodeVerify> {
   }
 
   Future<void> verifyPhone() async {
+    setState(() {
+      isLoading = true;
+    });
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
       this.verificationId = verID;
+      setState(() {
+        isLoading = false;
+      });
     };
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
+      print('sent');
+
+      setState(() {
+        isLoading = false;
+      });
     };
     final PhoneVerificationCompleted verifiedSuccess =
         (AuthCredential phoneAuthCredential) {
       navigate();
       print('verified');
+      setState(() {
+        isLoading = false;
+      });
     };
     final PhoneVerificationFailed verifyFailed = (AuthException exception) {
       print('${exception.message}');
+      setState(() {
+        isLoading = false;
+      });
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -164,164 +183,174 @@ class _PincodeVerifyState extends State<PincodeVerify> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: ListView(
-              children: <Widget>[
-                SizedBox(height: 30),
-                Container(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 14),
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      color: Colors.black,
-                      iconSize: 38,
-                      onPressed: () {
-                        log('Clikced on back btn');
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                      },
-                    ),
+          child: isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.red,
                   ),
-                  alignment: Alignment.centerLeft,
-                ),
-                SizedBox(height: 12),
-                FadeAnimation(
-                  0.8,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      AppLocalizations.of(context).translate('enter_code'),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat',
-                          fontSize: 22),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                FadeAnimation(
-                  0.9,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30.0, vertical: 8),
-                    child: RichText(
-                      text: TextSpan(
-                          text: AppLocalizations.of(context)
-                              .translate('has_sent_to'),
-                          children: [
-                            TextSpan(
-                                text: widget.phone,
+                )
+              : Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView(
+                    children: <Widget>[
+                      SizedBox(height: 30),
+                      Container(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 14),
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_back),
+                            color: Colors.black,
+                            iconSize: 38,
+                            onPressed: () {
+                              log('Clikced on back btn');
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                        alignment: Alignment.centerLeft,
+                      ),
+                      SizedBox(height: 12),
+                      FadeAnimation(
+                        0.8,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('enter_code'),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Montserrat',
+                                fontSize: 22),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      FadeAnimation(
+                        0.9,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 8),
+                          child: RichText(
+                            text: TextSpan(
+                                text: AppLocalizations.of(context)
+                                    .translate('has_sent_to'),
+                                children: [
+                                  TextSpan(
+                                      text: widget.phone,
+                                      style: TextStyle(
+                                          color: Color(0xFFf45d27),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)),
+                                ],
                                 style: TextStyle(
-                                    color: Color(0xFFf45d27),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15)),
-                          ],
-                          style:
-                              TextStyle(color: Colors.black54, fontSize: 18)),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                FadeAnimation(
-                  1,
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 7.0, horizontal: 7.0),
-                      child: PinCodeTextField(
-                        length: 6,
-                        obsecureText: false,
-                        shape: PinCodeFieldShape.box,
-                        fieldHeight: 50,
-                        backgroundColor: Colors.white,
-                        fieldWidth: 50,
-                        onCompleted: (v) {
-                          print("Completed");
+                                    color: Colors.black54, fontSize: 18)),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      FadeAnimation(
+                        1,
+                        Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 7.0, horizontal: 7.0),
+                            child: PinCodeTextField(
+                              length: 6,
+                              obsecureText: false,
+                              shape: PinCodeFieldShape.box,
+                              fieldHeight: 50,
+                              backgroundColor: Colors.white,
+                              fieldWidth: 50,
+                              onCompleted: (v) {
+                                print("Completed");
+                              },
+                              onChanged: (val) {
+                                enteredOtp = val;
+                              },
+                            )),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          signIn();
                         },
-                        onChanged: (val) {
-                          enteredOtp = val;
-                        },
-                      )),
-                ),
-                InkWell(
-                  onTap: () {
-                    signIn();
-                  },
-                  child: FadeAnimation(
-                    1.2,
-                    Container(
-                      padding: EdgeInsets.only(top: 32),
-                      child: Center(
-                        child: Container(
-                          height: 51,
-                          width: MediaQuery.of(context).size.width / 1.12,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                        child: FadeAnimation(
+                          1.2,
+                          Container(
+                            padding: EdgeInsets.only(top: 32),
+                            child: Center(
+                              child: Container(
+                                height: 51,
+                                width: MediaQuery.of(context).size.width / 1.12,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color(0xFFFF6038),
+                                        Color(0xFFFF9006)
+                                      ],
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50))),
+                                child: Center(
+                                  child: Text(
+                                    AppLocalizations.of(context)
+                                        .translate('continue')
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Center(
-                            child: Text(
-                              AppLocalizations.of(context)
-                                  .translate('continue')
-                                  .toUpperCase(),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 30),
-                ),
-                FadeAnimation(
-                  1.4,
-                  InkWell(
-                    onTap: () {
-                      verifyPhone();
-                    },
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                          text: AppLocalizations.of(context)
-                              .translate('i_did_not'),
-                          style: TextStyle(
-                              color: Color(0xFFf45d27),
-                              fontSize: 17.5,
-                              fontFamily: 'Montserrat'),
-                          children: [
-                            TextSpan(
-                                text: " \n " +
-                                    AppLocalizations.of(context)
-                                        .translate('tap_continue'),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 30),
+                      ),
+                      FadeAnimation(
+                        1.4,
+                        InkWell(
+                          onTap: () {
+                            verifyPhone();
+                          },
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                text: AppLocalizations.of(context)
+                                    .translate('i_did_not'),
                                 style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 14,
-                                    fontFamily: 'Montserrat'))
-                          ]),
-                    ),
+                                    color: Color(0xFFf45d27),
+                                    fontSize: 17.5,
+                                    fontFamily: 'Montserrat'),
+                                children: [
+                                  TextSpan(
+                                      text: " \n " +
+                                          AppLocalizations.of(context)
+                                              .translate('tap_continue'),
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14,
+                                          fontFamily: 'Montserrat'))
+                                ]),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 14,
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  height: 14,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );
