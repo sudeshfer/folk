@@ -87,10 +87,11 @@ class _SetupStepOneState extends State<SetupStepOne> {
         imageFile = croppedFile;
       });
       Navigator.of(context).pop();
-      _showImg();
-    } else {
-      _showImg();
-    }
+      // _showImg();
+    } 
+    // else {
+    //   _showImg();
+    // }
   }
 
 //asynce function to pick an image from camera

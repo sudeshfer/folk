@@ -30,7 +30,7 @@
     "enter_phone": "Enter Your Phone Number",
     "phone_no": "Phone Number",
     "tap_next_to": "Tap Next to receive an SMS confirmation from \n Account Kit powered by Facebook. Folk uses \n Facebook technology to keep you sign in.",
-    "c_code_needed": "Country Code & phone number needed !",
+    "c_code_needed": "phone number needed !",
     "next_btn": "Next",
     "err_select_c_code": "Select your country code",
     "err_shoub_be_9": "This should long 9 digits or higher!",

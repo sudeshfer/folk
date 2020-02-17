@@ -40,6 +40,7 @@ class _GetLocationState extends State<GetLocation> {
     SharedPreferences prefs2 = await SharedPreferences.getInstance();
     prefs2.setString("token", _token);
   }
+  
 
   TimerFunction() {
     const oneSec = const Duration(seconds: 1);
@@ -72,11 +73,11 @@ class _GetLocationState extends State<GetLocation> {
     print(status);
   }
 
-  Future<PermissionStatus> _onBackPressed() {
-    PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
-        .then(_updateStatus);
-  }
+  // Future<PermissionStatus> _onBackPressed() {
+  //   PermissionHandler()
+  //       .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+  //       .then(_updateStatus);
+  // }
 
   void _askPermission() {
     PermissionHandler().requestPermissions(

@@ -32,7 +32,7 @@ class PhoneLogin extends StatefulWidget {
 class _PhoneLoginState extends State<PhoneLogin> {
   final _phoneNo = TextEditingController();
   Country _selected = Country.IT;
-  String _countrycode = '';
+  String _countrycode = '+39';
   String _errorTxt = '';
   String _loginStatus = "";
   String phoneNum = "";
@@ -52,6 +52,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
     //     "\n" +
     //     widget.fbPicUrl);
     log("LoginType = " + widget.loginType);
+    print(_countrycode);
     super.initState();
   }
 

@@ -8,6 +8,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:folk/Screens/Login/phone_login.dart';
 import 'package:folk/Controllers/ApiServices/FbLoginService.dart';
 import 'package:folk/Screens/Login/setup_step1.dart';
+import 'package:folk/Screens/Login/setup_step3.dart';
 import 'package:folk/Utils/Animations/FadeAnimation.dart';
 import 'package:folk/Utils/Animations/delayed_reveal.dart';
 import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
@@ -190,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
 
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) =>
-                          //         SetupStepOne()));
+                          //         SetupStepThree()));
                         },
                         child: Center(
                           child: Padding(
