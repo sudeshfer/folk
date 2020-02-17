@@ -1,7 +1,6 @@
 // import 'package:location/location.dart';
 // import 'package:flutter/services.dart';
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
@@ -53,6 +52,10 @@ class _GetLocationState extends State<GetLocation> {
                   .then(_updateStatus),
               if (_status == PermissionStatus.granted)
                 {
+                  setState(() {
+                    isPermissionIgnored = false;
+                  }),
+
                   t.cancel(),
                   initializeToken(),
                   Navigator.of(context)
@@ -80,128 +83,75 @@ class _GetLocationState extends State<GetLocation> {
         [PermissionGroup.locationWhenInUse]).then(_onStatusrequested);
   }
 
-  void _onStatusrequested(Map<PermissionGroup, PermissionStatus> statuses) {
+ void _onStatusrequested(Map<PermissionGroup, PermissionStatus> statuses) {
     final status = statuses[PermissionGroup.locationWhenInUse];
-    if (status != PermissionStatus.granted) {
-      openSettingsDialog();
-    } else {
+    if (status == PermissionStatus.neverAskAgain) {
+      // openSettingsDialog();
+      setState(() {
+        isPermissionIgnored = true;
+      });
+      _updateStatus(_status);
+    } else if (status == PermissionStatus.denied) {
+      setState(() {
+        isPermissionIgnored = false;
+      });
+
       _updateStatus(status);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Homepage()));
+    } else if (status == PermissionStatus.granted) {
+      setState(() {
+        isPermissionIgnored = false;
+      });
+
+      _updateStatus(status);
+      // Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (context) => Homepage()));
       // navigateToHome();
     }
-  }
-
-  // navigateToHome() {
-  //   if (_status == PermissionStatus.granted) {
-  //     Navigator.of(context)
-  //         .push(MaterialPageRoute(builder: (context) => Homepage()));
-  //   } else {
-  //     print("permission denied");
-  //   }
-  // }
-
-  Future<bool> openSettingsDialog() {
-    return showDialog(
-      builder: (context) => CupertinoAlertDialog(
-        title: Text(AppLocalizations.of(context).translate('have_to_enable')),
-        content: Column(
-          children: <Widget>[
-            Text(AppLocalizations.of(context).translate('click_verify')),
-          ],
-        ),
-        actions: <Widget>[
-          FlatButton(
-            color: Colors.orange,
-            onPressed: () {
-              PermissionHandler().openAppSettings();
-            },
-            child: Text(
-              AppLocalizations.of(context).translate('open_settings'),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          FlatButton(
-            color: Colors.orangeAccent,
-            onPressed: () {
-              _updateStatus(_status);
-              Navigator.of(context).pop();
-              setState(() {
-                isPermissionIgnored = true;
-              });
-              // navigateToHome();
-            },
-            child: Text(
-              AppLocalizations.of(context).translate('close'),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold),
-            ),
-          )
-        ],
-      ),
-      context: context,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+      )),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            child: new Image.asset(
-              'assets/images/location_bg.png',
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              fit: BoxFit.fill,
+          FadeAnimation(
+            0.8,
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/location_ico.jpg'),
+                      fit: BoxFit.cover)),
+              height: 340.0,
+              width: 340.0,
             ),
           ),
-          Positioned(
-            top: 30.0,
-            // left: (MediaQuery.of(context).size.width) / 13,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  FadeAnimation(
-                    0.8,
-                    Container(
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage('assets/images/location_ico.jpg'),
-                              fit: BoxFit.cover)),
-                      height: 340.0,
-                      width: 340.0,
-                    ),
-                  ),
-                  FadeAnimation(
-                    0.9,
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 2),
-                        child: isPermissionIgnored
-                            ? Text(
-                                AppLocalizations.of(context).translate('oops'),
+          FadeAnimation(
+            0.9,
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(top: 2),
+                child: isPermissionIgnored
+                    ? Text(
+                        AppLocalizations.of(context).translate('oops'),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 35,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w600,
-                                ),
-                              )
-                            : Text(
-                                AppLocalizations.of(context)
+                        ),
+                      )
+                    : Text(
+                        AppLocalizations.of(context)
                                     .translate('where_you'),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -209,66 +159,63 @@ class _GetLocationState extends State<GetLocation> {
                                   fontSize: 35,
                                   fontFamily: 'Montserrat',
                                   fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: FadeAnimation(
-                      1,
-                      Center(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 18),
-                          child: isPermissionIgnored
-                              ? Text(
-                                  AppLocalizations.of(context)
-                                      .translate('need_enabled'),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Montserrat',
-                                  ),
-                                )
-                              : Text(
-                                  AppLocalizations.of(context)
-                                      .translate('need_enabled'),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Montserrat',
-                                  ),
-                                ),
                         ),
                       ),
-                    ),
-                  ),
-                  FadeAnimation(
-                    1.2,
-                    isPermissionIgnored
-                        ? InkWell(
-                            onTap: () {
-                              setState(() {
-                                isGoTOSettingsClicked = true;
-                              });
-                              PermissionHandler().openAppSettings();
-                            },
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 40.0),
-                                child: Container(
-                                  height: 55,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.4,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(50))),
-                                  child: Center(
-                                    child: Text(
-                                      AppLocalizations.of(context)
+              ),
+            ),
+          ),
+          FadeAnimation(
+            1,
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(top: 18),
+                child: isPermissionIgnored
+                    ? Text(
+                        AppLocalizations.of(context)
+                                      .translate('need_enabled'),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Montserrat',
+                        ),
+                      )
+                    : Text(
+                       AppLocalizations.of(context)
+                                      .translate('need_enabled'),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Montserrat',
+                        ),
+                      ),
+              ),
+            ),
+          ),
+          FadeAnimation(
+            1.2,
+            isPermissionIgnored
+                ? InkWell(
+                    onTap: () {
+                      setState(() {
+                        isGoTOSettingsClicked = true;
+                      });
+                      PermissionHandler().openAppSettings();
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 40.0),
+                        child: Container(
+                          height: 55,
+                          width: MediaQuery.of(context).size.width / 1.4,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50))),
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context)
                                           .translate('goto_settings')
                                           .toUpperCase(),
                                       style: TextStyle(
@@ -277,30 +224,32 @@ class _GetLocationState extends State<GetLocation> {
                                           // fontWeight: FontWeight.w600,
                                           // letterSpacing: 0.2,
                                           height: 1),
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              _askPermission();
-                            },
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 40.0),
-                                child: Container(
-                                  height: 55,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.4,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(50))),
-                                  child: Center(
-                                    child: Text(
-                                      AppLocalizations.of(context)
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : InkWell(
+                    onTap: () {
+                      setState(() {
+                        isPermissionIgnored = false;
+                      });
+                      _askPermission();
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 40.0),
+                        child: Container(
+                          height: 55,
+                          width: MediaQuery.of(context).size.width / 1.4,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50))),
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context)
                                           .translate('enable_location')
                                           .toUpperCase(),
                                       style: TextStyle(
@@ -309,45 +258,16 @@ class _GetLocationState extends State<GetLocation> {
                                           // fontWeight: FontWeight.w600,
                                           // letterSpacing: 0.2,
                                           height: 1),
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ),
                           ),
+                        ),
+                      ),
+                    ),
                   ),
-                ],
-              ),
-            ),
           ),
         ],
       ),
+    )
     );
   }
-  // void initPlatformState() async{
-  //   Map<String,double> my_location;
-
-  //   try{
-  //     my_location = await location.getLocation();
-  //     error = "";
-  //   }
-  //   on PlatformException catch(e){
-  //     if(e.code == 'PERMISSION_DENIED')
-  //     error = 'Permission Denied';
-
-  //     else if(e.code == 'PERMISSION_DENIED_NEVER_ASK')
-  //     error = 'Permission denied - please ask the user to enable it from the app settings';
-  //     my_location = null;
-  //   }
-
-  //   setState(() {
-  //     currentLocation = my_location;
-  //   });
-
-  //   final lat = "${currentLocation['latitude']}";
-  //   final long = "${currentLocation['longitude']}";
-
-  //   print(lat +"\n"+ long);
-
-  // }
 }
