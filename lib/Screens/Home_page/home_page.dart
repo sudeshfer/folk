@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:folk/Screens/Home_page/homeWidgets/header.dart';
+import 'package:folk/Screens/Home_page/homeWidgets/post_content.dart';
 import 'package:folk/Screens/Login/location.dart';
 import 'package:folk/Screens/Login/login_page.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,13 +35,16 @@ class Homepage extends StatefulWidget {
   _HomepageState createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage>
+    with SingleTickerProviderStateMixin {
   PermissionStatus _status;
+  TabController tabController;
 
   @override
   void initState() {
     super.initState();
     //  print(widget.fbName);
+    tabController = TabController(vsync: this, length: 3);
     PermissionHandler()
         .checkPermissionStatus(PermissionGroup.locationWhenInUse)
         .then(_updateStatus);
@@ -106,7 +110,22 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
-      child: Scaffold(appBar: _buildHeader(context), body: Container(child: _logOut(context),)),
+      child: Scaffold(
+          appBar: _buildHeader(context),
+          body: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color:Colors.transparent
+                ),
+                child: _buildTabBar(context),
+              ),
+               Flexible(
+                child: _buildTabView(context),
+              ),
+            ],
+          )),
     );
   }
 
@@ -114,12 +133,51 @@ class _HomepageState extends State<Homepage> {
     return PreferredSize(
       preferredSize: Size.fromHeight(120.0),
       child: Container(
-        color: Colors.amber,
-        height: 120.0,
+        color: Colors.transparent,
+        height: 70.0,
         alignment: Alignment.center,
         child: Header(),
       ),
     );
+  }
+
+  Widget _buildTabBar(BuildContext context) {
+    return TabBar(
+      controller: tabController,
+      indicatorColor: Colors.transparent,
+      labelColor: Color(0xFFFF6038),
+      unselectedLabelColor: Color(0xFF020433),
+      isScrollable: true,
+      tabs: <Widget>[
+        getTabs('Posts'),
+        getTabs('Events'),
+        getTabs('Joined'),
+      ],
+    );
+  }
+
+  getTabs(String title){
+    return Tab(
+          child: Text(
+            title,
+            style: TextStyle(
+                fontSize: 25.0,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w500),
+          ),
+        );
+
+  }
+
+   Widget _buildTabView(BuildContext context){
+    return TabBarView(
+                controller: tabController,
+                children: <Widget>[
+                  PostsContent(),
+                  PostsContent(),
+                  PostsContent(),
+                ],
+              );
   }
 
   Widget _logOut(BuildContext context) {
