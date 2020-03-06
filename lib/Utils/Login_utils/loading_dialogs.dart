@@ -304,7 +304,7 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 5.0),
               child: Container(
-                child: Text("Verifying...",
+                child: Text("Verifying Code !",
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 15,
@@ -318,7 +318,7 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
   }
 }
 
-class WelcomeScreen extends StatefulWidget {
+class VerifyPhoneScreen extends StatefulWidget {
   final String phone;
   final fbId;
   final fbName;
@@ -326,7 +326,7 @@ class WelcomeScreen extends StatefulWidget {
   final fbPicUrl;
   final loginType;
   final loginStatus;
-  WelcomeScreen(
+  VerifyPhoneScreen(
       {Key key,
       this.phone,
       this.fbId,
@@ -338,10 +338,10 @@ class WelcomeScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  _VerifyPhoneScreenState createState() => _VerifyPhoneScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
   @override
   void initState() {
     // log(widget.fbName);
@@ -349,23 +349,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     super.initState();
   }
 
-  navigate() {
+   navigate() {
     Future.delayed(
       Duration(seconds: 5),
       () {
         // Navigator.pop(context);
-        // final _fbId = widget.fbId;
-        // final _fbName = widget.fbName;
-        // final _fbEmail = widget.fbEmail;
-        // final _fbPicUrl = widget.fbPicUrl;
-        // final _loginType = widget.loginType;
-        // final _loginStatus = widget.loginStatus;
-        // final code = widget.newotp;
-        // final phoneNum = widget.phone;
+        final _fbId = widget.fbId;
+        final _fbName = widget.fbName;
+        final _fbEmail = widget.fbEmail;
+        final _fbPicUrl = widget.fbPicUrl;
+        final _loginType = widget.loginType;
+        final _loginStatus = widget.loginStatus;
+        final phoneNum = widget.phone;
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Homepage(),
+            builder: (context) => SentScreen(
+              fbId: _fbId,
+              fbName: _fbName,
+              fbEmail: _fbEmail,
+              fbPicUrl: _fbPicUrl,
+              loginType: _loginType,
+              loginStatus: _loginStatus,
+              phone: phoneNum,
+            ),
           ),
         );
       },
@@ -388,24 +395,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       image: AssetImage('assets/images/sending.gif'),
                       fit: BoxFit.cover)),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5.0),
-              child: Container(
-                child: Row(
-                  children: <Widget>[
-                    Text('Welcome Back',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 15,
-                        )),
-                    Text(widget.fbName,
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 15,
-                        )),
-                  ],
-                ),
-              ),
+            Container(
+              child: Text('Verifying Phone Number..!',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 15,
+                  )),
             ),
           ],
         ),

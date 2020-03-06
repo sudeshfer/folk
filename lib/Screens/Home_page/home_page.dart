@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:folk/Screens/Home_page/homeWidgets/header.dart';
 import 'package:folk/Screens/Login/location.dart';
 import 'package:folk/Screens/Login/login_page.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -34,8 +35,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-
- PermissionStatus _status;
+  PermissionStatus _status;
 
   @override
   void initState() {
@@ -45,28 +45,30 @@ class _HomepageState extends State<Homepage> {
         .checkPermissionStatus(PermissionGroup.locationWhenInUse)
         .then(_updateStatus);
 
-        TimerFunction();
-
+    TimerFunction();
   }
 
-   TimerFunction() {
+  TimerFunction() {
     const oneSec = const Duration(seconds: 1);
-    new Timer.periodic(oneSec, (Timer t) => {
-      print("timer running"),
-       PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
-        .then(_updateStatus),
-
-      
-      if(_status==PermissionStatus.denied){
-        t.cancel(),
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetLocation()))        
-      }
-      else{
-        print("location permission already enabled !"),
-        t.cancel(),
-      }
-    });
+    new Timer.periodic(
+        oneSec,
+        (Timer t) => {
+              print("timer running"),
+              PermissionHandler()
+                  .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+                  .then(_updateStatus),
+              if (_status == PermissionStatus.denied)
+                {
+                  t.cancel(),
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => GetLocation()))
+                }
+              else
+                {
+                  print("location permission already enabled !"),
+                  t.cancel(),
+                }
+            });
   }
 
   void _updateStatus(PermissionStatus status) {
@@ -75,7 +77,6 @@ class _HomepageState extends State<Homepage> {
       print(_status);
     }
   }
-
 
   Future<bool> _onBackPressed() {
     return AwesomeDialog(
@@ -94,54 +95,66 @@ class _HomepageState extends State<Homepage> {
         false;
   }
 
-  logOut() async{
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-                    prefs.remove("token");
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext ctx) => LoginPage()));
+  logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("token");
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext ctx) => LoginPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
-      child: Scaffold(
-        body: Container(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Welcome to home page"),
-                GestureDetector(
-                  onTap: () {
-                    logOut();
-                    log("logged Out");
-                  },
-                  child: Container(
-                    height: 51,
-                    width: MediaQuery.of(context).size.width / 2,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    child: Center(
-                      child: Text(
-                        'Logout'.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontFamily: 'Montserrat',
-                        ),
-                      ),
+      child: Scaffold(appBar: _buildHeader(context), body: Container(child: _logOut(context),)),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(120.0),
+      child: Container(
+        color: Colors.amber,
+        height: 120.0,
+        alignment: Alignment.center,
+        child: Header(),
+      ),
+    );
+  }
+
+  Widget _logOut(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Welcome to home page"),
+            GestureDetector(
+              onTap: () {
+                logOut();
+                log("logged Out");
+              },
+              child: Container(
+                height: 51,
+                width: MediaQuery.of(context).size.width / 2,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFFFF6038), Color(0xFFFF9006)],
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                child: Center(
+                  child: Text(
+                    'Logout'.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontFamily: 'Montserrat',
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

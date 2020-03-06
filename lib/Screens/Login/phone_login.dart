@@ -225,7 +225,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                     //otp login new user
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
-                                            builder: (context) => SentScreen(
+                                            builder: (context) => VerifyPhoneScreen(
                                                 phone: phoneNum,
                                                 loginStatus: _loginStatus,
                                                 loginType: _loginType)));
@@ -259,7 +259,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                                     final _fbPicUrl = widget.fbPicUrl;
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                            builder: (context) => SentScreen(
+                                            builder: (context) => VerifyPhoneScreen(
                                                   phone: phoneNum,
                                                   fbId: _fbId,
                                                   fbName: _fbName,
@@ -399,7 +399,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PincodeVerify(
+        builder: (context) => VerifyPhoneScreen(
             phone: _phone,
             fbId: _fbId,
             fbName: _fbName,

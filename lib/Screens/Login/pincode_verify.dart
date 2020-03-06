@@ -73,6 +73,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
   Future<bool> _onBackPressed() {
     Navigator.of(context).pop();
     Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 
   Future<void> verifyPhone() async {
@@ -204,6 +205,7 @@ class _PincodeVerifyState extends State<PincodeVerify> {
                             iconSize: 38,
                             onPressed: () {
                               log('Clikced on back btn');
+                              Navigator.of(context).pop();
                               Navigator.of(context).pop();
                               Navigator.of(context).pop();
                             },

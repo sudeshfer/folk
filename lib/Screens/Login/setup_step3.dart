@@ -176,12 +176,6 @@ class _SetupStepThreeState extends State<SetupStepThree> {
                                 color: Colors.grey,
                                 size: 30,
                               ),
-                              // suffixIcon:isSearchFocused?
-                              //      Icon(
-                              //       Icons.close,
-                              //       color: Colors.orange,
-                              //     )
-                              //     :null,
 
                               hintText: AppLocalizations.of(context).translate('search'),
                             ),
