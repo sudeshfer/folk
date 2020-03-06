@@ -11,13 +11,16 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _buildNotificationBtn(context),
-            Text("hutta"),
-            Text("hutta"),
-          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(left:20.0,right: 20.0),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _buildNotificationBtn(context),
+              _buildLogo(context),
+              _buildFilterBtn(context),
+            ]),
+      ),
     );
   }
 
@@ -74,4 +77,39 @@ class _HeaderState extends State<Header> {
               fontSize: 12, color: Colors.white, fontWeight: FontWeight.w900),
         )));
   }
+
+  Widget _buildFilterBtn(BuildContext context){
+    return Container(
+      height: 45,
+      width: 45,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: [Color(0xFF020433), Color(0xFF020433)],
+        ),
+        // borderRadius: BorderRadius.all(Radius.circular(45))
+      ),
+      child: Center(
+        child: Container(
+          height: 20.0,
+          width: 20.0,
+          decoration: BoxDecoration(
+            image: new DecorationImage(
+                fit: BoxFit.fill,
+                image: new AssetImage('assets/images/Filters.png')),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogo(BuildContext context){
+    return Image.asset(
+            'assets/images/logo.png',
+            width: 100,
+            height: 100,
+          );
+  }
+
+  
 }
