@@ -20,6 +20,7 @@ class _PostsContentState extends State<PostsContent> {
         _buildPost(context),
         _buildPost(context),
         _buildPost(context),
+        _buildPost(context),
         ]
       );
   }
@@ -30,28 +31,30 @@ class _PostsContentState extends State<PostsContent> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Padding(
+        Container(
           padding: const EdgeInsets.fromLTRB(16.0, 20.0, 8.0, 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 15),
-                child: Row(
-                  children: <Widget>[
-                     _buildAvatar(context),
-                    new SizedBox(
-                      width: 10.0,
-                    ),
-                    _buildNameContent(context)
-                  ],
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top: 15),
+                  child: Row(
+                    children: <Widget>[
+                       _buildAvatar(context),
+                      new SizedBox(
+                        width: 10.0,
+                      ),
+                      _buildNameContent(context)
+                    ],
+                  ),
                 ),
-              ),
-              new IconButton(
-                icon: Icon(Icons.more_horiz, size: 35),
-                onPressed: null,
-              )
-            ],
+                new IconButton(
+                  icon: Icon(Icons.more_horiz, size: 35),
+                  onPressed: null,
+                )
+              ],
+            ),
           ),
         ),
         _buildTimeBar(context),
@@ -62,9 +65,9 @@ class _PostsContentState extends State<PostsContent> {
          decoration: BoxDecoration(
         boxShadow:[BoxShadow(
            color: Colors.grey[200],
-           offset: new Offset(5.0, 18.0),
+           offset: new Offset(5.0, 6.0),
            spreadRadius: 2.0,
-            blurRadius: 8.0,
+            blurRadius: 12.0,
         )]
       ),
          child:_buildLikeCommentBar(context),
@@ -278,7 +281,7 @@ class _PostsContentState extends State<PostsContent> {
 
   Widget _devider(BuildContext context){
     return  Divider(
-      color: Colors.grey,
+      color: Colors.grey[300],
     );
   }
 

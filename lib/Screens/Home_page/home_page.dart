@@ -134,7 +134,7 @@ class _HomepageState extends State<Homepage>
       preferredSize: Size.fromHeight(120.0),
       child: Container(
         color: Colors.transparent,
-        height: 70.0,
+        height: 110.0,
         alignment: Alignment.center,
         child: Header(),
       ),

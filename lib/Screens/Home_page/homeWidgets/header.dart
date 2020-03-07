@@ -29,14 +29,14 @@ class _HeaderState extends State<Header> {
       Padding(
           padding: const EdgeInsets.only(top: 4.0, right: 8.0),
           child: _buildNotificationIcon(context)),
-      Positioned(bottom: 32, left: 28, child: _buildNotificationCount(context))
+      Positioned(bottom: 36, left: 32, child: _buildNotificationCount(context))
     ]);
   }
 
   Widget _buildNotificationIcon(BuildContext context) {
     return Container(
-      height: 45,
-      width: 45,
+      height: 50,
+      width: 50,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
@@ -80,8 +80,8 @@ class _HeaderState extends State<Header> {
 
   Widget _buildFilterBtn(BuildContext context){
     return Container(
-      height: 45,
-      width: 45,
+      height: 50,
+      width: 50,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(

@@ -26,8 +26,8 @@ class _TrendingState extends State<Trending> {
                 ),
               )
             ]),
-        margin: const EdgeInsets.only(top:4) ,
-        padding: const EdgeInsets.only(top: 20.0, left: 20),
+        margin: const EdgeInsets.only(top:16) ,
+        padding: const EdgeInsets.only(top: 20.0, left: 20,bottom:20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
