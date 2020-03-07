@@ -128,16 +128,7 @@ class _HomepageState extends State<Homepage>
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child:Container(
-              margin: const EdgeInsets.only(bottom:20),
-          height: 100.0,
-          width: 90.0,
-          decoration: BoxDecoration(
-            image: new DecorationImage(
-                fit: BoxFit.fill,
-                image: new AssetImage('assets/images/Circle_Border.png')),
-          ),
-        ), 
+            child: _buildCircleBorder(context)  , 
           ),
           Align(
               alignment: Alignment.bottomCenter,
@@ -244,6 +235,21 @@ class _HomepageState extends State<Homepage>
       ),
     );
   }
+
+  Widget _buildCircleBorder(BuildContext context){
+    return Container(
+              margin: const EdgeInsets.only(bottom:30),
+          height: 90.0,
+          width: 90.0,
+          decoration: BoxDecoration(
+            image: new DecorationImage(
+                fit: BoxFit.fill,
+                image: new AssetImage('assets/images/Circle_Border.png')),
+          ),
+        );
+  }
+
+  
 
   Widget _logOut(BuildContext context) {
     return Container(
