@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:folk/Screens/Home_page/homeWidgets/bottomBar.dart';
 import 'package:folk/Screens/Home_page/homeWidgets/header.dart';
 import 'package:folk/Screens/Home_page/homeWidgets/post_content.dart';
 import 'package:folk/Screens/Login/location.dart';
@@ -111,21 +112,39 @@ class _HomepageState extends State<Homepage>
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-          appBar: _buildHeader(context),
-          body: Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
+        appBar: _buildHeader(context),
+        body: Stack(children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                decoration: BoxDecoration(
-                  color:Colors.transparent
-                ),
+                decoration: BoxDecoration(color: Colors.transparent),
                 child: _buildTabBar(context),
               ),
-               Flexible(
+              Flexible(
                 child: _buildTabView(context),
               ),
             ],
-          )),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child:Container(
+              margin: const EdgeInsets.only(bottom:20),
+          height: 100.0,
+          width: 90.0,
+          decoration: BoxDecoration(
+            image: new DecorationImage(
+                fit: BoxFit.fill,
+                image: new AssetImage('assets/images/Circle_Border.png')),
+          ),
+        ), 
+          ),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: _buildBottomStack(context))
+        ]),
+        // bottomNavigationBar:
+      ),
     );
   }
 
@@ -156,28 +175,74 @@ class _HomepageState extends State<Homepage>
     );
   }
 
-  getTabs(String title){
+  getTabs(String title) {
     return Tab(
-          child: Text(
-            title,
-            style: TextStyle(
-                fontSize: 25.0,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w500),
-          ),
-        );
-
+      child: Text(
+        title,
+        style: TextStyle(
+            fontSize: 25.0,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w500),
+      ),
+    );
   }
 
-   Widget _buildTabView(BuildContext context){
+  Widget _buildTabView(BuildContext context) {
     return TabBarView(
-                controller: tabController,
-                children: <Widget>[
-                  PostsContent(),
-                  PostsContent(),
-                  PostsContent(),
-                ],
-              );
+      controller: tabController,
+      children: <Widget>[
+        PostsContent(),
+        PostsContent(),
+        PostsContent(),
+      ],
+    );
+  }
+
+  Widget _buildBottomStack(BuildContext context) {
+    return Stack(children: <Widget>[
+      _buildBottomBar(context),
+      Positioned(child: _buildPostImg(context)),
+      Positioned(child: _buildPostBtnIcon(context))
+    ]);
+  }
+
+  Widget _buildBottomBar(BuildContext context) {
+    return new Container(
+        height: 120.0, alignment: Alignment.center, child: BottomBar());
+  }
+
+  Widget _buildPostImg(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          height: 100.0,
+          width: 100.0,
+          decoration: BoxDecoration(
+            image: new DecorationImage(
+                fit: BoxFit.fill,
+                image: new AssetImage('assets/images/PostImg.png')),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPostBtnIcon(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 25),
+      // color: Colors.blue,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            Icons.add,
+            size: 35,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _logOut(BuildContext context) {
