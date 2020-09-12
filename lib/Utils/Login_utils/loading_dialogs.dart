@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:folk/Screens/Home_page/home_page.dart';
-import 'package:folk/Screens/Login/location.dart';
+import 'package:folk/pages/HomePage/Home.dart';
+import 'package:folk/pages/login&signup/location.dart';
+import 'package:folk/pages/login&signup/pincode_verify.dart';
 import 'dart:async';
-import 'package:folk/Screens/Login/pincode_verify.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingUpScreen extends StatefulWidget {
   final String phone;
@@ -48,20 +49,20 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
         final _loginType = widget.loginType;
         final _loginStatus = widget.loginStatus;
         final phoneNum = widget.phone;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Homepage(
-              fbId: _fbId,
-              fbName: _fbName,
-              fbEmail: _fbEmail,
-              fbPicUrl: _fbPicUrl,
-              loginType: _loginType,
-              loginStatus: _loginStatus,
-              phone: phoneNum,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => Homepage(
+        //       fbId: _fbId,
+        //       fbName: _fbName,
+        //       fbEmail: _fbEmail,
+        //       fbPicUrl: _fbPicUrl,
+        //       loginType: _loginType,
+        //       loginStatus: _loginStatus,
+        //       phone: phoneNum,
+        //     ),
+        //   ),
+        // );
       },
     );
   }
@@ -222,37 +223,67 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
         .checkPermissionStatus(PermissionGroup.locationWhenInUse)
         .then(_updateStatus);
 
-        TimerFunction();
-    // navigate();
+        // TimerFunction();
+    // initNavigation();
 
   }
 
-    TimerFunction() {
-    const oneSec = const Duration(seconds: 1);
-    new Timer.periodic(oneSec, (Timer t) => {
-      print("timer running"),
-       PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.locationWhenInUse)
-        .then(_updateStatus),
+  //  TimerFunction() {
+  //   const oneSec = const Duration(seconds: 1);
+  //   new Timer.periodic(oneSec, (Timer t) => {
+  //     print("timer running"),
+  //      PermissionHandler()
+  //       .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+  //       .then(_updateStatus),
 
       
-      if(_status==PermissionStatus.denied || _status== PermissionStatus.neverAskAgain){
-        t.cancel(),
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetLocation()))        
-      }
-      else{
-        print("location permission enabled !"),
-        t.cancel(),
-        navigate(),
-      }
-    });
-  }
+  //     if(_status==PermissionStatus.denied || _status== PermissionStatus.neverAskAgain || _status == PermissionStatus.disabled){
+  //       t.cancel(),
+  //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetLocation()))        
+  //     }
+  //     else{
+  //       print("location permission enableddddddddddddddddddddddd !"),
+  //       t.cancel(),
+  //       navigate(),
+  //     }
+  //   });
+  // }
+
+  // initNavigation(){
+  //   PermissionHandler()
+  //       .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+  //       .then(_updateStatus);
+    
+  //   if(_status==PermissionStatus.denied || _status== PermissionStatus.neverAskAgain || _status == PermissionStatus.disabled){
+  //     print("Permission status is --- " + _status.toString());
+  //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetLocation()));        
+  //     }
+  //      if(_status == PermissionStatus.granted){
+  //       print("Permission status is --- " + _status.toString());
+  //       navigate();
+  //     }
+  // }
 
   void _updateStatus(PermissionStatus status) {
     if (status != _status) {
       _status = status;
-      print(_status);
+      print("Permission status is --- " + _status.toString());
+      if(_status == PermissionStatus.granted){
+        navigate();
+      }
+      else{
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetLocation()));
+      }
     }
+  }
+
+  Future<void> initializeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var _token = prefs.getString("gettoken");
+    print(_token);
+
+    SharedPreferences prefs2 = await SharedPreferences.getInstance();
+    prefs2.setString("token", _token);
   }
 
   navigate() {
@@ -260,6 +291,7 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
       Duration(seconds: 5),
       () {
         // Navigator.pop(context);
+        initializeToken();
         final _fbId = widget.fbId;
         final _fbName = widget.fbName;
         final _fbEmail = widget.fbEmail;
@@ -270,7 +302,7 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Homepage(
+            builder: (context) => Home(
               fbId: _fbId,
               fbName: _fbName,
               fbEmail: _fbEmail,
@@ -304,7 +336,7 @@ class _VerifyingScreenState extends State<VerifyingScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 5.0),
               child: Container(
-                child: Text("Verifying Code !",
+                child: Text("Verifying You !",
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 15,

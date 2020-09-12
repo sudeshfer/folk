@@ -2,6 +2,7 @@ package io.flutter.plugins;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 
@@ -14,15 +15,29 @@ import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 public final class GeneratedPluginRegistrant {
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
     ShimPluginRegistry shimPluginRegistry = new ShimPluginRegistry(flutterEngine);
+      com.shatsy.admobflutter.AdmobFlutterPlugin.registerWith(shimPluginRegistry.registrarFor("com.shatsy.admobflutter.AdmobFlutterPlugin"));
+    flutterEngine.getPlugins().add(new io.flutter.plugins.deviceinfo.DeviceInfoPlugin());
       io.flutter.plugins.firebaseauth.FirebaseAuthPlugin.registerWith(shimPluginRegistry.registrarFor("io.flutter.plugins.firebaseauth.FirebaseAuthPlugin"));
     flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.core.FirebaseCorePlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin());
       rocks.biessek.fluttercountrypicker.FlutterCountryPickerPlugin.registerWith(shimPluginRegistry.registrarFor("rocks.biessek.fluttercountrypicker.FlutterCountryPickerPlugin"));
       com.roughike.facebooklogin.facebooklogin.FacebookLoginPlugin.registerWith(shimPluginRegistry.registrarFor("com.roughike.facebooklogin.facebooklogin.FacebookLoginPlugin"));
+    flutterEngine.getPlugins().add(new com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin());
       io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin.registerWith(shimPluginRegistry.registrarFor("io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin"));
+      com.dooboolab.fluttersound.FlutterSoundPlugin.registerWith(shimPluginRegistry.registrarFor("com.dooboolab.fluttersound.FlutterSoundPlugin"));
+      io.github.ponnamkarthik.toast.fluttertoast.FluttertoastPlugin.registerWith(shimPluginRegistry.registrarFor("io.github.ponnamkarthik.toast.fluttertoast.FluttertoastPlugin"));
+      carnegietechnologies.gallery_saver.GallerySaverPlugin.registerWith(shimPluginRegistry.registrarFor("carnegietechnologies.gallery_saver.GallerySaverPlugin"));
+    flutterEngine.getPlugins().add(new com.baseflow.geolocator.GeolocatorPlugin());
+    flutterEngine.getPlugins().add(new com.baseflow.googleapiavailability.GoogleApiAvailabilityPlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.googlemaps.GoogleMapsPlugin());
     flutterEngine.getPlugins().add(new vn.hunghd.flutter.plugins.imagecropper.ImageCropperPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.imagepicker.ImagePickerPlugin());
-      com.lyokone.location.LocationPlugin.registerWith(shimPluginRegistry.registrarFor("com.lyokone.location.LocationPlugin"));
+    flutterEngine.getPlugins().add(new com.baseflow.location_permissions.LocationPermissionsPlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
       com.baseflow.permissionhandler.PermissionHandlerPlugin.registerWith(shimPluginRegistry.registrarFor("com.baseflow.permissionhandler.PermissionHandlerPlugin"));
+    flutterEngine.getPlugins().add(new io.flutter.plugins.share.SharePlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
+      clancey.simpleauth.simpleauthflutter.SimpleAuthFlutterPlugin.registerWith(shimPluginRegistry.registrarFor("clancey.simpleauth.simpleauthflutter.SimpleAuthFlutterPlugin"));
+    flutterEngine.getPlugins().add(new com.tekartik.sqflite.SqflitePlugin());
   }
 }

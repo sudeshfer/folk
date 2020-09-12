@@ -1,26 +1,90 @@
+//created by Suthura
+
+
+import 'dart:io';
+import 'package:admob_flutter/admob_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:folk/Screens/Login/location.dart';
-import 'package:folk/Screens/Login/login_page.dart';
-import 'package:folk/Screens/Login/phone_login.dart';
-import 'package:folk/Screens/Login/forgotPassword.dart';
-import 'package:folk/Screens/Login/resetPassword.dart';
-import 'package:folk/Screens/Login/pincode_verify.dart';
-import 'package:folk/Screens/Login/setup_step1.dart';
-import 'package:folk/Screens/Login/setup_step2.dart';
-import 'package:folk/Screens/Login/setup_step3.dart';
-import 'package:folk/Screens/Splash_screen/splash_screen.dart';
-import 'package:folk/Screens/Home_page/home_page.dart';
-import 'package:folk/Utils/Login_utils/loading_dialogs.dart';
+import 'package:folk/providers/EventProvider.dart';
+import 'package:folk/providers/chatGroupProvider.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
+import 'package:folk/pages/SplashScreen.dart';
+import 'package:folk/providers/AppBarProvider.dart';
+import 'package:folk/providers/AuthProvider.dart';
+import 'package:folk/providers/ConverstionProvider.dart';
+import 'package:folk/providers/DateProvider.dart';
+import 'package:folk/providers/NotificationProvider.dart';
+import 'package:folk/providers/PostProvider.dart';
+import 'package:folk/providers/PeerProfileProvider.dart';
+import 'package:folk/providers/Theme_provider.dart';
+import 'package:folk/utils/Constants.dart';
 
 import 'app_localizations.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  //set up providers
+  WidgetsFlutterBinding.ensureInitialized();
+  Admob.initialize();
+  runApp(OverlaySupport(
+    child: MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => ThemeProvider(isLightTheme: true)),
+      ChangeNotifierProvider(
+        create: (_) => AuthProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => DateProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => AppBarProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => NotificationProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => PostProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => ConversionProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => EventProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => PeerProfileProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => ChatGroupProvider(),
+      ),
+    ], child: MyApp()),
+  ));
+}
+
+String getAppId() {
+  if (Platform.isIOS) {
+    return Constants.ADMOB_APP_ID_IOS;
+  } else if (Platform.isAndroid) {
+    return Constants.ADMOB_APP_ID_ANDROID;
+  }
+  return null;
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //set up theme provider with listen true to rebuild app when theme change
+    //by default listen is true
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp]);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: themeProvider.getThemeData.backgroundColor,
+        statusBarIconBrightness:
+            themeProvider.getThemeData.brightness == Brightness.dark
+                ? Brightness.light
+                : Brightness.dark));
     return MaterialApp(
       supportedLocales: [Locale('en'), Locale('it')],
       localizationsDelegates: [
@@ -39,28 +103,10 @@ class MyApp extends StatelessWidget {
         }
         return supportedLocales.first;
       },
-      debugShowCheckedModeBanner: false,
+      theme: themeProvider.getThemeData,
+      home: SplashScreen(),
       title: 'Folk',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
-      home: new SplashScreen(),
-      routes: <String, WidgetBuilder>{
-        // login and resgistration routes
-        "/login": (BuildContext context) => new LoginPage(),
-        "/phonelogin": (BuildContext context) => new PhoneLogin(),
-        "/forgotpw": (BuildContext context) => new ForgotPassword(),
-        "/resetpw": (BuildContext context) => new ResetPassword(),
-        "/pincode": (BuildContext context) => new PincodeVerify(),
-        "/setupstep1": (BuildContext context) => new SetupStepOne(),
-        "/setupstep2": (BuildContext context) => new SetupStepTwo(),
-        "/setupstep3": (BuildContext context) => new SetupStepThree(),
-        "/location": (BuildContext context) => new GetLocation(),
-        "/SettingUpScreen": (BuildContext context) => new SettingUpScreen(),
-
-        //homepage routes
-        "/home": (BuildContext context) => new Homepage(),
-      },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
